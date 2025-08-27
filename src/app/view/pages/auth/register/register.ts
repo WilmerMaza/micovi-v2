@@ -25,7 +25,6 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-
 export class Register {
   private _formBuilder = inject(FormBuilder);
 
