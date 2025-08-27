@@ -1,0 +1,95 @@
+<div class="slider-effectCoverflow effectCoverflow">
+  <div class="cerrar">
+    <button mat-icon-button (click)="cerrar()">
+      <mat-icon style="color: rgba(255, 255, 255, 0.64)">close</mat-icon>
+    </button>
+  </div>
+  <swiper-container
+    effect="coverflow"
+    grab-cursor="true"
+    centered-slides="true"
+    slides-per-view="auto"
+    pagination="true"
+    navigation="true"
+    class="mySwiper"
+    #swiperEl
+  >
+    <ng-template
+      swiperSlide
+      *ngFor="let item of dataEjercicios; let ind = index"
+    >
+      <div class="contentViewEjercicio">
+        <div class="item">
+          <button
+            class="viewImage"
+            [ngClass]="{ zoom: zoomImage && index === ind }"
+            (click)="abrirImagen(ind)"
+          >
+            <img
+              [src]="
+                imageUrl[ind] && imageUrl[ind] != 'imagen.jpg'
+                  ? imageUrl[ind]
+                  : 'images/ejemploEjercicio.png'
+              "
+              alt="imagen de usuario inicial"
+            />
+          </button>
+          <div class="tittleEjercicio">
+            {{ item.Name }} ({{ item.Abbreviation }})
+          </div>
+          <div class="dataEjercicio">
+            <p class="dataEjecicioItem">
+              Grupo: {{ item.SubGrupo.Grupo.NameGrupo }}
+            </p>
+            <p class="dataEjecicioItem">
+              SubGrupo: {{ item.SubGrupo.NameSubGrupo }}
+            </p>
+            <p class="dataEjecicioItem">
+              Tipo de relación: {{ item.Relationship }}
+            </p>
+            <p class="dataEjecicioItem">
+              Unidad de medida de calidad: {{ item.Calidad.Name }}
+            </p>
+            <p class="dataEjecicioItem">
+              Unidad de medida de cantidad: {{ item.Cantidad.Name }}
+            </p>
+          </div>
+
+          <div class="despcritionEjercicio">
+            <div class="despcritionEjercicioItem">
+              Descripción:
+              <a
+                class="colorVideo"
+                *ngIf="item.LinkEjercicios"
+                href="{{ item.LinkEjercicios }}"
+                target="_blank"
+              >
+                Video de apoyo</a
+              >
+            </div>
+            <div class="textDescription">
+              <ng-container
+                *ngIf="
+                  item.Description.length > maxLength;
+                  else shortDescription
+                "
+              >
+                {{
+                  showFullDescription
+                    ? item.Description
+                    : (item.Description | slice : 0 : maxLength)
+                }}
+                <a class="textOption" (click)="toggleDescription()">{{
+                  showFullDescription ? "Ver menos" : "Ver más"
+                }}</a>
+              </ng-container>
+              <ng-template #shortDescription>
+                {{ item.Description }}
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </swiper-container>
+</div>

@@ -1,0 +1,33 @@
+<div id="ejercicio">
+  <div class="dinamic">
+    <section class="filterContent">
+      <app-dinamic-filter
+        [showDownload]="false"
+        [isDownload]="isDownload"
+        [showCombinate]="isCombinate"
+        [nameAdd]="nameAdd"
+        [isButtonEjercicio]="true"
+        [dataFilter]="filtros"
+        (filterResult)="getDataFilter($event)"
+        (actionFilter)="getActionEventFilter($event)"
+      >
+        loading..
+      </app-dinamic-filter>
+    </section>
+    <section>
+      <app-dinamic-table
+        [isCheckBox]="isCheck"
+        [columns]="column"
+        [dataSource]="dataEjercicio"
+        (actionEvent)="getActionEvent($event)"
+      ></app-dinamic-table>
+    </section>
+  </div>
+</div>
+@if (dataValuesImage?.dataEjercicio?.length) {
+<app-view-ejercicio
+  [dataSource]="dataValuesImage"
+  (actionClose)="actionCloseImage($event)"
+>
+</app-view-ejercicio>
+}

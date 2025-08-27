@@ -1,0 +1,143 @@
+<div id="content_create_indicador">
+    <!-- <div class="content_fondo"></div> -->
+    <div class="content_form_indicador">
+        <div class="title_indicador">Crear indicador</div>
+        <form [formGroup]="formIndicador">
+            <div class="forms-indicador">
+
+                <div class="content_form1">
+
+                    <div class="content-input">
+                        <div class="row">Nombre</div>
+                        <div class="row-data">
+                            <mat-form-field class="matforms" appearance="outline" fxFlex>
+                                <input matInput formControlName="name" required class="inputmat" id="inputname"
+                                    placeholder="Nombre del Indicador" />
+                                <mat-error *ngIf="formIndicador.get('name')?.invalid">El nombre del indicador es
+                                    requerido</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+
+                    <div class="content-input">
+
+                        <div class="row">Abreviatura</div>
+
+                        <div class="row-data">
+                            <mat-form-field class="matforms" appearance="outline" fxFlex>
+                                <input matInput formControlName="abrevt" required class="inputmat" id="inputabrevt"
+                                    placeholder="Abreviatura" />
+                                <mat-error *ngIf="formIndicador.get('abrevt')?.invalid">La abreviatura del indicador es
+                                    requerido</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+                    <div class="content-input">
+                        <div class="row">Descripción</div>
+                        <div class="form-field">
+                            <textarea matInput formControlName="description" class="field-input custom-input"
+                                placeholder="Descripción detallada"></textarea>
+                            <mat-error class="Error" *ngIf="
+                              ( formIndicador.get('description')?.touched) &&
+                              formIndicador.get('description')?.hasError('required')
+                            ">
+                                *Campo requerido
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content_form2">
+                    <div class="content-input">
+                        <div class="row">Niveles de calificación</div>
+                        <div class="row-data">
+                            <mat-form-field class="matforms" appearance="outline" fxFlex>
+
+                                <mat-select formControlName="levelCal" id="inputoption" placeholder="seleccionar">
+                                    <mat-option *ngFor="let item of levelsList" [value]="item.level"
+                                        (click)="createTemplate(item.level)">{{item.level}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="formIndicador.get('levelCal')?.invalid">Campo requerido</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="content_nivel_form" [ngClass]="{'isRequeridoNivelfrom': isFormValid()}">
+                        <div>
+
+
+
+                            <div class="content-input">
+                                <div class="row">Nombre del nivel</div>
+                                <div class="row-data">
+                                    <mat-form-field class="matforms" appearance="outline" fxFlex>
+                                        <input matInput formControlName="nameLevel" required class="inputmat"
+                                            placeholder="{{this.formIndicador.get('level')?.value}}"
+                                            id="inputlevelname" />
+                                        <mat-error *ngIf="formIndicador.get('nameLevel')?.invalid">Campo
+                                            requerido</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="content-input">
+                                <div class="row">Descripción</div>
+                                <div class="form-field">
+                                    <textarea matInput formControlName="descriptionLevel"
+                                        class="field-input custom-input-nivel"
+                                        placeholder="Descripción detallada nivel"></textarea>
+                                    <mat-error class="Error" *ngIf="
+                                      ( formIndicador.get('descriptionLevel')?.touched) &&
+                                      formIndicador.get('descriptionLevel')?.hasError('required')
+                                    ">
+                                        *Campo requerido
+                                    </mat-error>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contentButtonControl">
+                            <div *ngFor="let item of countLeves; let tab = index"
+                                [style.background-color]="isTheSame(tab)" (click)="changeTab(tab)"
+                                [ngClass]="{'tabSelectNivel':active === tab}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content_form3">
+
+                    <div class="content-input">
+                        <div class="row">Porcentaje absoluto (%)</div>
+                        <div class="row-data">
+                            <mat-form-field class="matforms" appearance="outline" fxFlex>
+                                <input matInput formControlName="absolute" type="text" required class="inputmat"
+                                    placeholder='Ejemplo: {{"92"}}' id="inputporcentage" mask='percent' />
+                                <mat-error *ngIf="formIndicador.get('absolute')?.invalid">Campo requerido</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="contentNumero">
+                        <div class="textIndicador">Indicador</div>
+                        <div class="numberIndicador">N.° <span class="number">{{numberIndicador}}</span></div>
+
+                    </div>
+                    <br>
+                    <div class="buttons_ind">
+                        <button mat-stroked-button color="primary" class="button_crear"
+                            (click)="createIndicator()">Crear indicador</button>
+                        <br><br>
+                        <button mat-raised-button class="button_cancel" type="button"
+                            (click)="goBack()">Cancelar</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>

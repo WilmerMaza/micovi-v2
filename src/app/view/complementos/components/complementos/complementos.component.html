@@ -1,0 +1,124 @@
+<div class="gree-content" id="gree-content">
+  <div class="content">
+    <div
+      class="grid-container"
+      [ngClass]="{ 'grid-containerCenter': !isEscuela }"
+    >
+      <div *ngIf="isEscuela">
+        <div class="esfera">
+          <img src="images/categorias.png" alt="" />
+        </div>
+        <div class="buttons">
+          <button
+            mat-raised-button
+            class="bttunPrimero"
+            (click)="viewTable('Categorías')"
+          >
+            Ver categorías
+          </button>
+          <br />
+          <button
+            mat-raised-button
+            color="primary"
+            class="bttunSegundo"
+            (click)="createCategoria()"
+          >
+            Crear categoría
+          </button>
+        </div>
+      </div>
+      <div *ngIf="!isEscuela">
+        <div class="esfera">
+          <img src="images/etapas.png" alt="" />
+        </div>
+        <div class="buttons">
+          <button
+            mat-raised-button
+            class="bttunPrimero"
+            (click)="viewTable('Etapas')"
+          >
+            Ver etapas
+          </button>
+          <br />
+          <button
+            mat-raised-button
+            color="primary"
+            class="bttunSegundo"
+            (click)="createEtapa()"
+          >
+            Crear etapas
+          </button>
+        </div>
+      </div>
+      <div *ngIf="!isEscuela">
+        <div class="esfera">
+          <img src="images/tareas.png" alt="" />
+        </div>
+        <div class="buttons">
+          <button
+            mat-raised-button
+            class="bttunPrimero"
+            (click)="viewTable('Actividades')"
+          >
+            Ver Actividades
+          </button>
+          <br />
+          <button
+            mat-raised-button
+            color="primary"
+            class="bttunSegundo"
+            (click)="createtask()"
+          >
+            Crear Actividad
+          </button>
+        </div>
+      </div>
+      <div *ngIf="!isEscuela">
+        <div class="esfera">
+          <img src="images/subgrupos.png" alt="" />
+        </div>
+        <div class="buttons">
+          <button
+            mat-raised-button
+            class="bttunPrimero"
+            (click)="viewTable('Subgrupos')"
+          >
+            Ver subgrupos
+          </button>
+          <br />
+          <button
+            mat-raised-button
+            color="primary"
+            class="bttunSegundo"
+            (click)="openSubgrupo()"
+          >
+            Crear subgrupos
+          </button>
+        </div>
+      </div>
+      <div *ngIf="isEscuela">
+        <div class="esfera esf-disciplina">
+          <img src="images/icon-disciplina.png" alt="" />
+        </div>
+        <div class="buttons">
+          <button
+            mat-raised-button
+            class="bttunPrimero"
+            (click)="viewTable('Disciplinas')"
+          >
+            Ver disciplinas
+          </button>
+          <br />
+          <button
+            mat-raised-button
+            color="primary"
+            class="bttunSegundo"
+            (click)="crearDisciplina()"
+          >
+            Crear disciplina
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

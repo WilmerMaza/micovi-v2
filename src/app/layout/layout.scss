@@ -1,0 +1,22 @@
+/* src/app/layout/layout.component.scss */
+:host {
+  display: block;
+  height: 100vh;
+}
+
+/* alto del toolbar (desktop) */
+$toolbar-h: 56px;
+
+/* full-height = viewport – toolbar */
+.sidenav-container,
+.main-content {
+  height: calc(100vh - #{$toolbar-h});
+  margin: 10px;
+  border-radius: 25px;
+}
+
+/* opcional: que el contenedor empiece justo debajo de la barra */
+.sidenav-container {
+  top: $toolbar-h;
+  position: relative;
+}

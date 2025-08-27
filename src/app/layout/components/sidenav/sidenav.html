@@ -1,0 +1,27 @@
+<!-- sidenav.html -->
+
+<!-- bloque avatar -->
+<div class="user-block" [class.collapsed]="collapsed()">
+  <img [src]="avatar" class="avatar" alt="avatar" />
+
+  <div class="user-info">
+    <p class="channel">Your channel</p>
+    <p class="name">{{ username }}</p>
+  </div>
+</div>
+
+<!-- lista de navegación -->
+<mat-nav-list>
+  @for (item of Menu; track $index) {
+  <a
+    mat-list-item
+    [routerLink]="item.route"
+    routerLinkActive="active"
+    matTooltipPosition="right"
+    [disableRipple]="true"
+  >
+    <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+    <span class="label">{{ item.label }}</span>
+  </a>
+  }
+</mat-nav-list>

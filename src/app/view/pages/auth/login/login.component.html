@@ -1,0 +1,67 @@
+<div class="contenMax">
+  <div class="conten">
+    <div class="group_login">
+      <div class="content-logo">
+        <div class="contenLogo"></div>
+      </div>
+      <div class="line-blue"></div>
+      <div class="formLogin">
+        <form [formGroup]="loginForm">
+          <p class="textInicio">Iniciar sesión</p>
+          <p class="textMedium">Iniciar sesión para continuar.</p>
+
+          <p class="textInput">Usuario</p>
+          <mat-form-field appearance="outline" class="matforms">
+            <span matSuffix>
+              <img src="./images/account.svg" class="custom-icon" />
+            </span>
+            <input
+              matInput
+              formControlName="username"
+              required
+              class="inputmat"
+              autocomplete="username"
+            />
+            <mat-error *ngIf="loginForm.get('username')?.invalid"
+              >username is required</mat-error
+            >
+          </mat-form-field>
+
+          <p class="textInput">Contraseña</p>
+          <mat-form-field appearance="outline" class="matforms">
+            <span matSuffix>
+              <img src="./images/segure.svg" class="custom-icon" />
+            </span>
+            <input
+              matInput
+              formControlName="password"
+              required
+              autocomplete="current-password"
+              class="inputmat"
+              type="password"
+            />
+            <mat-error *ngIf="loginForm.get('password')?.invalid"
+              >password is required</mat-error
+            >
+          </mat-form-field>
+
+          <div class="contenFlex">
+            <div class="checkbox">
+              <input type="checkbox" />
+              <label>Recordar contraseña</label>
+            </div>
+          </div>
+          <div class="content-button">
+            <button class="button" (click)="sessionLogin()">
+              Ingresar
+            </button>
+          </div>
+
+          <div class="olvidarConten">
+            <a class="buttonOlvidar"> ¿Olvidaste tu contraseña? </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
