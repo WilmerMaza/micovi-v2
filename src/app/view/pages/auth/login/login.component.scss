@@ -1,319 +1,186 @@
-.group_login {
-  display: flex;
-  flex-direction: row;
-  border: 5px solid white;
-  width: calc(80% - 10%);
-  height: calc(80% - 10%);
-  top: 87px;
-  left: 252px;
-  border-radius: 45px 0px 0px 45px;
-  background-color: white;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-}
-
-.formLogin {
-  margin: auto;
-  font-family: Inria Sans;
-  padding: 10px;
-}
-
-.conten {
-  width: 100%;
-  height: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.content-logo {
-  width: 50%;
-  height: 100%;
-  box-shadow: 1px 1px 5px #000000;
-}
-
-.contenLogo {
-  background-image: url(/images/Frame_Login.webp);
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 45px 0px 0px 45px;
-}
-
+/*  CONTENEDOR PRINCIPAL (pantalla completa con fondo) */
 .contenMax {
   width: 100%;
-  height: 100% !important;
+  min-height: 100vh;
   display: flex;
-  background-image: url(/images/Frame_fondo_login.webp);
-  background-size: cover;
   align-items: center;
-  background-position: center;
+  justify-content: center;
+  background: url("/images/fondoBanner.png") no-repeat center center;
+  background-size: cover;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+/*  TÍTULO EXTERNO (fuera de la card) */
+.titulo-externo {
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 50px;
+}
 
-  ::ng-deep .mat-mdc-text-field-wrapper {
-    height: 30px !important;
-    border-radius: 14px !important;
-    border-color: white !important;
-    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+/*  CARD BLANCA (contenedor del login) */
+.group_login {
+  box-sizing: border-box;
+  width: 95vw;
+  max-width: 800px;
+  min-height: 400px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 3rem;
+  padding: 40px 40px 60px 40px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/*  TEXTO DE REGISTRO */
+.registro {
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 32px;
+
+  .linkRegistro {
+    color: #0c4cc8;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+/*  LÍNEA DIVISORA */
+.divider {
+  border: none;
+  border-top: 2px solid #bbb;
+  margin: 0 auto 40px auto;
+  width: 90%;
+}
+
+/*  CAMPOS DE FORMULARIO */
+.mat-input-custom {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 25px auto;
+
+  /* Fondo gris claro */
+  .mat-mdc-text-field-wrapper {
+    background-color: #f2f2f2;
+    border-radius: 6px 6px 0 0;
   }
 
-  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
-    font-size: 12px;
-    font-weight: 400;
+  /* Línea azul por defecto */
+  .mat-mdc-form-field-flex {
+    border-bottom: 2px solid #0c4cc8 !important;
   }
 
-  ::ng-deep .matforms .mat-mdc-form-field-icon-suffix {
-    position: relative !important;
-  }
-
-  ::ng-deep
-    .mat-mdc-text-field-wrapper.mdc-text-field--outlined
-    .mat-mdc-form-field-infix {
-    padding-top: 4px;
-  }
-
-  ::ng-deep.mdc-dialog__container {
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  ::ng-deep.mdc-text-field--outlined .mdc-notched-outline {
+  .mat-mdc-form-field-error-wrapper {
     display: none !important;
   }
-  ::ng-deep .matforms .mat-mdc-text-field-wrapper {
-    background-color: white !important;
+
+
+  .mdc-text-field--invalid .mat-mdc-form-field-flex {
+    border-bottom: 2px solid #0c4cc8 !important;
+  }
+
+  .form-submitted &.ng-invalid.ng-touched .mat-mdc-form-field-flex {
+    border-bottom: 2px solid red !important;
+  }
+
+  /* Texto */
+  .mat-mdc-input-element {
+    font-size: 15px;
   }
 }
 
-.textInicio {
-  margin-top: 10px;
-  margin-bottom: 0px;
-  color: #000000;
-  font-size: 34px;
-  font-family: "Inria Sans";
-  font-weight: 600;
-  font-style: normal;
-  line-height: normal;
-  width: 300px;
-  height: 38px;
-}
-
-.my-form-field .mat-form-field-wrapper {
-  margin-bottom: -1.25em;
-}
-
-.textMedium {
-  color: #000000;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 300;
-  font-family: Inria Sans;
-  margin-left: 2px;
-  margin-top: 8px;
-  margin-bottom: 0;
-}
-
-.textInput {
-  margin-bottom: 2px;
-  color: #000000;
-  font-size: 21px;
-  font-style: normal;
-  line-height: normal;
-  font-family: Inria Sans;
-  font-weight: 500;
-  /* Valor de font-weight para un texto delgado */
-  font-stretch: condensed;
-  /* Valor de font-stretch para un texto condensado (delgado) */
-}
-.matforms {
-  width: 100%;
-}
-
-.inputmat {
-  padding: 2px;
-}
-
-::ng-deep .mat-mdc-text-field-wrapper {
-  height: 30px !important;
-  border-radius: 10px !important;
-  border-color: white !important;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-
-::ng-deep
-  .mat-mdc-text-field-wrapper.mdc-text-field--outlined
-  .mat-mdc-form-field-infix {
-  padding: 2px !important;
-}
-
-.inputLogin {
-  width: 270px;
-  height: 30px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  background: #f8f8f8;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  margin-bottom: 1%;
-  border: none;
-  padding: 0px;
-}
-
-.button {
-  border: none;
-  width: 200px;
+/*  ICONOS INPUT */
+.custom-icon {
+  width: 20px;
   height: 20px;
-  flex-shrink: 0;
-  border-radius: 15px;
-  background: linear-gradient(180deg, #0ddcf9 15.63%, #0c4cc8 100%);
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  color: #ffffff;
-
-  font-size: 18px;
-  font-style: normal;
-  font-weight: bold;
-  line-height: normal;
-  font-family: "Nunito";
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-family: "Viable Logic", sans-serif;
-  margin-top: 10px;
+  margin-left: 0;
+  margin-right: 10px;
+  transition: filter 0.3s ease, fill 0.3s ease;
 }
 
+/* Icono azul cuando el input está activo */
+.mat-input-custom:focus-within .custom-icon {
+  filter: invert(29%) sepia(93%) saturate(2432%) hue-rotate(210deg) brightness(95%) contrast(101%);
+}
+
+/*  CHECKBOX + OLVIDAR CONTRASEÑA */
 .contenFlex {
   display: flex;
-  width: 270px;
-  align-items: center;
   justify-content: space-between;
-
-  .checkbox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .checkbox input {
-    margin-top: 7px;
-  }
-
-  .checkbox label {
-    display: inline-block;
-    margin-top: 10px;
-    margin-left: 2px;
-    color: #000000;
-    font-size: 10px;
-  }
-}
-
-.buttonOlvidar {
-  color: #0cbdc8;
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-}
-
-.inputUsuario .mat-form-field-outline {
-  border: none; /* Quita los bordes */
-}
-
-.inputUsuario .mat-form-field-flex {
-  padding: 0; /* Ajusta el relleno interno */
-}
-
-.inputUsuario .mat-input-element {
-  border-radius: 10px; /* Agrega el radio a los bordes */
-  border: 1px solid rgba(0, 0, 0, 0.12); /* Puedes agregar un borde opcional si lo deseas */
-}
-
-.input-container {
-  position: relative;
-  margin-bottom: 30px;
-}
-.olvidarConten {
-  margin-top: 14px;
-  text-align: center;
-}
-
-.input-container c-input-group {
-  display: flex;
   align-items: center;
-}
-
-.input-container input {
+  margin: 10px auto 0 auto;
   width: 100%;
-  padding-right: 30px; /* Espacio para el icono */
-  border-radius: 10px !important; /* Ajusta el valor según tu diseño */
-  border: none;
-}
+  max-width: 500px;
 
-.custom-icon {
-  margin-bottom: 90%;
-  margin-right: 10px;
-}
-
-.input-container .custom-icon {
-  pointer-events: none;
-}
-.mat-form-field-appearance-outline {
-  border: none;
-}
-
-@media screen and (max-width: 750px) {
-  .formLogin {
-    margin-top: 0;
-    width: 230px;
+  .buttonOlvidar {
+    font-size: 12px;
+    color: #0cbdc8;
+    cursor: pointer;
   }
-  .textInicio {
-    margin-top: 20px;
-    font-size: 29px;
-    margin-bottom: 0px;
-  }
+}
 
-  .textMedium {
-    font-size: 11px;
-    margin-top: 0;
-    margin-bottom: 20px;
+/*  BOTÓN TONAL LIMPIO */
+.button-tonal {
+  background-color: #0c4cc8 !important;
+  color: #fff !important;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 12px 0;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto 0 auto;
+  display: block;
+  cursor: pointer;
+
+  border: none !important;
+  box-shadow: none !important;
+  text-transform: none;
+}
+
+/*  RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .titulo-externo {
+    font-size: 26px;
   }
 
   .group_login {
-    height: calc(100% - 0%);
-    width: calc(100% - 40%);
-    margin: auto;
-    border-radius: 40px;
-    flex-direction: column;
-    border: none;
+    padding: 30px 20px 40px 20px;
+    border-radius: 2rem;
   }
 
-  .content-logo {
-    width: 100%;
-    height: 100px;
-    box-shadow: 0 0 0 white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .mat-input-custom,
+  .contenFlex,
+  .button-tonal {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo-externo {
+    font-size: 22px;
+    margin-bottom: 15px;
   }
 
-  .contenLogo {
-    width: 200px;
-    height: 80px;
-    background-image: url(/images/login-min.png);
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+  .group_login {
+    padding: 20px 15px 30px 15px;
+    border-radius: 1.5rem;
   }
 
-  .line-blue {
-    width: 250px;
-    margin: auto;
-    border: 1px solid #0c8bdd;
+  .divider {
+    margin: 0 auto 30px auto;
   }
 
-  .content-button {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  .button-tonal {
+    font-size: 14px;
+    padding: 10px 0;
   }
 }
