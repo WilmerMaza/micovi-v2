@@ -1,3 +1,9 @@
+/*  Fuente global del login */
+.contenMax,
+.contenMax * {
+  font-family: "Inria Sans", sans-serif !important;
+}
+
 /*  CONTENEDOR PRINCIPAL (pantalla completa con fondo) */
 .contenMax {
   width: 100%;
@@ -11,6 +17,7 @@
   box-sizing: border-box;
   overflow: hidden;
 }
+
 /*  TÍTULO EXTERNO (fuera de la card) */
 .titulo-externo {
   font-size: 32px;
@@ -53,7 +60,7 @@
   }
 }
 
-/*  LÍNEA DIVISORA */
+/* LÍNEA DIVISORA */
 .divider {
   border: none;
   border-top: 2px solid #bbb;
@@ -82,7 +89,6 @@
     display: none !important;
   }
 
-
   .mdc-text-field--invalid .mat-mdc-form-field-flex {
     border-bottom: 2px solid #0c4cc8 !important;
   }
@@ -97,7 +103,7 @@
   }
 }
 
-/*  ICONOS INPUT */
+/* 🔵 ICONOS INPUT */
 .custom-icon {
   width: 20px;
   height: 20px;
@@ -119,6 +125,12 @@
   margin: 10px auto 0 auto;
   width: 100%;
   max-width: 500px;
+  font-family: "Inria Sans", sans-serif !important; /* ✅ aplica fuente */
+
+  .mat-mdc-checkbox,
+  .buttonOlvidar {
+    font-family: "Inria Sans", sans-serif !important; /* ✅ asegura tipografía */
+  }
 
   .buttonOlvidar {
     font-size: 12px;
@@ -126,6 +138,7 @@
     cursor: pointer;
   }
 }
+
 
 /*  BOTÓN TONAL LIMPIO */
 .button-tonal {
