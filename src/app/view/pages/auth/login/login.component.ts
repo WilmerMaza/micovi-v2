@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CryptoService } from '../../../../utils/crypto.service';
 import { Router } from '@angular/router';
@@ -21,23 +21,38 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatCheckboxModule,
     MatIconModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   hide = true;
   submitted = false;
 
   public loginForm: FormGroup = new LoginFormModel().formLogin();
-  public isChecked: boolean = false;
-  private cryptoService$ = new CryptoService();
 
-  constructor(private loginSession$: Session, private router$: Router) {}
+  constructor(
+    private loginSession$: Session,
+    private router$: Router,
+    private cryptoService$: CryptoService
+  ) {}
+
+  ngOnInit(): void {
+    const savedUser = localStorage.getItem('username');
+    const savedPass = localStorage.getItem('password');
+
+    if (savedUser && savedPass) {
+      this.loginForm.patchValue({
+        username: savedUser,
+        password: this.cryptoService$.Decrypt(savedPass),
+        check: true,
+      });
+    }
+  }
 
   sessionLogin(): void {
-    this.submitted = true; 
+    this.submitted = true;
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -50,12 +65,25 @@ export class LoginComponent {
 
     NormaliceLowerValidators.normaliceData(data);
 
-    data.Password = this.cryptoService$
-      .Encript(this.loginForm.get('password')?.value)
-      .toString();
+    const plainPassword = this.loginForm.get('password')?.value;
+    const encryptedPassword = this.cryptoService$.Encript(plainPassword);
+    data.Password = encryptedPassword;
 
     this.loginSession$.sessionLogin(data).subscribe(
-      () => this.router$.navigate(['/home']),
+      () => {
+        if (this.loginForm.get('check')?.value) {
+          localStorage.setItem(
+            'username',
+            this.loginForm.get('username')?.value
+          );
+          localStorage.setItem('password', encryptedPassword);
+        } else {
+          localStorage.removeItem('username');
+          localStorage.removeItem('password');
+        }
+
+        this.router$.navigate(['/home']);
+      },
       () =>
         Toast.fire({
           icon: 'error',
@@ -63,5 +91,8 @@ export class LoginComponent {
         })
     );
   }
-}
 
+  togglePasswordVisibility(): void {
+    this.hide = !this.hide;
+  }
+}
