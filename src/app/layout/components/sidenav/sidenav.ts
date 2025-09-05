@@ -1,18 +1,9 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  effect,
-  input,
-  signal,
-  Signal,
-  WritableSignal,
-} from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, effect, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -20,7 +11,6 @@ import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
     MatSidenavModule,
     MatListModule,
     MatIconModule,
-
     RouterLink,
     RouterLinkActive,
   ],
@@ -34,11 +24,11 @@ export class Sidenav {
 
   constructor() {
     effect(() => {
-      console.log('changed: ', this.collapsed());
+      // console.log('changed: ', this.collapsed());
     });
   }
 
-  avatar = 'assets/avatar.jpg'; // demo
+  avatar = '/img/avatars/1.jpg'; // demo
   username = 'Zoab Khan'; // demo
 
   Menu = [

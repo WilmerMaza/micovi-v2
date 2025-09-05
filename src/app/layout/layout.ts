@@ -6,6 +6,7 @@ import { Sidenav } from './components/sidenav/sidenav';
 import { Nav } from './components/nav/nav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { Spinner } from '../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-layout',
@@ -20,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     MatSidenavModule,
     Sidenav,
+    Spinner,
   ],
   templateUrl: './layout.html',
   styleUrls: ['./layout.scss'],
