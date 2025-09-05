@@ -4,6 +4,7 @@ import { Validators } from '../../utils/Validators';
 import Swal from 'sweetalert2';
 import { customOptions } from '../../utils/alert_Toast';
 import { ActivatedRoute } from '@angular/router';
+import { SpinnerService } from '../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,8 +13,11 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard implements OnInit {
-  constructor(private route$: ActivatedRoute) {}
-  ngOnInit(): void {
+  constructor(
+    private route$: ActivatedRoute,
+    private spinner: SpinnerService
+  ) {}
+  public ngOnInit(): void {
     const {
       snapshot: {
         queryParams: { newpay },
@@ -22,14 +26,19 @@ export class Dashboard implements OnInit {
     if (!Validators.isNullOrUndefined(newpay)) {
       this.newPayCompleted();
     }
+
+    // this.spinner.show(); // activa el loading
+    // setTimeout(() => {
+    //   this.spinner.hide(); // desactiva tras 3s
+    // }, 3000000);
   }
 
-  newPayCompleted(): void {
+  private newPayCompleted(): void {
     Swal.fire(customOptions);
     this.createConfeti();
   }
 
-  createConfeti(): void {
+  private createConfeti(): void {
     const container = document.querySelector('.my-swal-container');
     const colores = [
       '#f00',
