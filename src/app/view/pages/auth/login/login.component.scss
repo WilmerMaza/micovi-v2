@@ -1,10 +1,14 @@
-/*  Fuente global del login */
+/* =========================================
+   FUENTE GLOBAL DEL LOGIN
+========================================= */
 .contenMax,
 .contenMax * {
   font-family: "Inria Sans", sans-serif !important;
 }
 
-/*  CONTENEDOR PRINCIPAL (pantalla completa con fondo) */
+/* =========================================
+   CONTENEDOR PRINCIPAL
+========================================= */
 .contenMax {
   width: 100%;
   min-height: 100vh;
@@ -18,7 +22,9 @@
   overflow: hidden;
 }
 
-/*  TÍTULO EXTERNO (fuera de la card) */
+/* =========================================
+   TÍTULO EXTERNO (fuera de la card)
+========================================= */
 .titulo-externo {
   font-size: 32px;
   font-weight: bold;
@@ -27,7 +33,9 @@
   margin-bottom: 50px;
 }
 
-/*  CARD BLANCA (contenedor del login) */
+/* =========================================
+   CARD BLANCA (contenedor del login)
+========================================= */
 .group_login {
   box-sizing: border-box;
   width: 95vw;
@@ -45,22 +53,26 @@
   justify-content: center;
 }
 
-/*  TEXTO DE REGISTRO */
+/* =========================================
+   TEXTO DE REGISTRO
+========================================= */
 .registro {
   font-size: 14px;
   color: #333;
   text-align: center;
   margin-bottom: 32px;
-
-  .linkRegistro {
-    color: #0c4cc8;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-  }
 }
 
-/* LÍNEA DIVISORA */
+.registro .linkRegistro {
+  color: #0c4cc8;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* =========================================
+   LÍNEA DIVISORA
+========================================= */
 .divider {
   border: none;
   border-top: 2px solid #bbb;
@@ -68,7 +80,9 @@
   width: 90%;
 }
 
-/*  CAMPOS DE FORMULARIO */
+/* =========================================
+   CAMPOS DE FORMULARIO
+========================================= */
 .mat-input-custom {
   width: 100%;
   max-width: 500px;
@@ -76,48 +90,54 @@
 
   /* Fondo gris claro */
   .mat-mdc-text-field-wrapper {
-    background-color: #f2f2f2;
-    border-radius: 6px 6px 0 0;
+    background-color: #e9ebf3; /* gris como en la imagen */
+    border-radius: 6px;
   }
 
-  /* Línea azul por defecto */
+  /* Línea inferior oscura */
   .mat-mdc-form-field-flex {
-    border-bottom: 2px solid #0c4cc8 !important;
+    border-bottom: 1px solid #444 !important;
   }
 
+  /* Error oculto por defecto */
   .mat-mdc-form-field-error-wrapper {
     display: none !important;
   }
 
-  .mdc-text-field--invalid .mat-mdc-form-field-flex {
-    border-bottom: 2px solid #0c4cc8 !important;
-  }
-
+  /* Línea roja en error cuando se envía el formulario */
+  .mdc-text-field--invalid .mat-mdc-form-field-flex,
   .form-submitted &.ng-invalid.ng-touched .mat-mdc-form-field-flex {
     border-bottom: 2px solid red !important;
   }
 
-  /* Texto */
+  /* Texto del input */
   .mat-mdc-input-element {
     font-size: 15px;
+    padding-left: 5px; /* espacio después del icono */
   }
 }
 
-/* 🔵 ICONOS INPUT */
+/* =========================================
+   ICONOS INPUT
+========================================= */
 .custom-icon {
   width: 20px;
   height: 20px;
-  margin-left: 0;
   margin-right: 10px;
+  margin-left: 5px;
   transition: filter 0.3s ease, fill 0.3s ease;
 }
-
-/* Icono azul cuando el input está activo */
-.mat-input-custom:focus-within .custom-icon {
-  filter: invert(29%) sepia(93%) saturate(2432%) hue-rotate(210deg) brightness(95%) contrast(101%);
+.mat-input-custom .custom-icon {
+  width: 20px;
+  height: 20px;
+  margin: 0 8px;
+  cursor: pointer;
 }
 
-/*  CHECKBOX + OLVIDAR CONTRASEÑA */
+
+/* =========================================
+   CHECKBOX + OLVIDAR CONTRASEÑA
+========================================= */
 .contenFlex {
   display: flex;
   justify-content: space-between;
@@ -125,22 +145,23 @@
   margin: 10px auto 0 auto;
   width: 100%;
   max-width: 500px;
-  font-family: "Inria Sans", sans-serif !important; /* ✅ aplica fuente */
-
-  .mat-mdc-checkbox,
-  .buttonOlvidar {
-    font-family: "Inria Sans", sans-serif !important; /* ✅ asegura tipografía */
-  }
-
-  .buttonOlvidar {
-    font-size: 12px;
-    color: #0cbdc8;
-    cursor: pointer;
-  }
 }
 
+.contenFlex,
+.contenFlex .mat-mdc-checkbox,
+.contenFlex .buttonOlvidar {
+  font-family: "Inria Sans", sans-serif !important;
+}
 
-/*  BOTÓN TONAL LIMPIO */
+.buttonOlvidar {
+  font-size: 12px;
+  color: #0cbdc8;
+  cursor: pointer;
+}
+
+/* =========================================
+   BOTÓN TONAL LIMPIO
+========================================= */
 .button-tonal {
   background-color: #0c4cc8 !important;
   color: #fff !important;
@@ -159,7 +180,9 @@
   text-transform: none;
 }
 
-/*  RESPONSIVE DESIGN */
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
 @media (max-width: 768px) {
   .titulo-externo {
     font-size: 26px;
