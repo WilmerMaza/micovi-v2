@@ -51,7 +51,7 @@ export const routes: Routes = [
     path: 'registers',
     canActivate: [IgnoreLoginGuard],
     loadComponent: () =>
-      import('./view/pages/auth/register/register').then((m) => m.Register),
+      import('./view/pages/auth/register/view/register').then((m) => m.Register),
   },
   {
     path: '',

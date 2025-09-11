@@ -1,0 +1,132 @@
+<section class="content_register" id="register">
+  <mat-card class="card_register" appearance="outlined">
+    <div class="header_register">
+      <div><h1 style="margin-left: 8px">Registrate</h1></div>
+      <div><img style="margin-right: 8px" src="" alt="" srcset="" /></div>
+    </div>
+  </mat-card>
+
+  <mat-card class="card_register" appearance="outlined">
+    <mat-stepper [linear]="true" #stepper>
+      <!-- Paso uno -->
+      <mat-step [stepControl]="formPersonalInfo">
+        <form [formGroup]="formPersonalInfo">
+          <ng-template matStepLabel>Información general</ng-template>
+          <mat-form-field class="w-100">
+            <mat-label>Nombre de la Institución</mat-label>
+            <input
+              matInput
+              placeholder="Nombre de la Institución"
+              formControlName="name"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100">
+            <mat-label>Correo eléctronico</mat-label>
+            <input
+              matInput
+              placeholder="Correo eléctronico"
+              formControlName="email"
+              (blur)="updateErrorMessage()"
+              required
+            />
+            <!--@if (email.invalid) {
+            <mat-error>{{errorMessage()}}</mat-error> }-->
+          </mat-form-field>
+
+          <mat-form-field class="w-100">
+            <mat-label>Representante Legal</mat-label>
+            <input
+              matInput
+              placeholder="Representante Legal"
+              formControlName="representanteLegal"
+              required
+            />
+          </mat-form-field>
+
+          <div class="header_register">
+            <mat-form-field style="width: 45%;">
+              <mat-label>Caracter</mat-label>
+              <mat-select formControlName="caracterNombre">
+                <mat-option value="one"></mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field style="width: 45%; margin-left: 10px;">
+              <mat-label>Pais</mat-label>
+              <mat-select formControlName="paisNombre">
+                <mat-option value="one">First option</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <button matButton matStepperNext>Siguiente</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Paso dos -->
+      <mat-step [stepControl]="formContactInfo" label="Datos de contacto">
+        <form [formGroup]="formContactInfo">
+          <mat-form-field class="w-100">
+            <mat-label>Sede</mat-label>
+            <input
+              matInput
+              placeholder="sede"
+              formControlName="sede"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100">
+            <mat-label>Página Web</mat-label>
+            <input
+              matInput
+              placeholder="Página Web"
+              formControlName="paginaWeb"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100">
+            <mat-label>Télefono</mat-label>
+            <input
+              matInput
+              placeholder="Ingresa tu Télefono"
+              formControlName="telefono"
+              required
+            />
+          </mat-form-field>
+
+          <div>
+            <button matButton matStepperPrevious>Atrás</button>
+            <button matButton matStepperNext>Siguiente</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Paso tres -->
+      <mat-step>
+        <form [formGroup]="formSecurityInfo">
+          <ng-template matStepLabel>Done</ng-template>
+          <mat-form-field class="w-100">
+            <mat-label>Contraseña</mat-label>
+            <input
+              matInput
+              placeholder="Ingresa una Contraseña"
+              formControlName="contraseña"
+              required
+            />
+          </mat-form-field>
+
+          <div>
+            <button matButton matStepperPrevious>Atrás</button>
+            <button matButton (click)="stepper.reset()">Hecho</button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-stepper>
+  </mat-card>
+</section>
