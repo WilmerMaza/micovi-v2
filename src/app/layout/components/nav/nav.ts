@@ -1,39 +1,24 @@
 import { Component, output } from '@angular/core';
-import { Router } from '@angular/router';  // 👈 importa Router
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Menu } from '../menu/menu';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule],
+  imports: [MatToolbarModule, MatIconModule, MatButtonModule, Menu],
   templateUrl: './nav.html',
-  styleUrls: ['./nav.scss'], // 👈 corregido (urls en plural)
+  styleUrls: ['./nav.scss'],
 })
 export class Nav {
-  // Output como Signal-Emitter
-  readonly menuToggle = output<void>();
+  public readonly menuToggle = output<void>();
+  public readonly username = 'Sebuncho';
 
-  constructor(private router: Router) {} // 👈 inyectamos Router
+  constructor() {}
 
   toggleMenu() {
     this.menuToggle.emit();
-  }
-
-  avatar = 'assets/avatar.jpg'; // demo
-  username = 'Sebuncho';        // demo
-
-  logout() {
-    // Aquí limpias la sesión/token
-    localStorage.removeItem('token');
-    sessionStorage.clear();
-
-    // Redirigir al login
-    this.router.navigate(['/login']); // 👈 ahora funciona
-  }
-
-  goToProfile() {
-    this.router.navigate(['/perfil']);
   }
 }
