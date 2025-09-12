@@ -1,21 +1,39 @@
-import { Component, input, output } from '@angular/core';
+import { Component, output } from '@angular/core';
+import { Router } from '@angular/router';  // 👈 importa Router
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-nav',
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule],
   standalone: true,
+  imports: [MatToolbarModule, MatIconModule, MatButtonModule],
   templateUrl: './nav.html',
-  styleUrl: './nav.scss',
+  styleUrls: ['./nav.scss'], // 👈 corregido (urls en plural)
 })
 export class Nav {
-  // 1️⃣  Output como Signal-Emitter
+  // Output como Signal-Emitter
   readonly menuToggle = output<void>();
 
-  // 2️⃣  Emitimos correctamente:
+  constructor(private router: Router) {} // 👈 inyectamos Router
+
   toggleMenu() {
-    this.menuToggle.emit(); // ← ya no da el error TS
+    this.menuToggle.emit();
+  }
+
+  avatar = 'assets/avatar.jpg'; // demo
+  username = 'Sebuncho';        // demo
+
+  logout() {
+    // Aquí limpias la sesión/token
+    localStorage.removeItem('token');
+    sessionStorage.clear();
+
+    // Redirigir al login
+    this.router.navigate(['/login']); // 👈 ahora funciona
+  }
+
+  goToProfile() {
+    this.router.navigate(['/perfil']);
   }
 }
