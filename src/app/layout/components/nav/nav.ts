@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Menu } from '../menu/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -16,9 +17,17 @@ export class Nav {
   public readonly menuToggle = output<void>();
   public readonly username = 'Sebuncho';
 
-  constructor() {}
+  constructor(private router: Router) { }
 
-  toggleMenu() {
+  public toggleMenu(): void {
     this.menuToggle.emit();
   }
+
+
+
+  public goToHome(): void {
+    this.router.navigate(['/home']); // 👈 aquí redirige al Home
+  }
+
+
 }
