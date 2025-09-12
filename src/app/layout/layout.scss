@@ -2,21 +2,57 @@
 :host {
   display: block;
   height: 100vh;
+  overflow: hidden;
 }
 
-/* alto del toolbar (desktop) */
 $toolbar-h: 56px;
 
-/* full-height = viewport – toolbar */
-.sidenav-container,
-.main-content {
-  height: calc(100vh - #{$toolbar-h});
-  margin: 10px;
-  border-radius: 25px;
+.sidenav-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  background-color: #F9FAFB !important;
+  
+  .mat-drawer-inner-container,
+  .mat-sidenav-content,
+  .mat-drawer-content {
+    background-color: #F9FAFB !important;
+  }
 }
 
-/* opcional: que el contenedor empiece justo debajo de la barra */
-.sidenav-container {
-  top: $toolbar-h;
-  position: relative;
+.main-content {
+  height: 100vh;
+  margin: 0;
+  padding: #{$toolbar-h} 0 0 0;
+  overflow: auto;
+  background-color: #F9FAFB;
+  border: none;
+  box-shadow: none;
+  margin-left: 250px; /* Espacio para el sidebar abierto */
+  transition: margin-left 0.3s ease;
+}
+
+/* Cuando el sidebar está colapsado */
+.app-sidenav.collapsed ~ .main-content {
+  margin-left: 80px; /* Espacio para el sidebar colapsado */
+}
+
+/* Estilos para el sidenav */
+.app-sidenav {
+  border: none;
+  box-shadow: none;
+  
+  &.mat-sidenav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 998;
+    border: none;
+    box-shadow: none;
+  }
 }

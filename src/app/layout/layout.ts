@@ -27,6 +27,29 @@ import { Spinner } from '../shared/components/spinner/spinner';
   styleUrls: ['./layout.scss'],
 })
 export class Layout {
-  readonly collapsed = signal(false);
-  toggle = () => this.collapsed.update((v) => !v);
+  private readonly STORAGE_KEY = 'sidebar-collapsed';
+  
+  readonly collapsed = signal(this.getSavedState());
+  
+  toggle = () => {
+    this.collapsed.update((v) => {
+      const newValue = !v;
+      this.saveState(newValue);
+      return newValue;
+    });
+  };
+
+  private getSavedState(): boolean {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(this.STORAGE_KEY);
+      return saved ? JSON.parse(saved) : false;
+    }
+    return false;
+  }
+
+  private saveState(state: boolean): void {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
+    }
+  }
 }

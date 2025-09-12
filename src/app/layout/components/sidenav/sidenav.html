@@ -1,27 +1,52 @@
 <!-- sidenav.html -->
+<div class="sidebar-container">
+  <!-- Sección superior con avatar y usuario -->
+  <div class="user-section" [class.collapsed]="collapsed()">
+    <div class="avatar-container">
+      <img [src]="avatar" class="user-avatar" alt="avatar" />
+    </div>
+    
+    @if (!collapsed()) {
+    <div class="user-name">
+      {{ username }}
+    </div>
+    }
+    
+    <!-- Botón Inicio -->
+    <div class="inicio-button">
+      <button class="btn-inicio" [class.collapsed]="collapsed()">
+        <mat-icon>home</mat-icon>
+        @if (!collapsed()) {
+        <span>Inicio</span>
+        }
+      </button>
+    </div>
+  </div>
 
-<!-- bloque avatar -->
-<div class="user-block" [class.collapsed]="collapsed()">
-  <img [src]="avatar" class="avatar" alt="avatar" />
+  <!-- Lista de navegación -->
+  <div class="navigation-section">
+    <mat-nav-list>
+      @for (item of Menu; track $index) {
+      <a
+        mat-list-item
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        matTooltipPosition="right"
+        [disableRipple]="true"
+        class="nav-item"
+        [class.collapsed]="collapsed()"
+      >
+        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+        @if (!collapsed()) {
+        <span class="label">{{ item.label }}</span>
+        }
+      </a>
+      }
+    </mat-nav-list>
+  </div>
 
-  <div class="user-info">
-    <p class="channel">Your channel</p>
-    <p class="name">{{ username }}</p>
+  <!-- Logo MICOVI en la parte inferior -->
+  <div class="logo-section" [class.collapsed]="collapsed()">
+    <img src="./images/dashboard.png" alt="MICOVI" class="micovi-logo">
   </div>
 </div>
-
-<!-- lista de navegación -->
-<mat-nav-list>
-  @for (item of Menu; track $index) {
-  <a
-    mat-list-item
-    [routerLink]="item.route"
-    routerLinkActive="active"
-    matTooltipPosition="right"
-    [disableRipple]="true"
-  >
-    <mat-icon matListIcon>{{ item.icon }}</mat-icon>
-    <span class="label">{{ item.label }}</span>
-  </a>
-  }
-</mat-nav-list>

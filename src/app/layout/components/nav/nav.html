@@ -1,12 +1,18 @@
 <!-- nav.html -->
-<mat-toolbar class="topbar" color="default">
-  <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()">
-    <mat-icon>menu</mat-icon>
+<mat-toolbar class="topbar" [class.sidebar-collapsed]="collapsed()">
+  <!-- Botón hamburguesa -->
+  <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()" class="menu-toggle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
   </button>
 
-  <span class="title">Content</span>
-
   <span class="spacer"></span>
-  <!-- zona de acciones secundarias -->
-  <button mat-icon-button><mat-icon>account_circle</mat-icon></button>
+
+  <!-- Botón logout -->
+  <button mat-icon-button aria-label="logout" (click)="logout()" class="logout-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7M16 15.5l3.5-3.5L16 8.5m-6.5 3.496h10"/>
+    </svg>
+  </button>
 </mat-toolbar>

@@ -2,6 +2,7 @@ import { Component, effect, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
 
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -11,6 +12,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     MatSidenavModule,
     MatListModule,
     MatIconModule,
+    MatButtonModule,
     RouterLink,
     RouterLinkActive,
   ],
@@ -29,20 +31,7 @@ export class Sidenav {
   }
 
   avatar = '/img/avatars/1.jpg'; // demo
-  username = 'Zoab Khan'; // demo
+  username = 'Real'; // demo
 
-  Menu = [
-    {
-      icon: 'home',
-      label: 'Inicio',
-      route: '/home',
-      subItem: [
-        {
-          icon: 'home',
-          label: 'home',
-          route: 'home',
-        },
-      ],
-    },
-  ];
+  Menu: any[] = [];
 }

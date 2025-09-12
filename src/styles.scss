@@ -23,14 +23,44 @@ html {
 -------------------------------- */
 body {
   color-scheme: light;
-  background-color: var(--mat-sys-surface);
+  background-color: #F9FAFB;
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
   margin: 0;
   padding: 0;
   font-family: "Inria Sans", Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
 }
 
 html, body {
   height: 100%;
+  overflow: hidden;
+}
+
+/* Ocultar scrollbars pero mantener funcionalidad */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* -------------------------------
+   Fix Angular Material backgrounds
+-------------------------------- */
+.mat-drawer-inner-container,
+.mat-sidenav-content,
+.mat-drawer-content {
+  background-color: #F9FAFB !important;
+}
+
+.mat-sidenav-container {
+  background-color: #F9FAFB !important;
 }

@@ -1,12 +1,12 @@
-<app-nav (menuToggle)="toggle()"></app-nav>
+<app-nav (menuToggle)="toggle()" [collapsed]="collapsed()"></app-nav>
 
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
     class="app-sidenav"
     fixedInViewport="true"
-    [fixedTopGap]="56"
+    [fixedTopGap]="0"
     mode="side"
-    [opened]="!collapsed()"
+    [opened]="true"
     [class.collapsed]="collapsed()"
   >
     <app-sidenav [collapsed]="collapsed()"></app-sidenav>
