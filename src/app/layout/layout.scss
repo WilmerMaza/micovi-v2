@@ -1,22 +1,24 @@
 /* src/app/layout/layout.component.scss */
+
 :host {
   display: block;
-  height: 100vh;
+  height: 100dvh; /* alto exacto de la pantalla */
+  --toolbar-h: 56px; /* cambia si tu toolbar es otra altura */
 }
 
-/* alto del toolbar (desktop) */
-$toolbar-h: 56px;
-
-/* full-height = viewport – toolbar */
-.sidenav-container,
-.main-content {
-  height: calc(100vh - #{$toolbar-h});
-  //margin: 10px;
-  border-radius: 25px;
-}
-
-/* opcional: que el contenedor empiece justo debajo de la barra */
+/* El container ocupa todo el host */
 .sidenav-container {
-  top: $toolbar-h;
-  position: relative;
+  height: 100%;
+}
+
+/* El contenido se desplaza debajo de la toolbar y ocupa 100% */
+.main-content {
+  height: 100%;
+  padding: var(--toolbar-h) 1% 1% 1%;
+  box-sizing: border-box;
+}
+
+/* El sidenav ya queda compensado con fixedTopGap, no uses top aquí */
+.app-sidenav {
+  width: 280px; /* tu ancho; opcional */
 }
