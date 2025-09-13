@@ -1,21 +1,33 @@
-import { Component, input, output } from '@angular/core';
+import { Component, output } from '@angular/core';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Menu } from '../menu/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule],
   standalone: true,
+  imports: [MatToolbarModule, MatIconModule, MatButtonModule, Menu],
   templateUrl: './nav.html',
-  styleUrl: './nav.scss',
+  styleUrls: ['./nav.scss'],
 })
 export class Nav {
-  // 1️⃣  Output como Signal-Emitter
-  readonly menuToggle = output<void>();
+  public readonly menuToggle = output<void>();
+  public readonly username = 'Sebuncho';
 
-  // 2️⃣  Emitimos correctamente:
-  toggleMenu() {
-    this.menuToggle.emit(); // ← ya no da el error TS
+  constructor(private router: Router) { }
+
+  public toggleMenu(): void {
+    this.menuToggle.emit();
   }
+
+
+
+  public goToHome(): void {
+    this.router.navigate(['/home']); // 👈 aquí redirige al Home
+  }
+
+
 }

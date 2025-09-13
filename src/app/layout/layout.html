@@ -1,6 +1,9 @@
 <app-nav (menuToggle)="toggle()"></app-nav>
 
 <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav-content class="main-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
   <mat-sidenav
     class="app-sidenav"
     fixedInViewport="true"
@@ -11,10 +14,6 @@
   >
     <app-sidenav [collapsed]="collapsed()"></app-sidenav>
   </mat-sidenav>
-
-  <mat-sidenav-content class="main-content">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
 </mat-sidenav-container>
 
 <app-spinner></app-spinner>

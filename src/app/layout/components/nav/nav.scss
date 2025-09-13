@@ -1,11 +1,63 @@
 .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 48px;
-  padding-inline: 0.75rem;
+  padding: 0 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+  /* 🔑 Para que siempre quede arriba */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  background: #fff; /* Fondo sólido */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* estilo similar a Facebook */
+
+
+.toolbar-left,
+.toolbar-center,
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
-.title {
-  font-weight: 500;
-  font-size: 0.95rem;
+
+.toolbar-center {
+  flex: 1;
+  justify-content: center;
 }
-.spacer {
-  flex: 1 1 auto;
+
+.logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
 }
+
+.user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Inria Sans', sans-serif;
+}
+
+.hello,
+.username {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+}
+
+.profile-btn {
+  color: #0C4CC8;
+}
+
+}
+
+

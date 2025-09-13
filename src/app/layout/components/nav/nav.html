@@ -1,12 +1,26 @@
-<!-- nav.html -->
 <mat-toolbar class="topbar" color="default">
-  <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()">
-    <mat-icon>menu</mat-icon>
-  </button>
+  <!-- 🔹 Zona izquierda -->
+  <div class="toolbar-left">
+    <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()">
+      <mat-icon class="profile-btn">menu</mat-icon>
+    </button>
+   <button mat-icon-button (click)="goToHome()">
+  <mat-icon class="profile-btn">home</mat-icon>
+</button>
+  </div>
 
-  <span class="title">Content</span>
+  <!-- 🔹 Zona central -->
+  <div class="toolbar-center">
+    <img src="./images/dashboard.webp" alt="Logo" class="logo"/>
+    <span class="user-greeting">/ Home</span>
+  </div>
 
-  <span class="spacer"></span>
-  <!-- zona de acciones secundarias -->
-  <button mat-icon-button><mat-icon>account_circle</mat-icon></button>
+  <!-- 🔹 Zona derecha -->
+  <div class="toolbar-right">
+    <div class="user-greeting">
+      <span class="hello">Hola,</span>
+      <span class="username">{{ username }}</span>
+    </div>
+    <app-menu></app-menu>
+  </div>
 </mat-toolbar>

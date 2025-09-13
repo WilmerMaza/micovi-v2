@@ -1,21 +1,24 @@
 /* -------------------------------
    Import Angular Material theming
 -------------------------------- */
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 /* -------------------------------
    Definición del tema
 -------------------------------- */
 html {
-  @include mat.theme((
-    color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto, // O usa "Inria Sans" si ya la cargaste
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Inria Sans,
+      // O usa "Inria Sans" si ya la cargaste
+      density: 0,
+    )
+  );
 }
 
 /* -------------------------------
@@ -31,6 +34,23 @@ body {
   font-family: "Inria Sans", Roboto, "Helvetica Neue", sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
 }
