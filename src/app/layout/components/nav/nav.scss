@@ -1,9 +1,14 @@
 .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 48px;
   padding: 0 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 
   /* 🔑 Para que siempre quede arriba */
   position: fixed;
@@ -14,7 +19,7 @@
 
   background: #fff; /* Fondo sólido */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* estilo similar a Facebook */
-}
+
 
 .toolbar-left,
 .toolbar-center,
@@ -52,3 +57,7 @@
 .profile-btn {
   color: #0C4CC8;
 }
+
+}
+
+

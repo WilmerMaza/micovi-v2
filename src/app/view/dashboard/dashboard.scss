@@ -1,23 +1,24 @@
 #conten-dashboard {
   height: 100vh; /* ocupa toda la pantalla */
   display: flex;
+  //-direction:column;
   justify-content: center; /* centra horizontalmente */
-  align-items: center;     /* centra verticalmente */
+  align-items: flex-start;
+  padding: 20px;  /* centra verticalmente */
   background: #f7f7f9;     /* color de fondo suave */
-}
 
-.dashboard {
+  .dashboard {
   width: 100%; /* ancho fijo en escritorio */
-  height: 90%; /* ocupa casi toda la altura */
+height: 100%; /* ocupa casi toda la altura */
   border-radius: 15px;
-  background: #ffffff;
+  background: #6f0ca4;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
 
   display: flex;
   flex-direction: column; /* los elementos se apilan */
   justify-content: center; /* centra verticalmente */
   align-items: center;     /* centra horizontalmente */
-  padding: 1rem 0;
+ // padding: 1rem 0;
 }
 
 .imgDash img {
@@ -25,6 +26,9 @@
   height: auto;
   object-fit: contain;
 }
+
+}
+
 
 /* 🔹 Responsive: cambia a barra superior en pantallas pequeñas */
 @media (max-width: 768px) {
