@@ -1,5 +1,5 @@
 #conten-dashboard {
-  height: 100vh; /* ocupa toda la pantalla */
+  height: clamp(84vh, 86vh, 94vh); /* ocupa toda la pantalla */
   display: flex;
   //-direction:column;
   justify-content: center; /* centra horizontalmente */
@@ -9,7 +9,7 @@
 
   .dashboard {
   width: 100%; /* ancho fijo en escritorio */
-height: 100%; /* ocupa casi toda la altura */
+  height: 100%; /* ocupa casi toda la altura */
   border-radius: 15px;
   background: #ffffff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
