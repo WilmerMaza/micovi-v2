@@ -4,6 +4,7 @@ import { Page404Component } from './view/pages/page404/page404.component';
 import { Page500Component } from './view/pages/page500/page500.component';
 import { Layout } from './layout/layout';
 import { JwtGuard } from './core/guard/JwtGuard';
+import { ConfiguracionComponent } from './layout/components/configuracion/configuracion.component';
 
 export const routes: Routes = [
   // {
@@ -37,8 +38,8 @@ export const routes: Routes = [
   //         import('./view/pages/auth/register/register').then((m) => m.Register),
   //     },
   //   ],
-  // },
-
+//   // },
+{ path: 'configuracion', component: ConfiguracionComponent, canActivate: [JwtGuard] } ,
   {
     path: 'login',
     canActivate: [IgnoreLoginGuard],

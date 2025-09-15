@@ -1,12 +1,16 @@
 <mat-toolbar class="topbar" color="default">
   <!-- 🔹 Zona izquierda -->
+
   <div class="toolbar-left">
-    <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()">
+
+    <button *ngIf="mostrarToggleMenu" mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()">
       <mat-icon class="profile-btn">menu</mat-icon>
     </button>
-   <button mat-icon-button (click)="goToHome()">
-  <mat-icon class="profile-btn">home</mat-icon>
-</button>
+
+
+    <button mat-icon-button (click)="goToHome()">
+      <mat-icon class="profile-btn">home</mat-icon>
+    </button>
   </div>
 
   <!-- 🔹 Zona central -->

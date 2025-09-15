@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { Router} from '@angular/router';
 import { AuthService } from '../../../core/services/auth';
 
 @Component({
@@ -25,4 +25,9 @@ export class Menu {
     this.authService.clearSession();
     this.router.navigate(['/login']);
   }
+  
+  public configuracion(): void {  
+    this.router.navigate(['configuracion']); 
+  }
+
 }
