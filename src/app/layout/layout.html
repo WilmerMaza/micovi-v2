@@ -1,20 +1,20 @@
 <app-nav (menuToggle)="toggle()" [collapsed]="collapsed()"></app-nav>
 
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    class="app-sidenav"
-    fixedInViewport="true"
-    [fixedTopGap]="0"
-    mode="side"
-    [opened]="true"
-    [class.collapsed]="collapsed()"
-  >
-    <app-sidenav [collapsed]="collapsed()"></app-sidenav>
-  </mat-sidenav>
+<!-- Backdrop para móvil -->
+@if (isMobile() && !collapsed()) {
+<div class="mobile-backdrop" (click)="onBackdropClick()"></div>
+}
 
-  <mat-sidenav-content class="main-content">
+<div class="layout-container" 
+     [class.sidebar-collapsed]="collapsed()" 
+     [class.mobile-mode]="isMobile()">
+  <div class="sidebar-wrapper" [class.mobile-drawer]="isMobile()">
+    <app-sidenav [collapsed]="collapsed()" (closeSidebar)="onCloseSidebar()"></app-sidenav>
+  </div>
+  
+  <div class="main-content">
     <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>
 
 <app-spinner></app-spinner>

@@ -6,47 +6,48 @@
       <img [src]="avatar" class="user-avatar" alt="avatar" />
     </div>
     
-    @if (!collapsed()) {
+    @if (!collapsed() && showText()) {
     <div class="user-name">
       {{ username }}
     </div>
     }
-    
+  </div>
+
+  <!-- Sección de navegación unificada -->
+  <div class="navigation-section" [class.collapsed]="collapsed()">
     <!-- Botón Inicio -->
-    <div class="inicio-button">
-      <button class="btn-inicio" [class.collapsed]="collapsed()">
+    <div class="nav-button-container">
+      <button class="nav-button" [class.collapsed]="collapsed()" [class.active]="isActive('/home')" (click)="navigateTo('/home')">
         <mat-icon>home</mat-icon>
-        @if (!collapsed()) {
+        @if (!collapsed() && showText()) {
         <span>Inicio</span>
         }
       </button>
     </div>
-  </div>
-
-  <!-- Lista de navegación -->
-  <div class="navigation-section">
-    <mat-nav-list>
-      @for (item of Menu; track $index) {
-      <a
-        mat-list-item
-        [routerLink]="item.route"
-        routerLinkActive="active"
-        matTooltipPosition="right"
-        [disableRipple]="true"
-        class="nav-item"
+    
+    <!-- Botones de navegación -->
+    @for (item of Menu; track $index) {
+    <div class="nav-button-container">
+      <button 
+        class="nav-button" 
         [class.collapsed]="collapsed()"
+        [class.active]="isActive(item.url)"
+        (click)="navigateTo(item.url)"
       >
-        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
-        @if (!collapsed()) {
-        <span class="label">{{ item.label }}</span>
+        <mat-icon>{{ item.iconComponent.name }}</mat-icon>
+        @if (!collapsed() && showText()) {
+        <span>{{ item.name }}</span>
+        @if (item.badge) {
+        <span class="badge" [class]="'badge-' + item.badge.color">{{ item.badge.text }}</span>
         }
-      </a>
-      }
-    </mat-nav-list>
+        }
+      </button>
+    </div>
+    }
   </div>
 
   <!-- Logo MICOVI en la parte inferior -->
   <div class="logo-section" [class.collapsed]="collapsed()">
-    <img src="./images/dashboard.png" alt="MICOVI" class="micovi-logo">
+    <img src="/images/dashboard.png" alt="MICOVI" class="micovi-logo">
   </div>
 </div>

@@ -19,14 +19,14 @@ $width-collapsed: 80px;
 
 /* Sección del usuario en la parte superior */
 .user-section {
-  padding: 4rem 1rem 2rem; /* Más espacio arriba para los botones del header */
+  padding: 4rem 1rem 1rem; /* Aumentar espacio superior para bajar la foto */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 
   &.collapsed {
-    padding: 3rem 0.5rem 1rem;
+    padding: 3rem 0.5rem 0.5rem;
   }
 }
 
@@ -48,105 +48,121 @@ $width-collapsed: 80px;
   color: white;
   font-size: 1rem;
   font-weight: 500;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Reducir margen */
 }
 
-/* Botón Inicio */
-.inicio-button {
-  width: 100%;
-  margin-bottom: 1rem;
-
-  .btn-inicio {
-    background: white;
-    color: #3886F6;
-    border: none;
-    border-radius: 8px; /* Menos redondeado - más rectangular */
-    padding: 0.75rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    &:hover {
-      background: #f8f9fa;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
-
-    &.collapsed {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px; /* Mantener consistencia cuando está colapsado */
-      padding: 0;
-
-      span {
-        display: none;
-      }
-    }
-  }
-}
-
-/* Sección de navegación */
+/* Sección de navegación unificada */
 .navigation-section {
   flex: 1;
   padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Espaciado consistente entre botones */
 
-  .mat-nav-list {
-    padding: 0;
+  &.collapsed {
+    padding: 0 0.5rem;
+  }
+}
 
-    .nav-item {
+/* Container para cada botón de navegación */
+.nav-button-container {
+  width: 100%;
+}
+
+/* Estilo unificado para todos los botones de navegación */
+.nav-button {
+  background: transparent;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: left;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  &.active {
+    background: white;
+    color: #3886F6;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    mat-icon {
+      color: #3886F6;
+    }
+
+    .badge {
+      background-color: #3886F6;
       color: white;
-      margin-bottom: 0.5rem;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      height: 48px;
-      display: flex;
-      align-items: center;
+    }
+  }
 
-      &:hover {
-        background: rgba(255, 255, 255, 0.1);
-      }
+  mat-icon {
+    color: white;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-      &.active {
-        background: rgba(255, 255, 255, 0.2);
-        font-weight: 500;
-      }
+  span {
+    color: inherit;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 
-      &.collapsed {
-        justify-content: center;
+  .badge {
+    background-color: #3886F6;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: auto;
+    font-weight: 500;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
 
-        .label {
-          display: none;
-        }
-      }
+    &.badge-info {
+      background-color: #17a2b8;
+    }
 
-      mat-icon {
-        color: white;
-        margin-right: 1rem;
-        font-size: 20px;
-        width: 20px;
+    &.badge-warning {
+      background-color: #ffc107;
+      color: #212529;
+    }
 
-        &[matListIcon] {
-          margin-right: 1rem;
-        }
-      }
+    &.badge-success {
+      background-color: #28a745;
+    }
+  }
 
-      .label {
-        color: white;
-        font-size: 0.9rem;
-      }
+  &.collapsed {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    padding: 0;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    span {
+      display: none;
+    }
+
+    .badge {
+      display: none;
     }
   }
 }
@@ -168,56 +184,44 @@ $width-collapsed: 80px;
     height: 60px;
     width: auto;
     object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
+    opacity: 1;
     background: transparent;
   }
 }
 
 /* Drawer width handled by host sidenav */
 :host {
-  width: $width-open;
-  transition: width 0.3s ease;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-:host-context(.app-sidenav.collapsed) {
-  width: $width-collapsed;
-}
-
-/* Cuando está colapsado */
-:host-context(.app-sidenav.collapsed) .sidebar-container {
+/* Cuando está colapsado - usar la nueva estructura */
+:host-context(.sidebar-collapsed) .sidebar-container {
   .user-section {
-    padding: 2rem 0.5rem 1rem;
+    padding: 3rem 0.5rem 0.5rem;
 
     .user-name {
       display: none;
-    }
-
-    .inicio-button .btn-inicio {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px; /* Menos redondeado también cuando está colapsado */
-      padding: 0;
-
-      span {
-        display: none;
-      }
     }
   }
 
   .navigation-section {
     padding: 0 0.5rem;
+  }
 
-    .nav-item {
-      justify-content: center;
+  .nav-button {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    justify-content: center;
 
-      .label {
-        display: none;
-      }
+    span {
+      display: none;
+    }
 
-      mat-icon {
-        margin-right: 0;
-      }
+    .badge {
+      display: none;
     }
   }
 
