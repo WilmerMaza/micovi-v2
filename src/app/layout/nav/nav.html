@@ -1,11 +1,12 @@
 <mat-toolbar class="topbar" color="default">
   <!-- 🔹 Zona izquierda -->
   <div class="toolbar-left">
-
-    @if(mostrarToggleMenu()){ <button  mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()">
+    @if(mostrarToggleMenu()){
+    <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()">
       <mat-icon class="profile-btn">menu</mat-icon>
-    </button> }
-   
+    </button>
+    }
+
     <button mat-icon-button (click)="goToHome()">
       <mat-icon class="profile-btn">home</mat-icon>
     </button>
@@ -13,7 +14,7 @@
 
   <!-- 🔹 Zona central -->
   <div class="toolbar-center">
-    <img src="./images/dashboard.webp" alt="Logo" class="logo"/>
+    <img src="./images/dashboard.webp" alt="Logo" class="logo" />
     <span class="user-greeting">/ Home</span>
   </div>
 
@@ -23,6 +24,6 @@
       <span class="hello">Hola,</span>
       <span class="username">{{ username }}</span>
     </div>
-    <app-menu></app-menu>
+    <app-profile-menu></app-profile-menu>
   </div>
 </mat-toolbar>
