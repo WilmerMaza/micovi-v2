@@ -39,7 +39,11 @@ export const routes: Routes = [
   //     },
   //   ],
 //   // },
-{ path: 'configuracion', component: ConfiguracionComponent, canActivate: [JwtGuard] } ,
+  { 
+    path: 'configuracion', 
+    component: ConfiguracionComponent, 
+    canActivate: [JwtGuard] 
+  },
   {
     path: 'login',
     canActivate: [IgnoreLoginGuard],

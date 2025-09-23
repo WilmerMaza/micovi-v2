@@ -1,12 +1,10 @@
-import { Component, output } from '@angular/core';
-import { Input } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Menu } from '../menu/menu';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-nav',
@@ -15,11 +13,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './nav.html',
   styleUrls: ['./nav.scss'],
 })
+
 export class Nav {
-  @Input() mostrarToggleMenu: boolean = true; // true por defecto
+  readonly mostrarToggleMenu = input<boolean>(true); // true por defecto
   public readonly menuToggle = output<void>();
   public readonly username = 'usuario';
-
   constructor(private router: Router) { }
 
   public toggleMenu(): void {
