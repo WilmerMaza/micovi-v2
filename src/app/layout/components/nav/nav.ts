@@ -10,7 +10,6 @@ import { LogoutModal } from '../../../shared/components/logout-modal/logout-moda
   selector: 'app-nav',
   imports: [MatToolbarModule, MatIconModule, MatButtonModule, LogoutModal],
   standalone: true,
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule, Menu],
   templateUrl: './nav.html',
   styleUrls: ['./nav.scss'],
 })
