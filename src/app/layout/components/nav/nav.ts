@@ -10,16 +10,17 @@ import { LogoutModal } from '../../../shared/components/logout-modal/logout-moda
   selector: 'app-nav',
   imports: [MatToolbarModule, MatIconModule, MatButtonModule, LogoutModal],
   standalone: true,
+  imports: [MatToolbarModule, MatIconModule, MatButtonModule, Menu],
   templateUrl: './nav.html',
-  styleUrl: './nav.scss',
+  styleUrls: ['./nav.scss'],
 })
 export class Nav {
   // 1️⃣  Input para recibir el estado collapsed
   readonly collapsed = input<boolean>(false);
-  
+
   // 2️⃣  Output como Signal-Emitter
   readonly menuToggle = output<void>();
-  
+
   // Signal para controlar la visibilidad del modal
   readonly showLogoutModal = signal(false);
 

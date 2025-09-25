@@ -5,13 +5,13 @@
 <div class="mobile-backdrop" (click)="onBackdropClick()"></div>
 }
 
-<div class="layout-container" 
-     [class.sidebar-collapsed]="collapsed()" 
+<div class="layout-container"
+     [class.sidebar-collapsed]="collapsed()"
      [class.mobile-mode]="isMobile()">
   <div class="sidebar-wrapper" [class.mobile-drawer]="isMobile()">
     <app-sidenav [collapsed]="collapsed()" (closeSidebar)="onCloseSidebar()"></app-sidenav>
   </div>
-  
+
   <div class="main-content">
     <router-outlet></router-outlet>
   </div>

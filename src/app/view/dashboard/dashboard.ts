@@ -4,19 +4,16 @@ import { Validators } from '../../utils/Validators';
 import Swal from 'sweetalert2';
 import { customOptions } from '../../utils/alert_Toast';
 import { ActivatedRoute } from '@angular/router';
-import { SpinnerService } from '../../shared/services/spinner.service';
-
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
+  standalone: true,
 })
 export class Dashboard implements OnInit {
-  constructor(
-    private route$: ActivatedRoute,
-    private spinner: SpinnerService
-  ) {}
+  constructor(private route$: ActivatedRoute) {}
+
   public ngOnInit(): void {
     const {
       snapshot: {
@@ -26,11 +23,6 @@ export class Dashboard implements OnInit {
     if (!Validators.isNullOrUndefined(newpay)) {
       this.newPayCompleted();
     }
-
-    // this.spinner.show(); // activa el loading
-    // setTimeout(() => {
-    //   this.spinner.hide(); // desactiva tras 3s
-    // }, 3000000);
   }
 
   private newPayCompleted(): void {

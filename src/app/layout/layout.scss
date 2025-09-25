@@ -1,4 +1,5 @@
 /* src/app/layout/layout.component.scss */
+
 :host {
   display: block;
   height: 100vh;
@@ -70,17 +71,17 @@ $sidebar-width-collapsed: 80px;
       z-index: 999;
       width: $sidebar-width-open;
       transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      
+
       &.mobile-drawer {
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
       }
     }
-    
+
     .main-content {
       margin-left: 0; /* Sin margen en móvil */
       padding-left: 20px;
     }
-    
+
     /* Sidebar visible en móvil */
     &:not(.sidebar-collapsed) .sidebar-wrapper {
       left: 0; /* Slide in desde la izquierda */
@@ -94,7 +95,7 @@ $sidebar-width-collapsed: 80px;
     .sidebar-wrapper {
       width: $sidebar-width-collapsed;
     }
-    
+
     .main-content {
       margin-left: $sidebar-width-collapsed;
       padding-left: 40px; /* Más padding para separación del sidebar colapsado */
