@@ -2,23 +2,103 @@
 
 :host {
   display: block;
-  height: 100dvh; /* alto exacto de la pantalla */
-  --toolbar-h: 56px; /* cambia si tu toolbar es otra altura */
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* El container ocupa todo el host */
-.sidenav-container {
-  height: 100%;
+$toolbar-h: 56px;
+$sidebar-width-open: 250px;
+$sidebar-width-collapsed: 80px;
+
+.layout-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #F9FAFB;
 }
 
-/* El contenido se desplaza debajo de la toolbar y ocupa 100% */
+.sidebar-wrapper {
+  width: $sidebar-width-open;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .main-content {
-  height: 100%;
-  padding: var(--toolbar-h) 1% 1% 1%;
-  box-sizing: border-box;
+  flex: 1;
+  height: 100vh;
+  margin-left: $sidebar-width-open;
+  padding: #{$toolbar-h} 20px 20px 20px;
+  overflow: auto;
+  background-color: #F9FAFB;
+  transition: margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1), padding-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+  min-width: 0;
 }
 
-/* El sidenav ya queda compensado con fixedTopGap, no uses top aquí */
-.app-sidenav {
-  width: 280px; /* tu ancho; opcional */
+/* Backdrop para móvil */
+.mobile-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: 0;
+  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Estilos responsivos móviles */
+@media (max-width: 767px) {
+  .layout-container.mobile-mode {
+    .sidebar-wrapper {
+      position: fixed;
+      left: -$sidebar-width-open; /* Inicialmente oculto fuera de pantalla */
+      top: 0;
+      height: 100vh;
+      z-index: 999;
+      width: $sidebar-width-open;
+      transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &.mobile-drawer {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .main-content {
+      margin-left: 0; /* Sin margen en móvil */
+      padding-left: 20px;
+    }
+
+    /* Sidebar visible en móvil */
+    &:not(.sidebar-collapsed) .sidebar-wrapper {
+      left: 0; /* Slide in desde la izquierda */
+    }
+  }
+}
+
+/* Cuando el layout está colapsado (solo desktop) */
+@media (min-width: 768px) {
+  .layout-container.sidebar-collapsed {
+    .sidebar-wrapper {
+      width: $sidebar-width-collapsed;
+    }
+
+    .main-content {
+      margin-left: $sidebar-width-collapsed;
+      padding-left: 40px; /* Más padding para separación del sidebar colapsado */
+    }
+  }
 }

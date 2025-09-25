@@ -1,117 +1,233 @@
-// :host* {
-//   transition: all 500ms ease-in-out;
-// }
-// .sidenav-header {
-//   padding-top: 24px;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   > img {
-//     object-fit: cover;
-//     object-position: center;
-//     border-radius: 100%;
-//     margin-bottom: 10px;
-//   }
-
-//   .header-text {
-//     text-align: center;
-//     height: 3rem;
-//     > h2 {
-//       margin: 0;
-//       font-size: 1rem;
-//       line-height: 1.5rem;
-//     }
-
-//     > p {
-//       margin: 0;
-//       font-size: 0.8rem;
-//     }
-//   }
-// }
-
-// .menu-item {
-//   border-left: 5px solid;
-//   border-left-color: rgba(0, 0, 0, 0);
-// }
-
-// .selected-menu-item {
-//   background: rgba(0, 0, 0, 0.05);
-// }
-
-// .hide-header-text {
-//   height: 0 !important;
-//   opacity: 0;
-// }
-/* sidenav.scss */
-$width-open: 240px;
-$width-collapsed: 72px;
+/* sidenav.scss - Nuevo diseño azul degradado */
+$width-open: 250px;
+$width-collapsed: 80px;
 
 :host {
   display: block;
+  height: 100%;
 }
 
-/* Avatar */
-.user-block {
+/* Container principal del sidebar */
+.sidebar-container {
+  height: 100vh;
+  background: linear-gradient(180deg, #3886F6 0%, #1BA3FA 50%, #03BCFE 100%);
   display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sección del usuario en la parte superior */
+.user-section {
+  padding: 4rem 1rem 1rem; /* Aumentar espacio superior para bajar la foto */
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 0.75rem 0.9rem 0.5rem;
-  .avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-  }
-  .user-info {
-    margin-left: 0.75rem;
-    line-height: 1.1;
-  }
-  .channel {
-    font-size: 0.7rem;
-    color: #6b7280;
-  }
-  .name {
-    font-size: 0.8rem;
-    font-weight: 500;
+  text-align: center;
+
+  &.collapsed {
+    padding: 3rem 0.5rem 0.5rem;
   }
 }
-.user-block.collapsed {
+
+/* Avatar container */
+.avatar-container {
+  margin-bottom: 1rem;
+
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    object-fit: cover;
+  }
+}
+
+/* Nombre del usuario */
+.user-name {
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 1rem; /* Reducir margen */
+}
+
+/* Sección de navegación unificada */
+.navigation-section {
+  flex: 1;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Espaciado consistente entre botones */
+
+  &.collapsed {
+    padding: 0 0.5rem;
+  }
+}
+
+/* Container para cada botón de navegación */
+.nav-button-container {
+  width: 100%;
+}
+
+/* Estilo unificado para todos los botones de navegación */
+.nav-button {
+  background: transparent;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: left;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  &.active {
+    background: white;
+    color: #3886F6;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    mat-icon {
+      color: #3886F6;
+    }
+
+    .badge {
+      background-color: #3886F6;
+      color: white;
+    }
+  }
+
+  mat-icon {
+    color: white;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  span {
+    color: inherit;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .badge {
+    background-color: #3886F6;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: auto;
+    font-weight: 500;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &.badge-info {
+      background-color: #17a2b8;
+    }
+
+    &.badge-warning {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    &.badge-success {
+      background-color: #28a745;
+    }
+  }
+
+  &.collapsed {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    padding: 0;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    span {
+      display: none;
+    }
+
+    .badge {
+      display: none;
+    }
+  }
+}
+
+/* Logo MICOVI en la parte inferior */
+.logo-section {
+  padding: 1.5rem;
+  display: flex;
   justify-content: center;
-  padding: 0.9rem 0;
+  align-items: center;
+  margin-top: auto; /* Empuja el logo hacia abajo */
+  background: transparent;
+
+  &.collapsed {
+    padding: 1rem;
+  }
+
+  .micovi-logo {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    opacity: 1;
+    background: transparent;
+  }
 }
 
 /* Drawer width handled by host sidenav */
-:host-context(.app-sidenav) {
-  width: $width-open;
-}
-:host-context(.app-sidenav.collapsed) {
-  width: $width-collapsed;
-}
-
-/* Lista */
-.mat-nav-list {
-  padding-top: 0.4rem;
-}
-.mat-list-item {
-  height: 40px;
-}
-.mat-list-item .mat-icon {
-  font-size: 22px;
-  width: 22px;
-  margin-right: 1rem;
-}
-:host-context(.app-sidenav.collapsed) .mat-icon {
-  margin: 0 auto;
-}
-.label {
-  line-height: 40px;
+:host {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-/* activo */
-.active {
-  background: rgba(224, 0, 0, 0.1);
-}
-.mat-list-item {
-  justify-content: center;
-}
-.mat-list-item .mat-icon {
-  margin: 0;
+/* Cuando está colapsado - usar la nueva estructura */
+:host-context(.sidebar-collapsed) .sidebar-container {
+  .user-section {
+    padding: 3rem 0.5rem 0.5rem;
+
+    .user-name {
+      display: none;
+    }
+  }
+
+  .navigation-section {
+    padding: 0 0.5rem;
+  }
+
+  .nav-button {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    justify-content: center;
+
+    span {
+      display: none;
+    }
+
+    .badge {
+      display: none;
+    }
+  }
+
+  .logo-section {
+    .micovi-logo {
+      height: 40px;
+    }
+  }
 }

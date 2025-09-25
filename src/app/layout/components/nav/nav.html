@@ -1,26 +1,26 @@
-<mat-toolbar class="topbar" color="default">
-  <!-- 🔹 Zona izquierda -->
-  <div class="toolbar-left">
-    <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()">
-      <mat-icon class="profile-btn">menu</mat-icon>
-    </button>
-   <button mat-icon-button (click)="goToHome()">
-  <mat-icon class="profile-btn">home</mat-icon>
-</button>
-  </div>
+<!-- nav.html -->
+<mat-toolbar class="topbar" [class.sidebar-collapsed]="collapsed()">
+  <!-- Botón hamburguesa -->
+  <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()" class="menu-toggle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
 
-  <!-- 🔹 Zona central -->
-  <div class="toolbar-center">
-    <img src="./images/dashboard.webp" alt="Logo" class="logo"/>
-    <span class="user-greeting">/ Home</span>
-  </div>
+  <span class="spacer"></span>
 
-  <!-- 🔹 Zona derecha -->
-  <div class="toolbar-right">
-    <div class="user-greeting">
-      <span class="hello">Hola,</span>
-      <span class="username">{{ username }}</span>
-    </div>
-    <app-menu></app-menu>
-  </div>
+  <!-- Botón logout -->
+  <button mat-icon-button aria-label="logout" (click)="showLogoutConfirmation()" class="logout-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7M16 15.5l3.5-3.5L16 8.5m-6.5 3.496h10"/>
+    </svg>
+  </button>
 </mat-toolbar>
+
+<!-- Modal de confirmación de logout -->
+@if (showLogoutModal()) {
+<app-logout-modal
+  (confirmLogout)="confirmLogout()"
+  (cancelLogout)="cancelLogout()">
+</app-logout-modal>
+}
