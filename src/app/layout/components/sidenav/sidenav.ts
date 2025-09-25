@@ -1,11 +1,12 @@
-import { Component, effect, input, signal, output, HostListener } from '@angular/core';
+import { Component, effect, input, signal, output, WritableSignal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 
 import { Router } from '@angular/router';
-import { NavigationService, INavData } from '../../../core/services/navigation.service';
+import { NavigationService } from '../../../core/services/navigation.service';
+import { INavData } from '../../interfaces/nav-data.interface';
 
 @Component({
   selector: 'app-sidenav',
@@ -14,33 +15,26 @@ import { NavigationService, INavData } from '../../../core/services/navigation.s
     MatListModule,
     MatIconModule,
     MatButtonModule,
-
   ],
   standalone: true,
   templateUrl: './sidenav.html',
   styleUrl: './sidenav.scss',
 })
 export class Sidenav {
-  /** Señal de entrada – collapsed viene del padre */
   readonly collapsed = input.required<boolean>();
-
-  /** Señal para controlar cuándo mostrar el texto */
-  readonly showText = signal(true);
-
-  /** Output para cerrar el sidebar desde el componente padre */
+  readonly showText: WritableSignal<boolean> = signal(true);
   readonly closeSidebar = output<void>();
 
   private textTimeout?: number;
-
-  avatar = '/img/avatars/1.jpg'; 
-  username = 'Real';
+  avatar: string = '/img/avatars/1.jpg';
+  username: string = 'Real';
 
   constructor(
     private navigationService: NavigationService,
     private router: Router
   ) {
     effect(() => {
-      const isCollapsed = this.collapsed();
+      const isCollapsed = this.collapsed(); 
 
       if (isCollapsed) {
         this.showText.set(false);
@@ -54,17 +48,14 @@ export class Sidenav {
     });
   }
 
-  // Getter que retorna los items de navegación basados en el rol del usuario
   get Menu(): INavData[] {
     return this.navigationService.navigationItems();
   }
 
-  // Método para verificar si una ruta está activa
   isActive(url: string): boolean {
     return this.navigationService.isRouteActive(url, this.router.url);
   }
 
-  // Método para navegar a una ruta
   navigateTo(url: string): void {
     this.router.navigate([url]);
     this.closeSidebar.emit();

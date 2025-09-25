@@ -29,31 +29,30 @@ import { Spinner } from "../shared/components/spinner/spinner";
 export class Layout implements OnDestroy {
   private readonly STORAGE_KEY = 'sidebar-collapsed';
 
-  readonly collapsed = signal(this.getSavedState());
-  readonly isMobile = signal(this.checkIsMobile());
-
-  toggle = () => {
+  readonly collapsed: WritableSignal<boolean> = signal(this.getSavedState());
+  readonly isMobile: WritableSignal<boolean> = signal(this.checkIsMobile());
+ 
+  toggle = (): void => {
     this.collapsed.update((v) => {
       const newValue = !v;
       this.saveState(newValue);
       return newValue;
     });
 
-    // En móvil, manejar el scroll del body
+
     if (this.isMobile()) {
       this.toggleBodyScroll();
     }
   };
 
-  // Cerrar con clic en backdrop (solo móvil)
-  onBackdropClick = () => {
+
+  onBackdropClick = () : void => {
     if (this.isMobile() && !this.collapsed()) {
       this.toggle();
     }
   };
 
-  // Cerrar sidebar cuando se emite desde el componente hijo (navegación en móvil)
-  onCloseSidebar = () => {
+  onCloseSidebar = (): void => {
     if (this.isMobile() && !this.collapsed()) {
       this.toggle();
     }
@@ -64,7 +63,7 @@ export class Layout implements OnDestroy {
       const saved = localStorage.getItem(this.STORAGE_KEY);
       const isMobile = window.innerWidth < 768;
 
-      // En móvil, siempre empezar colapsado
+
       if (isMobile) {
         return true;
       }
@@ -90,42 +89,40 @@ export class Layout implements OnDestroy {
   private toggleBodyScroll(): void {
     if (typeof document !== 'undefined') {
       if (this.collapsed()) {
-        // Sidebar cerrado - permitir scroll
+
         document.body.style.overflow = '';
         document.body.style.position = '';
       } else {
-        // Sidebar abierto - bloquear scroll
+
         document.body.style.overflow = 'hidden';
         document.body.style.position = 'fixed';
       }
     }
   }
 
-  // Escuchar cambios de tamaño de ventana
   @HostListener('window:resize')
-  onResize() {
+  onResize(): void {
     const wasMobile = this.isMobile();
     const isNowMobile = this.checkIsMobile();
 
     this.isMobile.set(isNowMobile);
 
-    // Si cambió de móvil a desktop, restaurar scroll
+
     if (wasMobile && !isNowMobile) {
       document.body.style.overflow = '';
       document.body.style.position = '';
     }
   }
 
-  // Cerrar con tecla Esc
   @HostListener('window:keydown.escape')
-  onEscapeKey() {
+  onEscapeKey(): void {
     if (this.isMobile() && !this.collapsed()) {
       this.toggle();
     }
   }
 
-  ngOnDestroy() {
-    // Restaurar scroll al destruir componente
+  ngOnDestroy(): void {
+
     if (typeof document !== 'undefined') {
       document.body.style.overflow = '';
       document.body.style.position = '';
