@@ -7,9 +7,7 @@
     </div>
 
     @if (!collapsed() && showText()) {
-    <div class="user-name">
-      {{ username }}
-    </div>
+    <div class="user-name">{{ username }}</div>
     }
   </div>
 
@@ -17,7 +15,12 @@
   <div class="navigation-section" [class.collapsed]="collapsed()">
     <!-- Botón Inicio -->
     <div class="nav-button-container">
-      <button class="nav-button" [class.collapsed]="collapsed()" [class.active]="isActive('/home')" (click)="navigateTo('/home')">
+      <button
+        class="nav-button"
+        [class.collapsed]="collapsed()"
+        [class.active]="isActive('/home')"
+        (click)="navigateTo('/home')"
+      >
         <mat-icon>home</mat-icon>
         @if (!collapsed() && showText()) {
         <span>Inicio</span>
@@ -38,9 +41,10 @@
         @if (!collapsed() && showText()) {
         <span>{{ item.name }}</span>
         @if (item.badge) {
-        <span class="badge" [class]="'badge-' + item.badge.color">{{ item.badge.text }}</span>
-        }
-        }
+        <span class="badge" [class]="'badge-' + item.badge.color"
+          >{{ item.badge.text }}</span
+        >
+        } }
       </button>
     </div>
     }
@@ -48,6 +52,10 @@
 
   <!-- Logo MICOVI en la parte inferior -->
   <div class="logo-section" [class.collapsed]="collapsed()">
-    <img src="/images/dashboard.png" alt="MICOVI" class="micovi-logo">
+    <img
+      src=" {{collapsed()  ? 'micovi.ico' :  '/images/dashboard.png'}}"
+      alt="MICOVI"
+      class="micovi-logo"
+    />
   </div>
 </div>

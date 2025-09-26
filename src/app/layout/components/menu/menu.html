@@ -15,6 +15,7 @@
     panelClass="fb-panel"
     xPosition="before"
     yPosition="below"
+    class="mat-menu-content-profile"
   >
     <!-- Header con avatar y nombre -->
     <div class="fb-header">
@@ -37,7 +38,11 @@
 
     <mat-divider></mat-divider>
 
-    <button mat-menu-item class="fb-item danger" (click)="logout()">
+    <button
+      mat-menu-item
+      class="fb-item danger"
+      (click)="showLogoutConfirmation()"
+    >
       <mat-icon class="lead">logout</mat-icon>
       <span>Cerrar sesión</span>
     </button>
@@ -50,7 +55,11 @@
 
   <!-- Submenús -->
 
-  <mat-menu #displayMenu="matMenu" panelClass="fb-subpanel">
+  <mat-menu
+    #displayMenu="matMenu"
+    panelClass="fb-subpanel"
+    class="mat-menu-content-profile"
+  >
     <button mat-menu-item>
       <mat-icon>brightness_6</mat-icon><span>Tema</span>
     </button>
@@ -59,3 +68,12 @@
     </button>
   </mat-menu>
 </div>
+
+<!-- Modal de confirmación de logout -->
+@if (showLogoutModal()) {
+<app-logout-modal
+  (confirmLogout)="confirmLogout()"
+  (cancelLogout)="cancelLogout()"
+>
+</app-logout-modal>
+}
