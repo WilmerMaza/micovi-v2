@@ -39,10 +39,15 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadSavedCredentials();
+  }
+
+  private loadSavedCredentials(): void {
     const savedUser = localStorage.getItem('username');
     const savedPass = localStorage.getItem('password');
+    const rememberMe = localStorage.getItem('rememberMe') === 'true';
 
-    if (savedUser && savedPass) {
+    if (savedUser && savedPass && rememberMe) {
       this.loginForm.patchValue({
         username: savedUser,
         password: this.cryptoService$.Decrypt(savedPass),
@@ -71,17 +76,7 @@ export class LoginComponent implements OnInit {
 
     this.loginSession$.sessionLogin(data).subscribe(
       () => {
-        if (this.loginForm.get('check')?.value) {
-          localStorage.setItem(
-            'username',
-            this.loginForm.get('username')?.value
-          );
-          localStorage.setItem('password', encryptedPassword);
-        } else {
-          localStorage.removeItem('username');
-          localStorage.removeItem('password');
-        }
-
+        this.handleRememberCredentials(encryptedPassword);
         this.router$.navigate(['/home']);
       },
       () =>
@@ -90,6 +85,24 @@ export class LoginComponent implements OnInit {
           title: 'Usuario o contraseña incorrecta',
         })
     );
+  }
+
+  private handleRememberCredentials(encryptedPassword: string): void {
+    const rememberMe = this.loginForm.get('check')?.value;
+    
+    if (rememberMe) {
+      localStorage.setItem('username', this.loginForm.get('username')?.value);
+      localStorage.setItem('password', encryptedPassword);
+      localStorage.setItem('rememberMe', 'true');
+    } else {
+      this.clearSavedCredentials();
+    }
+  }
+
+  private clearSavedCredentials(): void {
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+    localStorage.removeItem('rememberMe');
   }
 
   togglePasswordVisibility(): void {
