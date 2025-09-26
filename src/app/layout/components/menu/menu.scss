@@ -98,5 +98,9 @@
   }
 }
 .profile-btn {
-  color: #0C4CC8;
+  color: #3886f6;
+}
+
+::ng-deep .mat-menu-content-profile {
+  background: #ffff !important;
 }
