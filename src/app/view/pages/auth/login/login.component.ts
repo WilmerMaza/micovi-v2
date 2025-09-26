@@ -1,16 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CryptoService } from '../../../../utils/crypto.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { NormaliceLowerValidators } from '../../../../utils/Validators';
 import { Toast } from '../../../../utils/alert_Toast';
-import { Session } from '../services/session';
+import { CryptoService } from '../../../../utils/crypto.service';
 import { LoginFormModel } from '../models/login-form';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+import { Session } from '../services/session';
 
 @Component({
   selector: 'app-login',
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
     this.loginSession$.sessionLogin(data).subscribe(
       () => {
         this.handleRememberCredentials(encryptedPassword);
-        this.router$.navigate(['/home']);
+        this.router$.navigate(['/dashboard']);
       },
       () =>
         Toast.fire({
