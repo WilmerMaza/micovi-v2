@@ -28,7 +28,7 @@ export class ProfileMenu {
 
   public confirmLogout(): void {
     this.showLogoutModal.set(false);
-    this.authService.clearSession();
+  this.authService.clear();
     this.router.navigate(['/login']);
   }
 

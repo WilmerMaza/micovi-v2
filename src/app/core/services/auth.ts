@@ -1,14 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, signal, computed } from '@angular/core';
-import { catchError, map, of, Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { MicoviApi } from './micovi.api';
+import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { MicoviApi } from './micovi.api';
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  account: string;
   // agrega más campos si tu backend los devuelve
 }
 
@@ -31,10 +30,8 @@ export class AuthService {
     return !!this.user();
   }
 
-
-
   loadSession(): Observable<User> {
-    return this.micoviapi.get<User>('/me')
+    return this.micoviapi.get<User>('/login/me')
       .pipe(tap(res => this.setUser(res)));
   }
 

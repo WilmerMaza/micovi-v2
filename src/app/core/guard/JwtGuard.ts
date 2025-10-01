@@ -1,25 +1,31 @@
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
   Router,
+  RouterStateSnapshot,
 } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JwtGuard {
-  constructor(private router: Router, private authService$: AuthService) {}
-  canActivate(
+  constructor(private router: Router, private authService$: AuthService) { }
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
-    if (this.authService$.isAuthenticated()) {
+  ): Promise<boolean> {
+    if (this.authService$.isAuthenticated()) return true;
+
+    try {
+      await firstValueFrom(this.authService$.loadSession()); // GET /me (con cookies)
       return true;
-    } else {
+    } catch (error) {
       this.router.navigate(['/login']);
       return false;
     }
+
+
   }
 }

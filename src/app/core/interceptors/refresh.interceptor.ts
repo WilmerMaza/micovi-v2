@@ -1,8 +1,8 @@
-import { AuthService } from './../services/auth';
-import { HttpClient, HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, filter, ReplaySubject, switchMap, take, throwError } from 'rxjs';
 import { MicoviApi } from '../services/micovi.api';
+import { AuthService } from './../services/auth';
 
 let refreshing = false;
 // cuando hay un refresh en curso, los demás esperan a que emita "ok"
@@ -10,7 +10,7 @@ let refreshDone$: ReplaySubject<boolean> | null = null;
 
 export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
   // No interceptar el propio refresh/login/logout
-  if (req.url.includes('/auth/refresh') || req.url.includes('/login') || req.url.includes('/logout')) {
+  if (req.url.includes('/login/refresh') || req.url.includes('/login') || req.url.includes('/logout')) {
     return next(req);
   }
 
@@ -34,7 +34,7 @@ export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
       const api = inject(MicoviApi);
       const auth = inject(AuthService);
 
-      return api.post<void>('/auth/refresh', {}).pipe(
+      return api.post<void>('/login/refresh', {}).pipe(
         switchMap(() => {
           // éxito → avisar a los que esperaban y reintentar la original
           refreshing = false;

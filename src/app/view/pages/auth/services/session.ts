@@ -1,31 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { Toast } from '../../../../utils/alert_Toast';
+import { tap } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth';
-import { environment } from '../../../../../environments/environment';
 import { MicoviApi } from '../../../../core/services/micovi.api';
+import { Toast } from '../../../../utils/alert_Toast';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SessionService {
+export class Session {
   submitted = false;
-  private API_URL = environment.micovi_api; // ⚡ mejor tomarlo de environment
 
   constructor(
-    private http: MicoviApi,
+    private api: MicoviApi,
     private auth: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   /** Login: backend setea cookie HttpOnly */
-  sessionLogin(credentials: { email: string; password: string }): void {
+  sessionLogin(data: { Name: string, Password: string }): void {
     this.submitted = true;
 
-    this.http
-      .post<{ user: any }>(`${this.API_URL}/login`, credentials)
+    this.api
+      .post<{ user: any }>(`/login`, data)
       .pipe(
         tap((res) => {
           this.auth.setUser(res.user); // guarda usuario en señal
@@ -33,11 +30,18 @@ export class SessionService {
         })
       )
       .subscribe({
-        error: () =>
+        error: (err: any) => {
+
+          console.log(err);
+
           Toast.fire({
             icon: 'error',
             title: 'Usuario o contraseña incorrecta',
-          }),
+          })
+        }
+
+
+
       });
   }
 
