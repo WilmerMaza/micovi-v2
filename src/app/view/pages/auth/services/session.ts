@@ -1,37 +1,46 @@
 import { Injectable } from '@angular/core';
-import { MicoviApi } from '../../../../core/services/micovi.api';
-import { AuthService } from '../../../../core/services/auth';
-import { Persistence } from '../../../../utils/persistence.service';
+import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { session } from '../../../../models/interface';
-import { DataLoginModel } from '../models/data-login';
-import { dataToken } from '../models/data-token';
+import { Router } from '@angular/router';
+import { Toast } from '../../../../utils/alert_Toast';
+import { AuthService } from '../../../../core/services/auth';
+import { environment } from '../../../../../environments/environment';
+import { MicoviApi } from '../../../../core/services/micovi.api';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Session {
+export class SessionService {
+  submitted = false;
+  private API_URL = environment.micovi_api; // ⚡ mejor tomarlo de environment
+
   constructor(
-    private micovid$: MicoviApi,
-    private Auth$: AuthService,
-    private persistence$: Persistence
+    private http: MicoviApi,
+    private auth: AuthService,
+    private router: Router
   ) {}
 
-  sessionLogin(data: DataLoginModel): Observable<session> {
-    const endpoint = '/login';
+  /** Login: backend setea cookie HttpOnly */
+  sessionLogin(credentials: { email: string; password: string }): void {
+    this.submitted = true;
 
-    return this.micovid$.post<session>(endpoint, data).pipe(
-      tap(async (UserInfo: session) => {
-        this.setAuth(UserInfo);
-      })
-    );
+    this.http
+      .post<{ user: any }>(`${this.API_URL}/login`, credentials)
+      .pipe(
+        tap((res) => {
+          this.auth.setUser(res.user); // guarda usuario en señal
+          this.router.navigate(['/dashboard']);
+        })
+      )
+      .subscribe({
+        error: () =>
+          Toast.fire({
+            icon: 'error',
+            title: 'Usuario o contraseña incorrecta',
+          }),
+      });
   }
 
-  setAuth({ token }: dataToken): void {
-    this.Auth$.setToken(token);
-  }
 
-  logout(): void {
-    this.persistence$.deleteAll();
-  }
 }
+

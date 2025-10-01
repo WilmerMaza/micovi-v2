@@ -16,28 +16,28 @@ export class MicoviApi {
   /** GET genérico que acepta parámetros HTTP */
   get<T>(endpoint: string, params?: HttpParams): Observable<T> {
     return this.http
-      .get<T>(`${this.baseUrl}${endpoint}`, { params })
+      .get<T>(`${this.baseUrl}${endpoint}`, { params, withCredentials: true })
       .pipe(catchError(this.handleError));
   }
 
   /** POST para enviar datos al servidor */
   post<T>(endpoint: string, body: any): Observable<T> {
     return this.http
-      .post<T>(`${this.baseUrl}${endpoint}`, body)
+      .post<T>(`${this.baseUrl}${endpoint}`, body, {withCredentials: true})
       .pipe(catchError(this.handleError));
   }
 
   /** PUT para actualizar recursos */
   put<T>(endpoint: string, body: any): Observable<T> {
     return this.http
-      .put<T>(`${this.baseUrl}${endpoint}`, body)
+      .put<T>(`${this.baseUrl}${endpoint}`, body, {withCredentials: true})
       .pipe(catchError(this.handleError));
   }
 
   /** DELETE para eliminar recursos */
   delete<T>(endpoint: string): Observable<T> {
     return this.http
-      .delete<T>(`${this.baseUrl}${endpoint}`)
+      .delete<T>(`${this.baseUrl}${endpoint}`,{withCredentials: true})
       .pipe(catchError(this.handleError));
   }
 
@@ -52,7 +52,7 @@ export class MicoviApi {
         params: options.params,
         body: options.body,
         responseType: options.responseType ?? 'json',
-        observe: options.observe ?? 'body',
+        observe: options.observe ?? 'body', withCredentials: true
       } as any) // necesario para encajar con múltiples firmas internas de HttpClient.request() :contentReference[oaicite:3]{index=3}
       .pipe(catchError(this.handleError));
   }
