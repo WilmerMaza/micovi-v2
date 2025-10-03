@@ -9,6 +9,13 @@ export const TRAINER_ROUTES: Routes = [
         (m) => m.TrainerComponent
       ),
   },
+  {
+    path: 'create',
+    loadComponent: () =>
+      import('./Components/create-trainer/create-trainer.component').then(
+        (m) => m.CreateTrainerComponent
+      ),
+  },
   // {
   //   path: ':id',
   //   loadComponent: () =>

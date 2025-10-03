@@ -16,7 +16,6 @@ import {
 } from '../../../../utils/Validators';
 import { filterResult } from '../../../../shared/model/filterModel';
 import { ActionResponse } from '../../../../shared/model/Response/DefaultResponse';
-import { CreateTrainerComponent } from '../../Components/create-trainer/create-trainer.component';
 import { DinamicTableComponent } from '../../../../shared/components/dinamic-table/dinamic-table.component';
 import { DinamicFilterComponent } from '../../../../shared/components/dinamic-filter/dinamic-filter.component';
 import { ViewTrainerComponent } from '../../Components/view-trainer/view-trainer.component';
@@ -27,7 +26,6 @@ import { ViewTrainerComponent } from '../../Components/view-trainer/view-trainer
   templateUrl: './trainer.component.html',
   styleUrls: ['./trainer.component.scss'],
   imports: [
-    CreateTrainerComponent,
     DinamicTableComponent,
     DinamicFilterComponent,
     ViewTrainerComponent,
@@ -42,7 +40,6 @@ export class TrainerComponent implements OnInit {
   public nameAdd: string = 'entrenador';
   public filtros = filterTrainerValue;
   public showViewTrainer: viewModalTrainer = { isVisible: false };
-  public showViewCreateTrainer: viewModalTrainer = { isVisible: false };
   public dataSingle: Trainer | undefined;
   constructor(
     private trainerService$: TrainerService,
@@ -101,10 +98,7 @@ export class TrainerComponent implements OnInit {
         };
         break;
       case 'Editar':
-        this.showViewCreateTrainer = {
-          isVisible: true,
-          data: $event.data,
-        };
+        // TODO: Implementar navegación para editar entrenador
         break;
       case 'planAnual':
         this.router.navigate(['/plan-anual'], {
@@ -117,10 +111,7 @@ export class TrainerComponent implements OnInit {
   }
 
   editTrainerView($event: Trainer): void {
-    this.showViewCreateTrainer = {
-      isVisible: true,
-      data: $event,
-    };
+
     this.showViewTrainer = { isVisible: false };
   }
 
@@ -129,7 +120,7 @@ export class TrainerComponent implements OnInit {
 
     switch (action) {
       case 'add':
-        this.showViewCreateTrainer = { isVisible: true };
+        this.router.navigate(['/entrenador/create']);
         break;
       default:
         break;

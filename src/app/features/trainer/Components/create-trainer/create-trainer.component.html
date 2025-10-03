@@ -96,7 +96,7 @@
                             placeholder=" Seleccione"
                           >
                             <mat-option
-                              *ngFor="let opcion of typeIdentificationlist"
+                              *ngFor="let opcion of typeIdentificationList"
                               [value]="opcion.code"
                             >
                               {{ opcion.code + " - " + opcion.value }}
@@ -339,7 +339,7 @@
                             placeholder=" Seleccione"
                           >
                             <mat-option
-                              *ngFor="let opcion of genderlist"
+                              *ngFor="let opcion of genderList"
                               [value]="opcion.code"
                             >
                               {{ opcion.value }}

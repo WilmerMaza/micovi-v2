@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 import {
   trainerNivelEducativo,
@@ -62,115 +64,100 @@ import { MatFormField } from '@angular/material/form-field';
     ...MATERIAL_IMPORTS,
   ],
 })
-export class CreateTrainerComponent implements OnInit {
-  @Input('viewActive') set setView(value: viewModalTrainer) {
-    this.showViewTrainer = value.isVisible;
-    this.dataIni(value);
-  }
-  @Output() CreateTrainer = new EventEmitter<boolean>();
+export class CreateTrainerComponent implements OnInit, OnDestroy {
 
-  public showViewTrainer: Boolean | undefined = true;
+  public readonly showViewTrainer: boolean = true;
+  private readonly destroy$ = new Subject<void>();
+
   public currentPage: number = 0;
-  public trainerForm: FormGroup = new trainerFormModel().formTrainer();
-  private cryptoService$ = new CryptoService();
-  public listPaises: Ipaises[] = PAISESCONST;
-  public listCiudades: CityName[] | undefined = [];
-  public listEstados: Estado[] | undefined = [];
-  public genderlist: Array<listInfo> = gender;
-  public trainerNivel: Array<listInfo> = trainerNivelEducativo;
-  public typeIdentificationlist: Array<listInfo> = typeIdentification;
-  public isActiveCrear: boolean = true;
+  public readonly trainerForm: FormGroup = new trainerFormModel().formTrainer();
+
+  // Datos de configuración
+  public readonly listPaises: Ipaises[] = PAISESCONST;
+  public listCiudades: CityName[] = [];
+  public listEstados: Estado[] = [];
+  public readonly genderList: listInfo[] = gender;
+  public readonly trainerNivel: listInfo[] = trainerNivelEducativo;
+  public readonly typeIdentificationList: listInfo[] = typeIdentification;
+
+  // Estados del componente
   public isEdit: boolean = false;
   public activeDepto: boolean = false;
   public activeCity: boolean = false;
-  public selectedFiles: File | undefined;
   public imageSelected: boolean = false;
+
+  // Datos de archivo e imagen
+  public selectedFiles: File | undefined;
   public selectedImageURL: string = '';
-  public imageUrl: string = '';
-  private veryficatePass: boolean = false;
-  tooltipText: string = 'Esta es una imagen de muestra';
+
+  // Configuración de teléfono
   public prefijoPhone: string = '+57';
   public maskPhone: string = '00 0000 0000';
   public placeHolderPhone: string = '+57 Colombia';
+
+  // Validación
+  private verifyPassword: boolean = false;
   private validateRegex: RegExp | undefined;
 
+  // Servicios
+  private readonly cryptoService$ = new CryptoService();
+
   constructor(
-    private trainerService$: TrainerService,
-    private imagenFuntionsService$: Imgs
+    private readonly trainerService$: TrainerService,
+    private readonly imagenFuntionsService$: Imgs,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
-    this.generarExpresionRegular(this.maskPhone);
+    this.initializeComponent();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private initializeComponent(): void {
+    this.generatePhoneRegex(this.maskPhone);
+    this.isEdit = false;
+    this.restorePasswordValidation();
   }
 
   closeCard(): void {
-    this.showViewTrainer = false;
-    this.defaulCarrusel();
+    this.navigateToTrainerList();
   }
 
-  dataIni(value: viewModalTrainer): void {
-    if (!Validar.isNullOrUndefined(value.data)) {
-      const {
-        data: { nationality, stateordepartmen, studyLevelMax },
-      } = value;
-
-      const {
-        ID,
-        createdAt,
-        updatedAt,
-        SportsInstitutionID,
-
-        ...dataTrainer
-      } = value.data;
-      dataTrainer.password = '';
-      dataTrainer.passwordVerificate = '';
-      dataTrainer.studyLevelMax = studyLevelMax.toLowerCase();
-      const state = {
-        value: nationality,
-      };
-      const citys = {
-        value: stateordepartmen,
-      };
-      this.viewImage(dataTrainer.image);
-      this.universalCiudadesApis(citys);
-      this.universalEstadoApis(state);
-      this.trainerForm.setValue(dataTrainer);
-      this.isEdit = true;
-      this.quitarValidacion();
-    } else {
-      this.isEdit = false;
-      this.restablecerValidacion();
-    }
+  private navigateToTrainerList(): void {
+    this.router.navigate(['/entrenador']);
   }
 
-  viewImage(nameImg: string | undefined): void {
-    if (nameImg) {
-      const imageLoader = new ImageLoader(this.imagenFuntionsService$);
-      imageLoader.loadImage(nameImg, false, (imageUrl) => {
-        this.selectedImageURL = imageUrl;
-      });
-    }
+
+  private loadImage(imageName: string | undefined): void {
+    if (!imageName) return;
+
+    const imageLoader = new ImageLoader(this.imagenFuntionsService$);
+    imageLoader.loadImage(imageName, false, (imageUrl: string) => {
+      this.selectedImageURL = imageUrl;
+    });
   }
 
   hasErrorRegexp(controlName: string): boolean {
-    return !this.validateRegex?.test(
-      this.trainerForm.get(controlName)?.value
-    );
+    const controlValue = this.trainerForm.get(controlName)?.value;
+    return this.validateRegex ? !this.validateRegex.test(controlValue) : false;
   }
 
   validatePassword(): void {
     const password = this.trainerForm.get('password')?.value;
-    const confirmPassword =
-      this.trainerForm.get('passwordVerificate')?.value;
+    const confirmPassword = this.trainerForm.get('passwordVerificate')?.value;
 
-    if (password !== confirmPassword) {
-      this.trainerForm
-        .get('passwordVerificate')
-        ?.setErrors({ passwordMismatch: true });
-      this.veryficatePass = true;
+    const passwordsMatch = password === confirmPassword;
+    this.verifyPassword = !passwordsMatch;
+
+    const confirmPasswordControl = this.trainerForm.get('passwordVerificate');
+    if (passwordsMatch) {
+      confirmPasswordControl?.setErrors(null);
     } else {
-      this.trainerForm.get('passwordVerificate')?.setErrors(null);
-      this.veryficatePass = false;
+      confirmPasswordControl?.setErrors({ passwordMismatch: true });
     }
   }
 
@@ -178,204 +165,240 @@ export class CreateTrainerComponent implements OnInit {
     this.activeCity = true;
     this.trainerForm.get('city')?.enable();
     const { value } = event;
-    this.listCiudades = CIUDADESCONST.find(
-      (item: Iciudades) => item.state_name.toLowerCase() === value.toLowerCase()
-    )?.city_name;
+    this.loadCitiesByState(value);
+  }
+
+  private loadCitiesByState(stateName: string): void {
+    const stateData = CIUDADESCONST.find(
+      (item: Iciudades) => item.state_name.toLowerCase() === stateName.toLowerCase()
+    );
+    this.listCiudades = stateData?.city_name || [];
   }
 
   universalEstadoApis(event: eventsPaises): void {
     this.activeDepto = true;
     this.trainerForm.get('stateordepartmen')?.enable();
     const { value } = event;
-    this.getMaskPhonecountry(value);
-    this.listEstados = ESTADOSCONST.find(
-      (item: Iestados) =>
-        item.country_name.toLowerCase() === value.toLowerCase()
-    )?.estados;
+    this.updatePhoneConfigByCountry(value);
+    this.loadStatesByCountry(value);
   }
 
-  getMaskPhonecountry(country: string): void {
-    PAISESCONST.forEach((value: Ipaises) => {
-      const { country_name, country_phone_code, mask_phone_code } = value;
-      if (country_name === country) {
-        this.generarExpresionRegular(mask_phone_code);
-        this.placeHolderPhone = `${country_phone_code} ${country_name}`;
-        this.prefijoPhone = country_phone_code;
-        this.maskPhone = mask_phone_code;
-      }
-    });
+  private loadStatesByCountry(countryName: string): void {
+    const countryData = ESTADOSCONST.find(
+      (item: Iestados) => item.country_name.toLowerCase() === countryName.toLowerCase()
+    );
+    this.listEstados = countryData?.estados || [];
   }
 
-  generarExpresionRegular(mask: string): void {
-    // Escapar caracteres especiales en la máscara
+  private updatePhoneConfigByCountry(country: string): void {
+    const countryData = PAISESCONST.find(
+      (paisData: Ipaises) => paisData.country_name === country
+    );
+
+    if (countryData) {
+      const { country_name, country_phone_code, mask_phone_code } = countryData;
+      this.generatePhoneRegex(mask_phone_code);
+      this.placeHolderPhone = `${country_phone_code} ${country_name}`;
+      this.prefijoPhone = country_phone_code;
+      this.maskPhone = mask_phone_code;
+    }
+  }
+
+  private generatePhoneRegex(mask: string): void {
     const escapedMask = mask.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-
-    // Reemplazar '0' con '\d'
-    const regexString = escapedMask.replace(/0/g, '\\d');
-
-    const withoutSpace = regexString.replace(/\s/g, '');
-    // Construir la expresión regular completa
-    const regex = new RegExp('^' + withoutSpace + '$');
+    const regexString = escapedMask.replace(/0/g, '\\d').replace(/\s/g, '');
+    const regex = new RegExp('^' + regexString + '$');
 
     this.validateRegex = regex;
-    this.trainerForm.get('phone')?.clearValidators();
-    this.trainerForm
-      .get('phone')
-      ?.addValidators([Validators.required, Validators.pattern(regex)]);
-    this.trainerForm.get('phone')?.updateValueAndValidity();
+    this.updatePhoneValidators(regex);
+  }
+
+  private updatePhoneValidators(regex: RegExp): void {
+    const phoneControl = this.trainerForm.get('phone');
+    phoneControl?.clearValidators();
+    phoneControl?.addValidators([Validators.required, Validators.pattern(regex)]);
+    phoneControl?.updateValueAndValidity();
   }
 
   setCurrentPageR(): void {
-    this.currentPage = this.currentPage + 1;
+    this.currentPage++;
   }
 
   setCurrentPageL(): void {
-    this.currentPage = this.currentPage - 1;
+    this.currentPage--;
   }
 
-  defaulCarrusel(): void {
+  private resetForm(): void {
     this.trainerForm.reset();
     this.currentPage = 0;
-    this.selectedFiles = new File([], 'empty.txt');
+    this.resetImageData();
+    this.resetLocationControls();
+    this.navigateToTrainerList();
+  }
+
+  private resetImageData(): void {
+    this.selectedFiles = undefined;
     this.imageSelected = false;
     this.selectedImageURL = '';
+  }
+
+  private resetLocationControls(): void {
     this.trainerForm.get('city')?.disable();
     this.trainerForm.get('stateordepartmen')?.disable();
     this.activeDepto = false;
     this.activeCity = false;
-    this.CreateTrainer.emit(true);
   }
 
-  quitarValidacion(): void {
-    this.trainerForm.get('password')?.clearValidators();
-    this.trainerForm.get('passwordVerificate')?.clearValidators();
-    this.trainerForm.get('password')?.disable();
-    this.trainerForm.get('passwordVerificate')?.disable();
-    this.trainerForm.get('password')?.updateValueAndValidity();
-    this.trainerForm.get('passwordVerificate')?.updateValueAndValidity();
+  private removePasswordValidation(): void {
+    const passwordControl = this.trainerForm.get('password');
+    const confirmPasswordControl = this.trainerForm.get('passwordVerificate');
+
+    passwordControl?.clearValidators();
+    confirmPasswordControl?.clearValidators();
+    passwordControl?.disable();
+    confirmPasswordControl?.disable();
+    passwordControl?.updateValueAndValidity();
+    confirmPasswordControl?.updateValueAndValidity();
   }
 
-  // Función para restablecer la validación
-  restablecerValidacion(): void {
-    this.trainerForm
-      .get('password')
-      ?.setValidators([Validators.pattern(regExps['regexPassword'])]);
-    this.trainerForm.get('password')?.updateValueAndValidity();
-    this.trainerForm.get('password')?.enable();
-    this.trainerForm.get('passwordVerificate')?.enable();
+  private restorePasswordValidation(): void {
+    const passwordControl = this.trainerForm.get('password');
+    const confirmPasswordControl = this.trainerForm.get('passwordVerificate');
+
+    passwordControl?.setValidators([Validators.pattern(regExps['regexPassword'])]);
+    passwordControl?.updateValueAndValidity();
+    passwordControl?.enable();
+    confirmPasswordControl?.enable();
   }
 
   createTrainer(): void {
+    if (!this.isFormValid()) {
+      return;
+    }
+
+    const trainerData = this.prepareTrainerData();
+    const formData = this.prepareFormData();
+
+    this.submitTrainer(trainerData, formData);
+  }
+
+  private isFormValid(): boolean {
     this.trainerForm.markAllAsTouched();
-    if (this.trainerForm.invalid) {
-      return;
-    }
+    return this.trainerForm.valid && !this.verifyPassword;
+  }
 
-    if (this.veryficatePass) {
-      return;
-    }
-
+  private prepareTrainerData(): any {
     const { value } = this.trainerForm;
-    const encryptedData = this.cryptoService$
-      .Encript(this.trainerForm.get('password')?.value)
-      .toString();
-
-    const { stateordepartmen, city, nationality, image, phone } = value;
     NormaliceLowerValidators.normaliceData(value);
 
-    let telef = `${this.prefijoPhone} ${phone}`;
-    const formTrainer = this.isEdit
-      ? {
-          ...value,
-          stateordepartmen,
-          city,
-          nationality,
-          image: Validar.isNullOrUndefined(this.selectedFiles)
-            ? image
-            : this.selectedFiles.name,
-          deleteImg: Validar.isNullOrUndefined(this.selectedFiles) ? '' : image,
-          phone: telef,
-        }
-      : {
-          ...value,
-          password: encryptedData,
-          image: Validar.isNullOrUndefined(this.selectedFiles)
-            ? ''
-            : this.selectedFiles.name,
-          stateordepartmen,
-          city,
-          nationality,
-          phone: telef,
-        };
+    const { stateordepartmen, city, nationality, image, phone } = value;
+    const formattedPhone = `${this.prefijoPhone} ${phone}`;
 
+    const baseData = {
+      ...value,
+      stateordepartmen,
+      city,
+      nationality,
+      phone: formattedPhone,
+    };
+
+    if (this.isEdit) {
+      return {
+        ...baseData,
+        image: this.selectedFiles?.name || image,
+        deleteImg: this.selectedFiles ? image : '',
+      };
+    } else {
+      const encryptedPassword = this.cryptoService$
+        .Encript(this.trainerForm.get('password')?.value)
+        .toString();
+
+      return {
+        ...baseData,
+        password: encryptedPassword,
+        image: this.selectedFiles?.name || '',
+      };
+    }
+  }
+
+  private prepareFormData(): FormData {
     const formData = new FormData();
-
-    if (!Validar.isNullOrUndefined(this.selectedFiles)) {
+    if (this.selectedFiles) {
       formData.append('file', this.selectedFiles);
     }
+    return formData;
+  }
 
-    this.trainerService$[
-      this.isEdit ? 'updateTrainer' : 'createTrainer'
-    ](formTrainer).subscribe(
-      async (res: resposeCreate) => {
-        if (!Validar.isNullOrUndefined(this.selectedFiles)) {
-          this.uploadImg(formData);
-        } else {
-          Toast.fire({
-            icon: 'success',
-            title: res.Menssage,
-          });
-          this.defaulCarrusel();
-        }
-      },
-      (respError): void => {
-        const {
-          error: { error },
-        } = respError;
-        Toast.fire({
-          icon: 'error',
-          title: error,
-        });
-      }
-    );
+  private submitTrainer(trainerData: any, formData: FormData): void {
+    const operation = this.isEdit ? 'updateTrainer' : 'createTrainer';
+
+    this.trainerService$[operation](trainerData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: resposeCreate) => this.handleTrainerSuccess(response, formData),
+        error: (error) => this.handleTrainerError(error)
+      });
+  }
+
+  private handleTrainerSuccess(response: resposeCreate, formData: FormData): void {
+    if (this.selectedFiles) {
+      this.uploadImg(formData);
+    } else {
+      this.showSuccessMessage(response.Menssage);
+      this.resetForm();
+    }
+  }
+
+  private handleTrainerError(error: any): void {
+    const errorMessage = error?.error?.error || 'Error desconocido';
+    this.showErrorMessage(errorMessage);
   }
 
   uploadImg(formData: FormData): void {
-    this.imagenFuntionsService$.subirImg(formData).subscribe(
-      (respuesta: responseUploadMode) => {
-        Toast.fire({
-          icon: 'success',
-          title: respuesta.msg,
-        });
-        this.defaulCarrusel();
-      },
-      (respError): void => {
-        const {
-          error: { error },
-        } = respError;
-        Toast.fire({
-          icon: 'error',
-          title: error,
-        });
-      }
-    );
+    this.imagenFuntionsService$.subirImg(formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: responseUploadMode) => {
+          this.showSuccessMessage(response.msg);
+          this.resetForm();
+        },
+        error: (error) => {
+          const errorMessage = error?.error?.error || 'Error al subir imagen';
+          this.showErrorMessage(errorMessage);
+        }
+      });
   }
 
-  onFilesSelected(event: any): void {
-    const {
-      target: { files },
-    } = event;
+  private showSuccessMessage(message: string): void {
+    Toast.fire({
+      icon: 'success',
+      title: message,
+    });
+  }
 
-    this.selectedFiles = files[0];
+  private showErrorMessage(message: string): void {
+    Toast.fire({
+      icon: 'error',
+      title: message,
+    });
+  }
 
-    const file = files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImageURL = e.target.result;
-        this.imageSelected = true; // Establecer imageSelected en true
-      };
-      reader.readAsDataURL(file);
-    }
+  onFilesSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (!file) return;
+
+    this.selectedFiles = file;
+    this.processSelectedFile(file);
+  }
+
+  private processSelectedFile(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      this.selectedImageURL = e.target?.result as string;
+      this.imageSelected = true;
+    };
+    reader.readAsDataURL(file);
   }
 }
