@@ -26,10 +26,12 @@ export class Session {
       .pipe(
         tap((res) => {
           this.auth.setUser(res.user); // guarda usuario en señal
-          this.router.navigate(['/dashboard']);
         })
       )
       .subscribe({
+        next: () => {
+          this.router.navigate(['/dashboard']);
+        },
         error: (err: any) => {
 
           console.log(err);

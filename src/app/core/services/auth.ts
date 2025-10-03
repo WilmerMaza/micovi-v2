@@ -1,16 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, of, shareReplay, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { MicoviApi } from './micovi.api';
-export interface infoUser {
-  user: User
-}
 
-export interface User {
-  dataUser: DataUser
-  iat: number
-  exp: number
-}
 
 export interface DataUser {
   ID: string
@@ -30,36 +22,13 @@ export interface DataUser {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private user = signal<infoUser | null>(null);
-  private inFlight$?: Observable<any>;
+  private user = signal<DataUser | null>(null);
+
   constructor(private micoviapi: MicoviApi, private router: Router) {
 
   }
-  ensureSession(): Observable<any> {
-    // ya tengo usuario
-    if (this.user()) return of(this.user());
 
-    // ya hay petición /me en curso → devuelvo la misma
-    if (this.inFlight$) return this.inFlight$;
-
-    // hago /me y memorizo hasta que complete
-    this.inFlight$ = this.micoviapi.get<{ user: any }>('/login/me').pipe(
-      tap((res) => this.user.set(res.user)),
-      catchError((err) => {
-        this.user.set(null);
-        throw err;
-      }),
-      // compartir el mismo observable a múltiples suscriptores
-      shareReplay(1)
-    );
-
-    // cuando complete o falle, libero el inFlight$
-    this.inFlight$.subscribe({ finalize: () => (this.inFlight$ = undefined) } as any);
-
-    return this.inFlight$;
-  }
-
-  getUser(): infoUser | null {
+  getUser(): DataUser | null {
     return this.user();
   }
 
@@ -75,19 +44,19 @@ export class AuthService {
     return !!this.user();
   }
 
-  loadSession(): Observable<infoUser> {
-    return this.micoviapi.get<infoUser>('/login/me')
-      .pipe(tap(res => this.setUser(res)));
+  loadSession(): Observable<DataUser> {
+    return this.micoviapi.get<DataUser>('/login/me')
+      .pipe(tap((res: DataUser) => this.setUser(res)));
   }
 
   logout(): Observable<void> {
     return this.micoviapi.post<void>(`/login/logout`, {})
-    .pipe(
-      tap(() => {
-        this.clear(); // ✅ resetea usuario
-        this.router.navigate(['/login']);
-      })
-    );
+      .pipe(
+        tap(() => {
+          this.clear(); // ✅ resetea usuario
+          this.router.navigate(['/login']);
+        })
+      );
   }
 
 }

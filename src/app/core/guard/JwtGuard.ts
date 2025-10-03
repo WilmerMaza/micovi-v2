@@ -1,9 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import {
-  ActivatedRouteSnapshot,
   CanActivateFn,
-  Router,
-  RouterStateSnapshot,
+  Router
 } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth';
@@ -18,7 +16,7 @@ export const JwtGuard: CanActivateFn = async () => {
   if (auth.isAuthenticated()) return true;
 
   try {
-    await firstValueFrom(auth.ensureSession()); // ← bloquea hasta que /me resuelva
+    await firstValueFrom(auth.loadSession()); // ← bloquea hasta que /me resuelva
     return true;
   } catch {
     return router.createUrlTree(['/login']);

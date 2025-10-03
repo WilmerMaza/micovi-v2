@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     private loginSession$: Session,
     private router$: Router,
     private cryptoService$: CryptoService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadSavedCredentials();
@@ -78,10 +78,9 @@ export class LoginComponent implements OnInit {
 
   private handleRememberCredentials(encryptedPassword: string): void {
     const rememberMe = this.loginForm.get('check')?.value;
-    
+
     if (rememberMe) {
       localStorage.setItem('username', this.loginForm.get('username')?.value);
-      localStorage.setItem('password', encryptedPassword);
       localStorage.setItem('rememberMe', 'true');
     } else {
       this.clearSavedCredentials();
