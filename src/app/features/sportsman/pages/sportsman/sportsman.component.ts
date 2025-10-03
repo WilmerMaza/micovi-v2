@@ -27,7 +27,7 @@ import {
   jsonData,
   SportsmanData,
 } from '../../../../view/models/dataFilterSportsman';
-import { gender } from '../../../../view/entrenador/Model/constantesEntrenador';
+import { gender } from '../../../trainer/Models/constantesTrainer';
 import { categoryModel } from '../../../../view/models/categoryModel';
 
 @Component({

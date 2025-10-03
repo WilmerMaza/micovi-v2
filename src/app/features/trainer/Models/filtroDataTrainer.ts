@@ -1,4 +1,4 @@
-export const filterEntrenadorValue = [
+export const filterTrainerValue = [
   {
     title:'No. identificación',
     property: 'identificacion',

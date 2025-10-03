@@ -1,4 +1,4 @@
-import { listInfo } from './entrenadorModel';
+import { listInfo } from './trainerModel';
 
 export const gender: Array<listInfo> = [
   {
@@ -11,7 +11,7 @@ export const gender: Array<listInfo> = [
   },
 ];
 
-export const entradorNivelEducativo: Array<listInfo> = [
+export const trainerNivelEducativo: Array<listInfo> = [
   {
     value: 'Técnico',
     code: 'tecnico',

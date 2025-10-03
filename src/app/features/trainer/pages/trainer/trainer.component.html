@@ -1,10 +1,10 @@
 <div class="Entrenador">
   <div class="dinamic">
-    @if (showViewCreateEntrenador) {<app-createEntrenador
-      [viewActive]="showViewCreateEntrenador"
-      (CreateEntrenador)="findEntranador()"
+    @if (showViewCreateTrainer) {<app-create-trainer
+      [viewActive]="showViewCreateTrainer"
+      (CreateTrainer)="findTrainer()"
       class="createEntrenador"
-    ></app-createEntrenador
+    ></app-create-trainer
     >}
 
     <section class="filterContent">
@@ -18,11 +18,11 @@
         loading..
       </app-dinamic-filter>
     </section>
-    @if (showViewEntrenador) {
-    <app-viewEntrenador
-      [viewActive]="showViewEntrenador"
-      (editarEntrenadorView)="editarEntrenadorView($event)"
-    ></app-viewEntrenador
+    @if (showViewTrainer) {
+    <app-view-trainer
+      [viewActive]="showViewTrainer"
+      (editTrainerView)="editTrainerView($event)"
+    ></app-view-trainer
     >}
 
     <section>

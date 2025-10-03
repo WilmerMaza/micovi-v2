@@ -21,7 +21,7 @@ import { editSubGrupoComplement } from '../../../complementos/model/interfaceCom
 import { ComplementosService } from '../../../complementos/services/complementos.service';
 import { Toast } from '../../../../utils/alert_Toast';
 import { DynamicError } from '../../../../shared/model/filterModel';
-import { resposeCreate } from '../../../entrenador/Model/entrenadorModel';
+import { resposeCreate } from '../../../../features/trainer/Models/trainerModel';
 
 @Component({
   selector: 'app-create-subgrupo',

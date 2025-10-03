@@ -1,5 +1,5 @@
 <div class="container-mat-card contentInfo">
-  @if (showViewEntrenador) {
+  @if (showViewTrainer) {
   <mat-card class="container-view">
     <button mat-icon-button class="close-button" (click)="closeCard()">
       <mat-icon>close</mat-icon>
@@ -88,7 +88,7 @@
               fxLayoutGap="16px"
               fxLayoutAlign="end center"
             >
-              <button mat-button class="columns" (click)="editarEntrenador()">
+              <button mat-button class="columns" (click)="editTrainer()">
                 Editar
               </button>
               <button mat-button class="columns">Exportar</button>

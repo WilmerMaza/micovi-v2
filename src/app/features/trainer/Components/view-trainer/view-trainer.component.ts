@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Entrandor, viewModalEntrenador } from '../../Model/entrenadorModel';
+import { Trainer, viewModalTrainer } from '../../Models/trainerModel';
 
 import { Imgs } from '../../../../core/services/imgs';
 import { DateValidators, Validators } from '../../../../utils/Validators';
@@ -7,20 +7,20 @@ import { ImageLoader } from '../../../../utils/readerBlodImg';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 @Component({
-  selector: 'app-viewEntrenador',
-  templateUrl: './viewEntrenador.component.html',
-  styleUrls: ['./viewEntrenador.component.scss'],
+  selector: 'app-view-trainer',
+  templateUrl: './view-trainer.component.html',
+  styleUrls: ['./view-trainer.component.scss'],
   imports: [MatCard, MatIcon, MatCardContent],
   standalone: true,
 })
-export class ViewEntrenadorComponent {
-  @Input('viewActive') set setView(value: viewModalEntrenador) {
+export class ViewTrainerComponent {
+  @Input('viewActive') set setView(value: viewModalTrainer) {
     const { data, isVisible } = value;
     this.imageUrl = '';
-    this.showViewEntrenador = isVisible;
+    this.showViewTrainer = isVisible;
 
     if (!Validators.isNullOrUndefined(data)) {
-      this.dataEntrenador = data;
+      this.dataTrainer = data;
 
       const { birtDate, stateordepartmen, city, nationality, image } = data;
       this.dataSingle = {
@@ -32,20 +32,20 @@ export class ViewEntrenadorComponent {
     }
   }
 
-  @Output() editarEntrenadorView = new EventEmitter<Entrandor>();
-  public showViewEntrenador: Boolean | undefined = false;
-  public dataSingle: Entrandor | undefined;
-  private dataEntrenador: Entrandor | undefined;
+  @Output() editTrainerView = new EventEmitter<Trainer>();
+  public showViewTrainer: Boolean | undefined = false;
+  public dataSingle: Trainer | undefined;
+  private dataTrainer: Trainer | undefined;
   public imageUrl: string = '';
   constructor(private imagenFuntionsService$: Imgs) {}
 
   closeCard(): void {
     this.imageUrl = '';
-    this.showViewEntrenador = false;
+    this.showViewTrainer = false;
   }
 
-  editarEntrenador(): void {
-    this.editarEntrenadorView.emit(this.dataEntrenador);
+  editTrainer(): void {
+    this.editTrainerView.emit(this.dataTrainer);
   }
 
   viewImage(nameImg: string | undefined): void {

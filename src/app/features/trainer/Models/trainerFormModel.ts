@@ -1,8 +1,8 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { regExps } from '../../../utils/Validators';
 
-export class entrenadorFormModel {
-  formEntrenador(): FormGroup {
+export class trainerFormModel {
+  formTrainer(): FormGroup {
     return new FormGroup({
       name: new FormControl(null, [Validators.required]),
       identification: new FormControl(null, [

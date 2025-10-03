@@ -7,17 +7,17 @@ import {
 } from '@angular/forms';
 
 import {
-  entradorNivelEducativo,
+  trainerNivelEducativo,
   gender,
   typeIdentification,
-} from '../../Model/constantesEntrenador';
+} from '../../Models/constantesTrainer';
 import {
   eventsPaises,
   listInfo,
   resposeCreate,
-  viewModalEntrenador,
-} from '../../Model/entrenadorModel';
-import { EntrenadorServices } from '../../services/EntrenadorServices.service';
+  viewModalTrainer,
+} from '../../Models/trainerModel';
+import { TrainerService } from '../../services/trainer.service';
 import { CryptoService } from '../../../../utils/crypto.service';
 import {
   CityName,
@@ -37,7 +37,7 @@ import {
   regExps,
   Validators as Validar,
 } from '../../../../utils/Validators';
-import { entrenadorFormModel } from '../../Model/entrenadorFormModel';
+import { trainerFormModel } from '../../Models/trainerFormModel';
 import { Imgs } from '../../../../core/services/imgs';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
@@ -46,9 +46,9 @@ import { CommonModule } from '@angular/common';
 import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
 import { MatFormField } from '@angular/material/form-field';
 @Component({
-  selector: 'app-createEntrenador',
-  templateUrl: './createEntrenador.component.html',
-  styleUrls: ['./createEntrenador.component.scss'],
+  selector: 'app-create-trainer',
+  templateUrl: './create-trainer.component.html',
+  styleUrls: ['./create-trainer.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -62,22 +62,22 @@ import { MatFormField } from '@angular/material/form-field';
     ...MATERIAL_IMPORTS,
   ],
 })
-export class CreateEntrenadorComponent implements OnInit {
-  @Input('viewActive') set setView(value: viewModalEntrenador) {
-    this.showViewEntrenador = value.isVisible;
+export class CreateTrainerComponent implements OnInit {
+  @Input('viewActive') set setView(value: viewModalTrainer) {
+    this.showViewTrainer = value.isVisible;
     this.dataIni(value);
   }
-  @Output() CreateEntrenador = new EventEmitter<boolean>();
+  @Output() CreateTrainer = new EventEmitter<boolean>();
 
-  public showViewEntrenador: Boolean | undefined = true;
+  public showViewTrainer: Boolean | undefined = true;
   public currentPage: number = 0;
-  public entrenadorForm: FormGroup = new entrenadorFormModel().formEntrenador();
+  public trainerForm: FormGroup = new trainerFormModel().formTrainer();
   private cryptoService$ = new CryptoService();
   public listPaises: Ipaises[] = PAISESCONST;
   public listCiudades: CityName[] | undefined = [];
   public listEstados: Estado[] | undefined = [];
   public genderlist: Array<listInfo> = gender;
-  public entrenadorNivel: Array<listInfo> = entradorNivelEducativo;
+  public trainerNivel: Array<listInfo> = trainerNivelEducativo;
   public typeIdentificationlist: Array<listInfo> = typeIdentification;
   public isActiveCrear: boolean = true;
   public isEdit: boolean = false;
@@ -95,7 +95,7 @@ export class CreateEntrenadorComponent implements OnInit {
   private validateRegex: RegExp | undefined;
 
   constructor(
-    private entrenadorServices$: EntrenadorServices,
+    private trainerService$: TrainerService,
     private imagenFuntionsService$: Imgs
   ) {}
 
@@ -104,11 +104,11 @@ export class CreateEntrenadorComponent implements OnInit {
   }
 
   closeCard(): void {
-    this.showViewEntrenador = false;
+    this.showViewTrainer = false;
     this.defaulCarrusel();
   }
 
-  dataIni(value: viewModalEntrenador): void {
+  dataIni(value: viewModalTrainer): void {
     if (!Validar.isNullOrUndefined(value.data)) {
       const {
         data: { nationality, stateordepartmen, studyLevelMax },
@@ -120,21 +120,21 @@ export class CreateEntrenadorComponent implements OnInit {
         updatedAt,
         SportsInstitutionID,
 
-        ...dataEntrandor
+        ...dataTrainer
       } = value.data;
-      dataEntrandor.password = '';
-      dataEntrandor.passwordVerificate = '';
-      dataEntrandor.studyLevelMax = studyLevelMax.toLowerCase();
+      dataTrainer.password = '';
+      dataTrainer.passwordVerificate = '';
+      dataTrainer.studyLevelMax = studyLevelMax.toLowerCase();
       const state = {
         value: nationality,
       };
       const citys = {
         value: stateordepartmen,
       };
-      this.viewImage(dataEntrandor.image);
+      this.viewImage(dataTrainer.image);
       this.universalCiudadesApis(citys);
       this.universalEstadoApis(state);
-      this.entrenadorForm.setValue(dataEntrandor);
+      this.trainerForm.setValue(dataTrainer);
       this.isEdit = true;
       this.quitarValidacion();
     } else {
@@ -154,29 +154,29 @@ export class CreateEntrenadorComponent implements OnInit {
 
   hasErrorRegexp(controlName: string): boolean {
     return !this.validateRegex?.test(
-      this.entrenadorForm.get(controlName)?.value
+      this.trainerForm.get(controlName)?.value
     );
   }
 
   validatePassword(): void {
-    const password = this.entrenadorForm.get('password')?.value;
+    const password = this.trainerForm.get('password')?.value;
     const confirmPassword =
-      this.entrenadorForm.get('passwordVerificate')?.value;
+      this.trainerForm.get('passwordVerificate')?.value;
 
     if (password !== confirmPassword) {
-      this.entrenadorForm
+      this.trainerForm
         .get('passwordVerificate')
         ?.setErrors({ passwordMismatch: true });
       this.veryficatePass = true;
     } else {
-      this.entrenadorForm.get('passwordVerificate')?.setErrors(null);
+      this.trainerForm.get('passwordVerificate')?.setErrors(null);
       this.veryficatePass = false;
     }
   }
 
   universalCiudadesApis(event: eventsPaises): void {
     this.activeCity = true;
-    this.entrenadorForm.get('city')?.enable();
+    this.trainerForm.get('city')?.enable();
     const { value } = event;
     this.listCiudades = CIUDADESCONST.find(
       (item: Iciudades) => item.state_name.toLowerCase() === value.toLowerCase()
@@ -185,7 +185,7 @@ export class CreateEntrenadorComponent implements OnInit {
 
   universalEstadoApis(event: eventsPaises): void {
     this.activeDepto = true;
-    this.entrenadorForm.get('stateordepartmen')?.enable();
+    this.trainerForm.get('stateordepartmen')?.enable();
     const { value } = event;
     this.getMaskPhonecountry(value);
     this.listEstados = ESTADOSCONST.find(
@@ -218,11 +218,11 @@ export class CreateEntrenadorComponent implements OnInit {
     const regex = new RegExp('^' + withoutSpace + '$');
 
     this.validateRegex = regex;
-    this.entrenadorForm.get('phone')?.clearValidators();
-    this.entrenadorForm
+    this.trainerForm.get('phone')?.clearValidators();
+    this.trainerForm
       .get('phone')
       ?.addValidators([Validators.required, Validators.pattern(regex)]);
-    this.entrenadorForm.get('phone')?.updateValueAndValidity();
+    this.trainerForm.get('phone')?.updateValueAndValidity();
   }
 
   setCurrentPageR(): void {
@@ -234,40 +234,40 @@ export class CreateEntrenadorComponent implements OnInit {
   }
 
   defaulCarrusel(): void {
-    this.entrenadorForm.reset();
+    this.trainerForm.reset();
     this.currentPage = 0;
     this.selectedFiles = new File([], 'empty.txt');
     this.imageSelected = false;
     this.selectedImageURL = '';
-    this.entrenadorForm.get('city')?.disable();
-    this.entrenadorForm.get('stateordepartmen')?.disable();
+    this.trainerForm.get('city')?.disable();
+    this.trainerForm.get('stateordepartmen')?.disable();
     this.activeDepto = false;
     this.activeCity = false;
-    this.CreateEntrenador.emit(true);
+    this.CreateTrainer.emit(true);
   }
 
   quitarValidacion(): void {
-    this.entrenadorForm.get('password')?.clearValidators();
-    this.entrenadorForm.get('passwordVerificate')?.clearValidators();
-    this.entrenadorForm.get('password')?.disable();
-    this.entrenadorForm.get('passwordVerificate')?.disable();
-    this.entrenadorForm.get('password')?.updateValueAndValidity();
-    this.entrenadorForm.get('passwordVerificate')?.updateValueAndValidity();
+    this.trainerForm.get('password')?.clearValidators();
+    this.trainerForm.get('passwordVerificate')?.clearValidators();
+    this.trainerForm.get('password')?.disable();
+    this.trainerForm.get('passwordVerificate')?.disable();
+    this.trainerForm.get('password')?.updateValueAndValidity();
+    this.trainerForm.get('passwordVerificate')?.updateValueAndValidity();
   }
 
   // Función para restablecer la validación
   restablecerValidacion(): void {
-    this.entrenadorForm
+    this.trainerForm
       .get('password')
       ?.setValidators([Validators.pattern(regExps['regexPassword'])]);
-    this.entrenadorForm.get('password')?.updateValueAndValidity();
-    this.entrenadorForm.get('password')?.enable();
-    this.entrenadorForm.get('passwordVerificate')?.enable();
+    this.trainerForm.get('password')?.updateValueAndValidity();
+    this.trainerForm.get('password')?.enable();
+    this.trainerForm.get('passwordVerificate')?.enable();
   }
 
-  createEntrenador(): void {
-    this.entrenadorForm.markAllAsTouched();
-    if (this.entrenadorForm.invalid) {
+  createTrainer(): void {
+    this.trainerForm.markAllAsTouched();
+    if (this.trainerForm.invalid) {
       return;
     }
 
@@ -275,16 +275,16 @@ export class CreateEntrenadorComponent implements OnInit {
       return;
     }
 
-    const { value } = this.entrenadorForm;
+    const { value } = this.trainerForm;
     const encryptedData = this.cryptoService$
-      .Encript(this.entrenadorForm.get('password')?.value)
+      .Encript(this.trainerForm.get('password')?.value)
       .toString();
 
     const { stateordepartmen, city, nationality, image, phone } = value;
     NormaliceLowerValidators.normaliceData(value);
 
     let telef = `${this.prefijoPhone} ${phone}`;
-    const formEntrenador = this.isEdit
+    const formTrainer = this.isEdit
       ? {
           ...value,
           stateordepartmen,
@@ -314,9 +314,9 @@ export class CreateEntrenadorComponent implements OnInit {
       formData.append('file', this.selectedFiles);
     }
 
-    this.entrenadorServices$[
-      this.isEdit ? 'updateEntrenador' : 'createEntrenador'
-    ](formEntrenador).subscribe(
+    this.trainerService$[
+      this.isEdit ? 'updateTrainer' : 'createTrainer'
+    ](formTrainer).subscribe(
       async (res: resposeCreate) => {
         if (!Validar.isNullOrUndefined(this.selectedFiles)) {
           this.uploadImg(formData);

@@ -12,13 +12,13 @@ export const HOME_ROUTES: Routes = [
   },
 
   // Entrenador
-  // {
-  //   path: 'entrenador',
-  //   loadChildren: () =>
-  //     import('../entrenador/entrenador.routes').then(
-  //       (m) => m.ENTRENADOR_ROUTES
-  //     ),
-  // },
+  {
+    path: 'entrenador',
+    loadChildren: () =>
+      import('../trainer/trainer.routes').then(
+        (m) => m.TRAINER_ROUTES
+      ),
+  },
 
   // // Deportistas
   {

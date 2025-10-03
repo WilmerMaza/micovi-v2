@@ -1,4 +1,4 @@
-export const columnsEntrenadorValue = [
+export const columnsTrainerValue = [
     {
       displayname: 'No. identificación',
       name:'identification',

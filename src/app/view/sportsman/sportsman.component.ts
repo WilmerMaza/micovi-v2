@@ -7,7 +7,7 @@ import { jsonData, SportsmanData } from '../models/dataFilterSportsman';
 import { HistorialCategory, visible } from '../models/HistorialCategoryModel';
 import { listInfo } from '../../models/interface';
 import { Imgs } from '../../core/services/imgs';
-import { gender } from '../entrenador/Model/constantesEntrenador';
+import { gender } from '../../features/trainer/Models/constantesTrainer';
 import { categoryModel } from '../models/categoryModel';
 import {
   DateValidators,

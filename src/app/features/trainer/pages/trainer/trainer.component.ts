@@ -2,66 +2,67 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import {
-  Entrandor,
-  listEntrenador,
-  viewModalEntrenador,
-} from '../../Model/entrenadorModel';
-import { columnsEntrenadorValue } from '../../Model/columnDataEntrenador';
-import { filterEntrenadorValue } from '../../Model/filtroDataEntrenador';
-import { EntrenadorServices } from '../../services/EntrenadorServices.service';
+  Trainer,
+  listTrainer,
+  viewModalTrainer,
+  requestTrainerFilter,
+} from '../../Models/trainerModel';
+import { columnsTrainerValue } from '../../Models/columnDataTrainer';
+import { filterTrainerValue } from '../../Models/filtroDataTrainer';
+import { TrainerService } from '../../services/trainer.service';
 import {
   NormaliceUpperUnicosValidators,
   NormaliceUpperValidators,
 } from '../../../../utils/Validators';
 import { filterResult } from '../../../../shared/model/filterModel';
 import { ActionResponse } from '../../../../shared/model/Response/DefaultResponse';
-import { CreateEntrenadorComponent } from '../createEntrenador/createEntrenador.component';
+import { CreateTrainerComponent } from '../../Components/create-trainer/create-trainer.component';
 import { DinamicTableComponent } from '../../../../shared/components/dinamic-table/dinamic-table.component';
 import { DinamicFilterComponent } from '../../../../shared/components/dinamic-filter/dinamic-filter.component';
-import { ViewEntrenadorComponent } from '../viewEntrenador/viewEntrenador.component';
+import { ViewTrainerComponent } from '../../Components/view-trainer/view-trainer.component';
 
 @Component({
-  selector: 'app-entrenador',
+  selector: 'app-trainer',
   standalone: true,
-  templateUrl: './entrenador.component.html',
-  styleUrls: ['./entrenador.component.scss'],
+  templateUrl: './trainer.component.html',
+  styleUrls: ['./trainer.component.scss'],
   imports: [
-    CreateEntrenadorComponent,
+    CreateTrainerComponent,
     DinamicTableComponent,
     DinamicFilterComponent,
-    ViewEntrenadorComponent,
+    ViewTrainerComponent,
   ],
 })
-export class EntrenadorComponent implements OnInit {
-  public column = columnsEntrenadorValue;
-  public data: listEntrenador = [];
+export class TrainerComponent implements OnInit {
+  public column = columnsTrainerValue;
+  public data: listTrainer = [];
   public isCheck: boolean = true;
   public selectItemCount: number = 0;
   public isDownload: boolean = false;
-  public nameAdd: string = 'entrenador';
-  public filtros = filterEntrenadorValue;
-  public showViewEntrenador: viewModalEntrenador = { isVisible: false };
-  public showViewCreateEntrenador: viewModalEntrenador = { isVisible: false };
-  public dataSingle: Entrandor | undefined;
+  public nameAdd: string = 'trainer';
+  public filtros = filterTrainerValue;
+  public showViewTrainer: viewModalTrainer = { isVisible: false };
+  public showViewCreateTrainer: viewModalTrainer = { isVisible: false };
+  public dataSingle: Trainer | undefined;
   constructor(
-    private entrenadorServices$: EntrenadorServices,
+    private trainerService$: TrainerService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.findEntranador();
+    this.findTrainer();
   }
 
-  findEntranador(Name?: string, identification?: string): void {
-    const filterEntranador = {
+  findTrainer(Name?: string, identification?: string): void {
+    const filterTrainer: requestTrainerFilter = {
       name: Name,
       identification: identification,
     };
 
-    this.entrenadorServices$
-      .getAllEntrenadores(filterEntranador)
-      .subscribe((response: listEntrenador) => {
-        response.forEach((item: Entrandor) => {
+    this.trainerService$
+      .getAllTrainers(filterTrainer)
+      .subscribe((response: listTrainer) => {
+        response.forEach((item: Trainer) => {
           item.name = NormaliceUpperUnicosValidators.normaliceData(item.name);
         });
         NormaliceUpperValidators.normaliceData(response);
@@ -79,7 +80,7 @@ export class EntrenadorComponent implements OnInit {
       filterData: { Name, identificacion },
     } = event;
 
-    this.findEntranador(Name, identificacion);
+    this.findTrainer(Name, identificacion);
   }
 
   getActionEvent($event: ActionResponse): void {
@@ -94,13 +95,13 @@ export class EntrenadorComponent implements OnInit {
           ...data,
         };
 
-        this.showViewEntrenador = {
+        this.showViewTrainer = {
           isVisible: true,
           data: dataResponse,
         };
         break;
       case 'Editar':
-        this.showViewCreateEntrenador = {
+        this.showViewCreateTrainer = {
           isVisible: true,
           data: $event.data,
         };
@@ -115,12 +116,12 @@ export class EntrenadorComponent implements OnInit {
     }
   }
 
-  editarEntrenadorView($event: Entrandor): void {
-    this.showViewCreateEntrenador = {
+  editTrainerView($event: Trainer): void {
+    this.showViewCreateTrainer = {
       isVisible: true,
       data: $event,
     };
-    this.showViewEntrenador = { isVisible: false };
+    this.showViewTrainer = { isVisible: false };
   }
 
   getActionEventFilter($event: ActionResponse): void {
@@ -128,7 +129,7 @@ export class EntrenadorComponent implements OnInit {
 
     switch (action) {
       case 'add':
-        this.showViewCreateEntrenador = { isVisible: true };
+        this.showViewCreateTrainer = { isVisible: true };
         break;
       default:
         break;

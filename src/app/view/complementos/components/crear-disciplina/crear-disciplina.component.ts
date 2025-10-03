@@ -15,7 +15,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
 
-import { resposeCreate } from '../../../entrenador/Model/entrenadorModel';
+import { resposeCreate } from '../../../../features/trainer/Models/trainerModel';
 import { Toast } from '../../../../utils/alert_Toast';
 import { DynamicError } from '../../../../shared/model/filterModel';
 import { ComplementosService } from '../../services/complementos.service';

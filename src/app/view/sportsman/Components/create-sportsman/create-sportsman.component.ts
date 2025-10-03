@@ -25,14 +25,14 @@ import {
 } from '../../../../models/PaisesConst';
 import { Imgs } from '../../../../core/services/imgs';
 import { typeIdentification } from '../../../../models/constan';
-import { gender } from '../../../entrenador/Model/constantesEntrenador';
+import { gender } from '../../../../features/trainer/Models/constantesTrainer';
 import { categoryModel } from '../../../models/categoryModel';
 import {
   NormaliceLowerValidators,
   regExps,
   Validators as Validar,
 } from '../../../../utils/Validators';
-import { eventsPaises } from '../../../entrenador/Model/entrenadorModel';
+import { eventsPaises } from '../../../../features/trainer/Models/trainerModel';
 import { ImageLoader } from '../../../../utils/readerBlodImg';
 import { calcularEdad } from '../../../../utils/UtilFunctions';
 import { SuccessResponse } from '../../../models/SuccessResponse';

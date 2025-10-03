@@ -44,9 +44,9 @@ import {
 import { sportsmanFormModel } from '../../../../view/models/sportsmanFormModel';
 import { Diciplinas } from '../../../../view/complementos/model/interfaceComplementos';
 import { ComplementosService } from '../../../../view/complementos/services/complementos.service';
-import { gender } from '../../../../view/entrenador/Model/constantesEntrenador';
+import { gender } from '../../../trainer/Models/constantesTrainer';
 import { categoryModel } from '../../../../view/models/categoryModel';
-import { eventsPaises } from '../../../../view/entrenador/Model/entrenadorModel';
+import { eventsPaises } from '../../../trainer/Models/trainerModel';
 import { SuccessResponse } from '../../../../view/models/SuccessResponse';
 
 @Component({

@@ -2,28 +2,28 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MicoviApi } from '../../../core/services/micovi.api';
 import {
-  requestEntrenador,
-  requetEntrenador,
+  requestTrainerFilter,
+  requestTrainer,
   resposeCreate,
-} from '../Model/entrenadorModel';
+} from '../Models/trainerModel';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EntrenadorServices {
+export class TrainerService {
   constructor(private micovid$: MicoviApi) {}
 
-  getAllEntrenadores(bodyRequest: requestEntrenador): Observable<any> {
+  getAllTrainers(bodyRequest: requestTrainerFilter): Observable<any> {
     const endpoint = '/Entrenador/getAll';
     return this.micovid$.post(endpoint, bodyRequest);
   }
 
-  createEntrenador(bodyRequest: requetEntrenador): Observable<resposeCreate> {
+  createTrainer(bodyRequest: requestTrainer): Observable<resposeCreate> {
     const endpoint = '/Entrenador/create';
     return this.micovid$.post(endpoint, bodyRequest);
   }
 
-  updateEntrenador(bodyRequest: requetEntrenador): Observable<resposeCreate> {
+  updateTrainer(bodyRequest: requestTrainer): Observable<resposeCreate> {
     const endpoint = '/Entrenador/update';
     return this.micovid$.put(endpoint, bodyRequest);
   }

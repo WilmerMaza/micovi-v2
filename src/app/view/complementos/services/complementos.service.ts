@@ -4,7 +4,7 @@ import { categoryModel } from '../../models/categoryModel';
 
 import { MicoviApi } from '../../../core/services/micovi.api';
 import { SubGrupoResponse } from '../../Ejercicios/Model/ejercicioModel';
-import { resposeCreate } from '../../entrenador/Model/entrenadorModel';
+import { resposeCreate } from '../../../features/trainer/Models/trainerModel';
 import {
   categoriaRequest,
   diciplinaRequest,

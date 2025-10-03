@@ -1,9 +1,9 @@
-export interface requestEntrenador {
+export interface requestTrainerFilter {
   name?: string;
   identification?: string;
 }
 
-export interface requetEntrenador {
+export interface requestTrainer {
   name: string;
   identification: string;
   typeIdentification: string;
@@ -40,9 +40,9 @@ export interface requestEtapaAssing {
   MacrocicloID: string;
   EtapaID: string;
 }
-export type listEntrenador = Entrandor[];
+export type listTrainer = Trainer[];
 
-export interface Entrandor {
+export interface Trainer {
   ID: string;
   name: string;
   identification: string;
@@ -70,9 +70,9 @@ export interface listInfo {
   code: string;
 }
 
-export interface viewModalEntrenador {
+export interface viewModalTrainer {
   isVisible?: boolean;
-  data?: Entrandor;
+  data?: Trainer;
 }
 
 export interface eventsPaises {
