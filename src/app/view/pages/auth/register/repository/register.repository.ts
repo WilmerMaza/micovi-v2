@@ -1,3 +1,5 @@
+import { Injectable } from '@angular/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 import {
   FormBuilder,
   FormControl,
@@ -5,38 +7,45 @@ import {
   Validators,
 } from '@angular/forms';
 
-export class registerRepository {
-  PersonalInfo(): FormGroup {
-    const form = new FormBuilder().group({
+@Injectable({ providedIn: 'root' })
+export class RegisterRepository {
+  constructor(private fb: FormBuilder /* o NonNullableFormBuilder */) {}
+
+  PersonalInfo() {
+    return this.fb.group({
       email: new FormControl('', [Validators.required, Validators.email]),
-      name: new FormControl(),
-      representanteLegal: new FormControl(),
-      caracterId: new FormControl(),
-      caracterNombre: new FormControl(),
-      paisId: new FormControl(),
-      paisNombre: new FormControl(),
+      name: [''],
+      representanteLegal: [''],
+      caracterId: [''],
+      caracterNombre: [''],
+      paisId: [''],
+      paisNombre: [''],
     });
-    return form;
   }
 
-  contactInfo(): FormGroup {
-    const form = new FormBuilder().group({
-      sede: new FormControl(),
-      telefono: new FormControl(),
-      paginaWeb: new FormControl(),
+  contactInfo() {
+    return this.fb.group({
+      sede: [''],
+      telefono: [''],
+      paginaWeb: [''],
     });
-
-    return form;
   }
 
-  securityInfo(): FormGroup {
-    const form = new FormBuilder().group({
-      contraseña: new FormControl('', [
-        Validators.required,
-        Validators.minLength(6),
-      ]),
-      confirmarContraseña: new FormControl('', [Validators.required]),
-    });
-    return form;
+  securityInfo() {
+    return this.fb.group(
+      {
+        contraseña: ['', [Validators.required, Validators.minLength(6)]],
+        confirmarContraseña: ['', [Validators.required]],
+      },
+      { validators: passwordsMatchValidator }
+    );
   }
+}
+
+function passwordsMatchValidator(
+  group: AbstractControl
+): ValidationErrors | null {
+  const p = group.get('contraseña')?.value;
+  const c = group.get('confirmarContraseña')?.value;
+  return p && c && p !== c ? { passwordMismatch: true } : null;
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -12,6 +12,9 @@ import { MatCardModule } from '@angular/material/card';
 import { RegisterService } from '../services/register.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { PersonalInfoFormComponent } from "../components/personal-info-form/personal-info-form/personal-info-form.component";
+import { DatosContactoFormComponent } from "../components/datos-contacto-form/datos-contacto-form/datos-contacto-form.component";
+import { PasswordFormComponent } from "../components/password-form/password-form/password-form.component";
 
 
 @Component({
@@ -25,53 +28,22 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatCardModule,
     MatOptionModule,
-    MatSelectModule
-  ],
+    MatSelectModule,
+    PersonalInfoFormComponent,
+    DatosContactoFormComponent,
+    PasswordFormComponent
+],
   standalone: true,
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-export class Register implements OnInit{
+export class Register {
 
   private _formBuilder = inject(FormBuilder);
-
-  constructor(private service$ : RegisterService) {
-    // merge(this.email.statusChanges, this.email.valueChanges)
-    //   .pipe(takeUntilDestroyed())
-    //   .subscribe(() => this.updateErrorMessage());
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  get formPersonalInfo() {
-    return this.service$.formPersonalInfo;
-  }
-
-  get formContactInfo() {
-    return this.service$.formContactInfo;
-  }
-
-  get formSecurityInfo() {
-    return this.service$.formSecurityInfo;
-  }
-
-
-  email:any;
-
-
-
+  email = this._formBuilder.control('', { nonNullable: true, validators: [] });
   errorMessage = signal('');
 
-  updateErrorMessage() {
-    if (this.email.hasError('required')) {
-      this.errorMessage.set('You must enter a value');
-    } else if (this.email.hasError('email')) {
-      this.errorMessage.set('Not a valid email');
-    } else {
-      this.errorMessage.set('');
-    }
-  }
+  constructor(public service: RegisterService) { }
+
 
 }

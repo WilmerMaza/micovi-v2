@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
-import { registerRepository } from '../repository/register.repository';
+import { RegisterRepository} from '../repository/register.repository';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RegisterService extends registerRepository {
+export class RegisterService {
 
-  public formPersonalInfo: FormGroup = this.PersonalInfo();
-  public formContactInfo: FormGroup = this.contactInfo();
-  public formSecurityInfo: FormGroup = this.securityInfo();
+  public readonly formPersonalInfo: FormGroup;
+  public readonly formContactInfo: FormGroup
+  public readonly formSecurityInfo: FormGroup
 
-  constructor() {
-    super();
+  constructor(factory: RegisterRepository) {
+      this.formPersonalInfo = factory.PersonalInfo();
+      this.formContactInfo = factory.contactInfo();
+      this.formSecurityInfo = factory.securityInfo();
   }
-  
+
 }
