@@ -9,7 +9,7 @@ export const MENU: Record<string, INavData[]> = {
     },
     {
       name: 'Entrenador',
-      url: '/Entrenador',
+      url: '/entrenador',
       iconComponent: { name: 'how_to_reg' },
     },
     {

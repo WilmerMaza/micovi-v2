@@ -37,7 +37,7 @@
         [class.active]="isActive(item.url)"
         (click)="navigateTo(item.url)"
       >
-        <mat-icon>{{ item.iconComponent.name }}</mat-icon>
+        <mat-icon>{{ item.iconComponent.name }}</mat-icon> 
         @if (!collapsed() && showText()) {
         <span>{{ item.name }}</span>
         @if (item.badge) {

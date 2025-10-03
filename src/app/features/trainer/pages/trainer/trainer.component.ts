@@ -39,7 +39,7 @@ export class TrainerComponent implements OnInit {
   public isCheck: boolean = true;
   public selectItemCount: number = 0;
   public isDownload: boolean = false;
-  public nameAdd: string = 'trainer';
+  public nameAdd: string = 'entrenador';
   public filtros = filterTrainerValue;
   public showViewTrainer: viewModalTrainer = { isVisible: false };
   public showViewCreateTrainer: viewModalTrainer = { isVisible: false };
