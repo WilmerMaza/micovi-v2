@@ -1,0 +1,689 @@
+<div class="contentInfo-sportman" id="sportsmansCreate">
+  <mat-card class="container-view-sportman" *ngIf="showViewSportsman">
+    <button mat-icon-button class="close-button" (click)="closeCard()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-card-content
+      fxFill
+      class="full-height"
+      fxLayout="column"
+      fxLayoutGap="16px"
+    >
+      <div fxLayout="row">
+        <div fxFlex="20%" class="center-content">
+          <div class="img">
+            <input
+              type="file"
+              id="upload"
+              accept=".png, .jpg, .webp"
+              (change)="onFilesSelected($event)"
+              hidden
+            />
+            <label
+              for="upload"
+              class="uploadlabelcustom"
+              *ngIf="!selectedImageURL"
+            >
+              <p class="masImg">+</p>
+              <p class="textImg">Añadir foto</p>
+            </label>
+
+            <label for="upload" class="uploadlabel" *ngIf="selectedImageURL">
+              <span title="Haz clic para cambiar la imagen">
+                <img [src]="selectedImageURL" />
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div fxFlex="80%" class="content-card">
+          <!-- Carousel  -->
+          <div fxFill #contentPanel class="contendorCarousel">
+            <div class="carousel">
+              <form [formGroup]="sportsmansForm">
+                <div class="form-carousel" *ngIf="currentPage === 0">
+                  <div
+                    fxLayout="row"
+                    fxLayoutGap="10%"
+                    fxLayoutAlign="center center"
+                  >
+                    <div fxFlex="30">
+                      <div class="row">Nombre completo</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <input
+                            matInput
+                            formControlName="name"
+                            required
+                            class="inputmat"
+                          />
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm.get('name')?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Tipo de Documento</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <mat-select
+                            formControlName="typeIdentification"
+                            class="inputmat"
+                            placeholder=" Seleccione"
+                          >
+                            <mat-option
+                              *ngFor="let identification of typeIdentification"
+                              [value]="identification.code"
+                            >
+                              {{
+                                identification.code +
+                                  " - " +
+                                  identification.value
+                              }}
+                            </mat-option>
+                          </mat-select>
+
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('typeIdentification')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    fxLayout="row"
+                    fxLayoutGap="10%"
+                    fxLayoutAlign="center center"
+                  >
+                    <div fxFlex="30">
+                      <div class="row">Número de documento</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <input
+                            matInput
+                            formControlName="identification"
+                            required
+                            class="inputmat"
+                          />
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('identification')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Fecha de nacimiento</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <input
+                            matInput
+                            [matDatepicker]="dp"
+                            placeholder="DD/MM/AA"
+                            formControlName="birtDate"
+                            class="inputmat"
+                          />
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="dp"
+                            class="iconDataPicker"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #dp></mat-datepicker>
+                          <mat-error
+                            *ngIf="sportsmansForm.get('birtDate')?.invalid"
+                            >Fecha de nacimiento is required</mat-error
+                          >
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Vista 2: Formulario con 4 campos -->
+                <div class="form-carousel" *ngIf="currentPage === 1">
+                  <div
+                    fxLayout="row"
+                    fxLayoutGap="16px"
+                    fxLayoutAlign="center center"
+                  >
+                    <div fxFlex="30">
+                      <div class="row">País de nacimiento</div>
+                      <div class="row-data">
+                        <mat-form-field class="matforms" appearance="outline">
+                          <mat-select
+                            formControlName="nationality"
+                            name="nationality"
+                            class="inputmat"
+                            placeholder=" Seleccione"
+                            (selectionChange)="universalEstadoApis($event)"
+                          >
+                            <mat-option
+                              *ngFor="let opcion of listPaises"
+                              [value]="opcion.country_name"
+                            >
+                              {{ opcion.country_name }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('nationality')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Departamento de nacimiento</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                          matTooltip="Selecciona un Pais"
+                          [matTooltipDisabled]="activeDepto"
+                        >
+                          <mat-select
+                            formControlName="department"
+                            name="department"
+                            class="inputmat"
+                            placeholder=" Seleccione"
+                            (selectionChange)="universalCiudadesApis($event)"
+                          >
+                            <mat-option
+                              *ngFor="let opcion of listEstados"
+                              [value]="opcion.state_name"
+                            >
+                              {{ opcion.state_name }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('department')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Ciudad de nacimiento</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          matTooltip="Selecciona un Departamento"
+                          [matTooltipDisabled]="activeCity"
+                        >
+                          <mat-select
+                            formControlName="city"
+                            name="city"
+                            class="inputmat"
+                            placeholder=" Seleccione"
+                          >
+                            <mat-option
+                              *ngFor="let opcion of listCiudades"
+                              [value]="opcion.city_name"
+                            >
+                              {{ opcion.city_name }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm.get('city')?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    fxLayout="row"
+                    fxLayoutGap="16px"
+                    fxLayoutAlign="center center"
+                  >
+                    <div fxFlex="30" class="peso-estatura">
+                      <div fxFlex="35">
+                        <div class="row">Peso (Kg)</div>
+                        <div class="row-data">
+                          <mat-form-field
+                            class="matforms"
+                            appearance="outline"
+                            fxFlex
+                          >
+                            <input
+                              matInput
+                              formControlName="weight"
+                              class="inputmat"
+                            />
+                            <mat-error class="Error">
+                              <ng-container
+                                *ngIf="
+                                  sportsmansForm
+                                    .get('weight')
+                                    ?.hasError('required')
+                                "
+                              >
+                                *Campo requerido
+                              </ng-container>
+                              <ng-container
+                                *ngIf="
+                                  sportsmansForm
+                                    .get('weight')
+                                    ?.hasError('pattern')
+                                "
+                              >
+                                *Campo inválido
+                              </ng-container>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div fxFlex="45">
+                        <div class="row">Estatura (m)</div>
+                        <div class="row-data">
+                          <mat-form-field
+                            class="matforms"
+                            appearance="outline"
+                            fxFlex
+                          >
+                            <input
+                              matInput
+                              formControlName="height"
+                              class="inputmat"
+                            />
+                            <mat-error class="Error">
+                              <ng-container
+                                *ngIf="
+                                  sportsmansForm
+                                    .get('height')
+                                    ?.hasError('required')
+                                "
+                              >
+                                *Campo requerido
+                              </ng-container>
+                              <ng-container
+                                *ngIf="
+                                  sportsmansForm
+                                    .get('height')
+                                    ?.hasError('pattern')
+                                "
+                              >
+                                *Campo inválido
+                              </ng-container>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Genero</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <mat-select
+                            formControlName="gender"
+                            class="inputmat"
+                            placeholder=" Seleccione"
+                          >
+                            <mat-option
+                              *ngFor="let genero of generos"
+                              [value]="genero.code"
+                            >
+                              {{ genero.value }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('gender')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Categoría</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <mat-select
+                            formControlName="category"
+                            class="inputmat"
+                            placeholder=" Seleccione"
+                          >
+                            <mat-option
+                              *ngFor="let categoria of categorias"
+                              [value]="categoria"
+                            >
+                              {{ categoria.name }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('category')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-carousel" *ngIf="currentPage === 2">
+                  <div
+                    fxLayout="row"
+                    fxLayoutGap="16px"
+                    fxLayoutAlign="center center"
+                  >
+                    <div fxFlex="30">
+                      <div class="row">Máximo nivel de estudio alcanzado</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <input
+                            matInput
+                            formControlName="studyLevelMax"
+                            class="inputmat"
+                          />
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('studyLevelMax')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Institución donde estudió</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <input
+                            matInput
+                            formControlName="institutionNameStudy"
+                            required
+                            class="inputmat"
+                          />
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('institutionNameStudy')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Disciplina deportiva</div>
+                      <div class="row-data">
+                        <mat-form-field
+                          class="matforms"
+                          appearance="outline"
+                          fxFlex
+                        >
+                          <mat-select
+                            formControlName="DiciplinaID"
+                            class="inputmat"
+                            placeholder=" Seleccione"
+                          >
+                            <mat-option
+                              *ngFor="let diciplinas of diciplinasList"
+                              [value]="diciplinas.ID"
+                            >
+                              {{ diciplinas.name }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('DiciplinaID')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    fxLayout="row"
+                    fxLayoutGap="16px"
+                    fxLayoutAlign="center center"
+                  >
+                    <div fxFlex="30">
+                      <div class="row">Correo eléctronico</div>
+                      <div class="row-data">
+                        <mat-form-field class="matforms" appearance="outline">
+                          <input matInput formControlName="email" />
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('email')
+                                  ?.hasError('required') ||
+                                sportsmansForm.get('email')?.touched
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm.get('email')?.hasError('pattern')
+                              "
+                            >
+                              *Campo inválido
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="30">
+                      <div class="row">Teléfono</div>
+                      <div class="row-data">
+                        <mat-form-field class="matforms" appearance="outline">
+                          <input
+                            matInput
+                            formControlName="phone"
+                            type="text"
+                            [placeholder]="placeHolderPhone"
+                          />
+                          <mat-error class="Error">
+                            <ng-container
+                              *ngIf="
+                                sportsmansForm
+                                  .get('phone')
+                                  ?.hasError('required')
+                              "
+                            >
+                              *Campo requerido
+                            </ng-container>
+                            <ng-container *ngIf="hasErrorRegexp('phone')">
+                              El formato del teléfono no es válido.
+                            </ng-container>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="center" class="btones">
+            <div class="widthBtnLeft">
+              <button
+                class="slice"
+                [ngClass]="{ 'invisible-button': currentPage == 0 }"
+                (click)="setCurrentPageL()"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="16"
+                  viewBox="0 0 15 16"
+                  fill="none"
+                >
+                  <path
+                    d="M14.2002 15.1971L0.200195 8.0231L14.2002 0.67407L7.7252 8.0231L14.2002 15.1971Z"
+                    fill="#0C4CC8"
+                  />
+                  <path
+                    d="M14.2002 15.1971L0.200195 8.0231L14.2002 0.67407L7.7252 8.0231L14.2002 15.1971Z"
+                    stroke="#0C4CC8"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div fxLayoutAlign="center center">
+              <mat-radio-group [(ngModel)]="currentPage">
+                <mat-radio-button
+                  class="mat-radio-button-custom"
+                  [value]="0"
+                ></mat-radio-button>
+                <mat-radio-button
+                  class="mat-radio-button-custom"
+                  [value]="1"
+                ></mat-radio-button>
+                <mat-radio-button
+                  class="mat-radio-button-custom"
+                  [value]="2"
+                ></mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <div class="widthBtnRigh" *ngIf="currentPage !== 2">
+              <button class="slice" (click)="setCurrentPageR()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="16"
+                  viewBox="0 0 15 16"
+                  fill="none"
+                >
+                  <path
+                    d="M0.799805 0.799194L14.7998 7.97324L0.799805 15.3223L7.2748 7.97324L0.799805 0.799194Z"
+                    fill="#0C4CC8"
+                  />
+                  <path
+                    d="M0.799805 0.799194L14.7998 7.97324L0.799805 15.3223L7.2748 7.97324L0.799805 0.799194Z"
+                    stroke="#0C4CC8"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div class="contentBtnCrear" *ngIf="currentPage === 2">
+              <button mat-button class="btnCrear" (click)="createSportsman()">
+                {{ isEdit ? "Guardar" : "Crear" }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

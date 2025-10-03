@@ -1,0 +1,51 @@
+<form [formGroup]="form">
+  <ng-template matStepLabel>Información general</ng-template>
+  <mat-form-field class="w-100">
+    <mat-label>Nombre de la Institución</mat-label>
+    <input
+      matInput
+      placeholder="Nombre de la Institución"
+      formControlName="name"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="w-100">
+    <mat-label>Correo eléctronico</mat-label>
+    <input
+      matInput
+      placeholder="Correo eléctronico"
+      formControlName="email"
+      (blur)="updateErrorMessage()"
+      required
+    />
+    <!--@if (email.invalid) {
+            <mat-error>{{errorMessage()}}</mat-error> }-->
+  </mat-form-field>
+
+  <mat-form-field class="w-100">
+    <mat-label>Representante Legal</mat-label>
+    <input
+      matInput
+      placeholder="Representante Legal"
+      formControlName="representanteLegal"
+      required
+    />
+  </mat-form-field>
+
+  <div class="header_register">
+    <mat-form-field style="width: 45%">
+      <mat-label>Caracter</mat-label>
+      <mat-select formControlName="caracterNombre">
+        <mat-option value="one"></mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="width: 45%; margin-left: 10px">
+      <mat-label>Pais</mat-label>
+      <mat-select formControlName="paisNombre">
+        <mat-option value="one">First option</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>

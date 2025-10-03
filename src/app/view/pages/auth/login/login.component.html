@@ -1,64 +1,149 @@
 <div class="contenMax">
   <div class="conten">
-    <div class="group_login">
-      <div class="content-logo">
-        <div class="contenLogo"></div>
-      </div>
-      <div class="line-blue"></div>
-      <div class="formLogin">
-        <form [formGroup]="loginForm">
-          <p class="textInicio">Iniciar sesión</p>
-          <p class="textMedium">Iniciar sesión para continuar.</p>
+    <!--  TÍTULO DE BIENVENIDA -->
+    <h2 class="titulo-externo">¡Hola de nuevo!</h2>
 
-          <p class="textInput">Usuario</p>
-          <mat-form-field appearance="outline" class="matforms">
-            <span matSuffix>
+    <div class="group_login">
+      <div class="formLogin">
+        <p class="registro">
+          No tienes cuenta?
+          <a class="linkRegistro">Regístrate ahora</a>
+        </p>
+        <hr class="divider" />
+
+        <!-- FORMULARIO -->
+        <form
+          [formGroup]="loginForm"
+          class="example-form"
+          [ngClass]="{ 'form-submitted': submitted }"
+        >
+          <!-- Usuario -->
+          <mat-form-field class="mat-input-custom" appearance="fill">
+            <mat-label>Email</mat-label>
+            <span matPrefix>
               <img src="./images/account.svg" class="custom-icon" />
             </span>
             <input
               matInput
+              type="text"
               formControlName="username"
+              placeholder="Ej. JuanPerez"
               required
-              class="inputmat"
-              autocomplete="username"
             />
-            <mat-error *ngIf="loginForm.get('username')?.invalid"
-              >username is required</mat-error
-            >
+
+            @if (loginForm.get('username')?.hasError('required') && submitted) {
+            <mat-error> Usuario es <strong>obligatorio</strong> </mat-error>
+            }
           </mat-form-field>
 
-          <p class="textInput">Contraseña</p>
-          <mat-form-field appearance="outline" class="matforms">
-            <span matSuffix>
+          <!-- Contraseña -->
+          <mat-form-field class="mat-input-custom" appearance="fill">
+            <mat-label>Contraseña</mat-label>
+            
+            <span matPrefix>
               <img src="./images/segure.svg" class="custom-icon" />
             </span>
+
             <input
               matInput
+              [type]="hide ? 'password' : 'text'"
               formControlName="password"
+              placeholder="********"
               required
-              autocomplete="current-password"
-              class="inputmat"
-              type="password"
             />
-            <mat-error *ngIf="loginForm.get('password')?.invalid"
-              >password is required</mat-error
+
+
+            <span
+              matSuffix
+              (click)="togglePasswordVisibility()"
+              style="cursor: pointer"
             >
+              @if (hide) {
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 512 512"
+                class="custom-icon"
+              >
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="32"
+                  d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
+                />
+                <circle
+                  cx="256"
+                  cy="256"
+                  r="80"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-miterlimit="10"
+                  stroke-width="32"
+                />
+              </svg>
+              } @else {
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 512 512"
+                class="custom-icon"
+              >
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="32"
+                  d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
+                />
+                <circle
+                  cx="256"
+                  cy="256"
+                  r="80"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-miterlimit="10"
+                  stroke-width="32"
+                />
+                <line
+                  x1="96"
+                  y1="96"
+                  x2="416"
+                  y2="416"
+                  stroke="currentColor"
+                  stroke-width="32"
+                  stroke-linecap="round"
+                />
+              </svg>
+              }
+            </span>
+
+            @if (loginForm.get('password')?.hasError('required') && submitted) {
+            <mat-error> Contraseña es <strong>obligatoria</strong> </mat-error>
+            }
           </mat-form-field>
 
+          <!-- Recordar y Olvidar -->
           <div class="contenFlex">
-            <div class="checkbox">
-              <input type="checkbox" />
-              <label>Recordar contraseña</label>
-            </div>
-          </div>
-          <div class="content-button">
-            <button class="button" (click)="sessionLogin()">
-              Ingresar
-            </button>
+            <mat-checkbox formControlName="check" color="primary">Recordar contraseña</mat-checkbox>
+            <a class="buttonOlvidar">¿Olvidaste tu contraseña?</a>
           </div>
 
-          <div class="olvidarConten">
-            <a class="buttonOlvidar"> ¿Olvidaste tu contraseña? </a>
+          <!-- Botón -->
+          <div class="content-button">
+            <button
+              mat-button
+              class="button-tonal"
+              type="button"
+              (click)="sessionLogin()"
+            >
+              Iniciar
+            </button>
           </div>
         </form>
       </div>

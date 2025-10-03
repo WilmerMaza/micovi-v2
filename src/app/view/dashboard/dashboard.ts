@@ -4,16 +4,17 @@ import { Validators } from '../../utils/Validators';
 import Swal from 'sweetalert2';
 import { customOptions } from '../../utils/alert_Toast';
 import { ActivatedRoute } from '@angular/router';
-
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
+  standalone: true,
 })
 export class Dashboard implements OnInit {
   constructor(private route$: ActivatedRoute) {}
-  ngOnInit(): void {
+
+  public ngOnInit(): void {
     const {
       snapshot: {
         queryParams: { newpay },
@@ -24,12 +25,12 @@ export class Dashboard implements OnInit {
     }
   }
 
-  newPayCompleted(): void {
+  private newPayCompleted(): void {
     Swal.fire(customOptions);
     this.createConfeti();
   }
 
-  createConfeti(): void {
+  private createConfeti(): void {
     const container = document.querySelector('.my-swal-container');
     const colores = [
       '#f00',

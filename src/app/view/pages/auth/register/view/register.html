@@ -1,0 +1,33 @@
+<section class="content_register" id="register">
+  <mat-card class="card_register" appearance="outlined">
+    <div class="header_register">
+      <div><h1 style="margin-left: 8px">Registrate</h1></div>
+      <div><img style="margin-right: 8px" src="./images/logo_register.png" class="img" alt="logo_register"/></div>
+    </div>
+  </mat-card>
+
+  <mat-card class="card_register" appearance="outlined">
+    <mat-stepper [linear]="true" #stepper>
+      <!-- Paso uno -->
+      <mat-step [stepControl]="service.formPersonalInfo">
+        <app-personal-info-form></app-personal-info-form>
+
+        <button matButton matStepperNext>Siguiente</button>
+      </mat-step>
+
+      <!-- Paso dos -->
+      <mat-step [stepControl]="service.formContactInfo">
+        <app-datos-contacto-form></app-datos-contacto-form>
+        <button matButton matStepperPrevious>Atrás</button>
+        <button matButton matStepperNext>Siguiente</button>
+      </mat-step>
+      <!-- Paso tres -->
+
+      <mat-step [stepControl]="service.formSecurityInfo">
+        <app-password-form></app-password-form>
+        <button matButton matStepperPrevious>Atrás</button>
+        <button matButton (click)="stepper.reset()">Hecho</button>
+      </mat-step>
+    </mat-stepper>
+  </mat-card>
+</section>

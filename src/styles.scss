@@ -1,7 +1,11 @@
-// Custom Theming for Angular Material
-// For more information: https://material.angular.dev/guide/theming
+/* -------------------------------
+   Import Angular Material theming
+-------------------------------- */
 @use "@angular/material" as mat;
 
+/* -------------------------------
+   Definición del tema
+-------------------------------- */
 html {
   @include mat.theme(
     (
@@ -11,18 +15,72 @@ html {
         tertiary: mat.$blue-palette,
       ),
       typography: Inria Sans,
+      // O usa "Inria Sans" si ya la cargaste
       density: 0,
     )
   );
-} /* You can add global styles to this file, and also import other style files */
+}
+
+/* -------------------------------
+   Estilos globales
+-------------------------------- */
+body {
+  color-scheme: light;
+  background-color: #F9FAFB;
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  padding: 0;
+  font-family: "Inria Sans", Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
+}
 
 html,
 body {
   height: 100%;
+  overflow: hidden;
 }
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Inria Sans";
-  font-style: normal;
+
+/* Ocultar scrollbars pero mantener funcionalidad */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* -------------------------------
+   Fix Angular Material backgrounds
+-------------------------------- */
+.mat-drawer-inner-container,
+.mat-sidenav-content,
+.mat-drawer-content {
+  background-color: #F9FAFB !important;
+}
+
+.mat-sidenav-container {
+  background-color: #F9FAFB !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
 }
