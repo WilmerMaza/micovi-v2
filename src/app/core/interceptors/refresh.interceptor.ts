@@ -3,8 +3,9 @@ import { inject } from '@angular/core';
 import { catchError, filter, ReplaySubject, switchMap, take, throwError } from 'rxjs';
 import { MicoviApi } from '../services/micovi.api';
 import { AuthService } from './../services/auth';
+import { Error } from '../../view/models/errorsModel';
 
-let refreshing = false;
+let refreshing : boolean;
 // cuando hay un refresh en curso, los demás esperan a que emita "ok"
 let refreshDone$: ReplaySubject<boolean> | null = null;
 
@@ -43,7 +44,8 @@ export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
           refreshDone$ = null;
           return next(req.clone());
         }),
-        catchError(refreshErr => {
+
+        catchError((refreshErr: Error)  => {
           // falló el refresh → limpiar estado y propagar error
           refreshing = false;
           refreshDone$?.error(refreshErr);

@@ -8,7 +8,6 @@ import { AuthService } from '../services/auth';
 
 
 export const JwtGuard: CanActivateFn = async () => {
-  console.log('gallinas y pollos');
   const auth = inject(AuthService);
   const router = inject(Router);
 
@@ -20,6 +19,5 @@ export const JwtGuard: CanActivateFn = async () => {
     return true;
   } catch {
     return router.createUrlTree(['/login']);
-  } finally {
   }
 };

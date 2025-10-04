@@ -4,12 +4,12 @@ import { tap } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth';
 import { MicoviApi } from '../../../../core/services/micovi.api';
 import { Toast } from '../../../../utils/alert_Toast';
+import { DataUser } from '../../../models/dataUser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Session {
-  submitted = false;
 
   constructor(
     private api: MicoviApi,
@@ -19,10 +19,10 @@ export class Session {
 
   /** Login: backend setea cookie HttpOnly */
   sessionLogin(data: { Name: string, Password: string }): void {
-    this.submitted = true;
+
 
     this.api
-      .post<{ user: any }>(`/login`, data)
+      .post<{ user: DataUser }>(`/login`, data)
       .pipe(
         tap((res) => {
           this.auth.setUser(res.user); // guarda usuario en señal
@@ -33,8 +33,6 @@ export class Session {
           this.router.navigate(['/dashboard']);
         },
         error: (err: any) => {
-
-          console.log(err);
 
           Toast.fire({
             icon: 'error',

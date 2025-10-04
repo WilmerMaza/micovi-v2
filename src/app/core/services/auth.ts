@@ -2,23 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { MicoviApi } from './micovi.api';
-
-
-export interface DataUser {
-  ID: string
-  email: string
-  institutionName: string
-  legalRepresentative: string
-  character: string
-  pais: string
-  sede: string
-  webPage: string
-  phone: string
-  image: string
-  createdAt: string
-  updatedAt: string
-  account: string
-}
+import { DataUser } from '../../view/models/dataUser';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

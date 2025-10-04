@@ -29,7 +29,6 @@ export class ProfileMenu {
 
   public async confirmLogout(): Promise<void> {
     this.showLogoutModal.set(false);
-   // await this.authService.logout();
     await firstValueFrom(this.authService.logout());
   }
 
