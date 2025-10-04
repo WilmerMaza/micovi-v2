@@ -1,0 +1,26 @@
+<form [formGroup]="form">
+  <mat-form-field class="w-100">
+    <mat-label>Sede</mat-label>
+    <input matInput placeholder="sede" formControlName="sede" required />
+  </mat-form-field>
+
+  <mat-form-field class="w-100">
+    <mat-label>Página Web</mat-label>
+    <input
+      matInput
+      placeholder="Página Web"
+      formControlName="paginaWeb"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="w-100">
+    <mat-label>Télefono</mat-label>
+    <input
+      matInput
+      placeholder="Ingresa tu Télefono"
+      formControlName="telefono"
+      required
+    />
+  </mat-form-field>
+</form>
