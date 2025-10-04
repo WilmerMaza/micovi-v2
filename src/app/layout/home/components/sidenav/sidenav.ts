@@ -32,6 +32,8 @@ export class Sidenav {
     private navigationService: NavigationService,
     private router: Router
   ) {
+    console.log('gallinas');
+
     effect(() => {
       const isCollapsed = this.collapsed();
 
@@ -57,7 +59,7 @@ export class Sidenav {
 
   navigateTo(url: string): void {
     console.log(url);
-    
+
     this.router.navigate([url]);
     this.closeSidebar.emit();
   }

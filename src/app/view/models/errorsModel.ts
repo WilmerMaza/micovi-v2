@@ -3,4 +3,3 @@ export interface Error {
     message?: string; // Esto podría ser un mensaje adicional que proporciona más información sobre el error
     status?: number;
   }
-  

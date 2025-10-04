@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { NormaliceLowerValidators } from '../../../../utils/Validators';
-import { Toast } from '../../../../utils/alert_Toast';
 import { CryptoService } from '../../../../utils/crypto.service';
 import { LoginFormModel } from '../models/login-form';
 import { Session } from '../services/session';
@@ -36,7 +35,7 @@ export class LoginComponent implements OnInit {
     private loginSession$: Session,
     private router$: Router,
     private cryptoService$: CryptoService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadSavedCredentials();
@@ -74,25 +73,14 @@ export class LoginComponent implements OnInit {
     const encryptedPassword = this.cryptoService$.Encript(plainPassword);
     data.Password = encryptedPassword;
 
-    this.loginSession$.sessionLogin(data).subscribe(
-      () => {
-        this.handleRememberCredentials(encryptedPassword);
-        this.router$.navigate(['/dashboard']);
-      },
-      () =>
-        Toast.fire({
-          icon: 'error',
-          title: 'Usuario o contraseña incorrecta',
-        })
-    );
+    this.loginSession$.sessionLogin(data);
   }
 
   private handleRememberCredentials(encryptedPassword: string): void {
     const rememberMe = this.loginForm.get('check')?.value;
-    
+
     if (rememberMe) {
       localStorage.setItem('username', this.loginForm.get('username')?.value);
-      localStorage.setItem('password', encryptedPassword);
       localStorage.setItem('rememberMe', 'true');
     } else {
       this.clearSavedCredentials();
