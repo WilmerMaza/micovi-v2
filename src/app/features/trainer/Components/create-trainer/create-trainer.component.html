@@ -1,679 +1,296 @@
-<div id="CreateEntrenador">
+<div class="create-trainer-container">
   @if (showViewTrainer) {
-  <mat-card class="container-view-EntrenadorCreate">
-    <button
-      mat-icon-button
-      class="close-button-createTrainer"
-      (click)="closeCard()"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
-    <mat-card-content
-      fxFill
-      class="ContentCreateEntrenador"
-      fxLayout="column"
-      fxLayoutGap="16px"
-    >
-      <div fxLayout="row">
-        <!-- Definición de la primera fila -->
-        <div fxFlex="20%" class="center-content-createTrainer">
-          <div class="img">
-            <input
-              type="file"
-              id="upload"
-              accept=".png, .jpg, .webp"
-              (change)="onFilesSelected($event)"
-              hidden
-            />
-            <label for="upload" class="uploadlabel" *ngIf="!selectedImageURL">
-              <p class="masImg">+</p>
-              <p class="textImg">Añadir foto</p>
-            </label>
-
-            <label for="upload" class="uploadlabel" *ngIf="selectedImageURL">
-              <span title="Haz clic para cambiar la imagen">
-                <img [src]="selectedImageURL" />
-              </span>
-            </label>
-          </div>
-        </div>
-        <div fxFlex="80%" class="content-card-CreateEntrenador">
-          <!-- Carousel  -->
-
-          <div fxFill #contentPanel class="contendorCarouselCreateEntrenador">
-            <div class="carouselCreateEntrenador">
-              <form [formGroup]="trainerForm">
-                <!-- Vista 1: Formulario con 4 campos -->
-                <div
-                  class="form-carousel-createTrainer"
-                  *ngIf="currentPage === 0"
-                >
-                  <div
-                    fxLayout="row"
-                    fxLayoutGap="10%"
-                    fxLayoutAlign="center center"
-                  >
-                    <div fxFlex="30">
-                      <div class="row">Nombre completo</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          fxFlex
-                        >
-                          <input
-                            matInput
-                            formControlName="name"
-                            required
-                            class="inputmat"
-                            placeholder="Ejemplo: Juan Pérez"
-                          />
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm.get('name')?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div fxFlex="30">
-                      <div class="row">Tipo. Documento</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          fxFlex
-                        >
-                          <mat-select
-                            formControlName="typeIdentification"
-                            name="typeIdentification"
-                            class="inputmat"
-                            placeholder=" Seleccione"
-                          >
-                            <mat-option
-                              *ngFor="let opcion of typeIdentificationList"
-                              [value]="opcion.code"
-                            >
-                              {{ opcion.code + " - " + opcion.value }}
-                            </mat-option>
-                          </mat-select>
-
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('typeIdentification')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    fxLayout="row"
-                    fxLayoutGap="10%"
-                    fxLayoutAlign="center center"
-                  >
-                    <div fxFlex="30">
-                      <div class="row">Número de documento</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          fxFlex
-                        >
-                          <input
-                            matInput
-                            formControlName="identification"
-                            required
-                            class="inputmat"
-                            placeholder="Ejemplo: 12345678"
-                          />
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('identification')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('identification')
-                                  ?.hasError('pattern')
-                              "
-                            >
-                              *Campo invalido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div fxFlex="30">
-                      <div class="row">Fecha de nacimiento</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          fxFlex
-                        >
-                          <input
-                            matInput
-                            [matDatepicker]="dp"
-                            placeholder="DD/MM/AA"
-                            formControlName="birtDate"
-                            class="inputmat"
-                          />
-                          <mat-datepicker-toggle
-                            matSuffix
-                            [for]="dp"
-                            class="iconDataPicker"
-                          ></mat-datepicker-toggle>
-                          <mat-datepicker #dp></mat-datepicker>
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('birtDate')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Vista 2: Formulario con 6 campos -->
-                <div
-                  class="form-carousel-createTrainer"
-                  *ngIf="currentPage === 1"
-                >
-                  <div
-                    fxLayout="row"
-                    fxLayoutGap="16px"
-                    fxLayoutAlign="center center"
-                  >
-                    <div fxFlex="30">
-                      <div class="row">País de nacimiento</div>
-                      <div class="row-data">
-                        <mat-form-field class="matforms" appearance="outline">
-                          <mat-select
-                            formControlName="nationality"
-                            name="nationality"
-                            class="inputmat"
-                            placeholder=" Seleccione"
-                            (selectionChange)="universalEstadoApis($event)"
-                          >
-                            <mat-option
-                              *ngFor="let opcion of listPaises"
-                              [value]="opcion.country_name"
-                            >
-                              {{ opcion.country_name }}
-                            </mat-option>
-                          </mat-select>
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('nationality')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div fxFlex="30">
-                      <div class="row">Departamento de nacimiento</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          fxFlex
-                          matTooltip="Selecciona un Pais"
-                          [matTooltipDisabled]="activeDepto"
-                        >
-                          <mat-select
-                            formControlName="stateordepartmen"
-                            name="stateordepartmen"
-                            class="inputmat"
-                            placeholder=" Seleccione"
-                            (selectionChange)="universalCiudadesApis($event)"
-                          >
-                            <mat-option
-                              *ngFor="let opcion of listEstados"
-                              [value]="opcion.state_name"
-                            >
-                              {{ opcion.state_name }}
-                            </mat-option>
-                          </mat-select>
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('stateordepartmen')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div fxFlex="30">
-                      <div class="row">Ciudad de nacimiento</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          matTooltip="Selecciona un Departamento"
-                          [matTooltipDisabled]="activeCity"
-                        >
-                          <mat-select
-                            formControlName="city"
-                            name="city"
-                            class="inputmat"
-                            placeholder=" Seleccione"
-                          >
-                            <mat-option
-                              *ngFor="let opcion of listCiudades"
-                              [value]="opcion.city_name"
-                            >
-                              {{ opcion.city_name }}
-                            </mat-option>
-                          </mat-select>
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm.get('city')?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    fxLayout="row"
-                    fxLayoutGap="16px"
-                    fxLayoutAlign="center center"
-                  >
-                    <div fxFlex="30">
-                      <div class="row">Genero</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          fxFlex
-                        >
-                          <mat-select
-                            formControlName="gender"
-                            name="gender"
-                            class="inputmat"
-                            placeholder=" Seleccione"
-                          >
-                            <mat-option
-                              *ngFor="let opcion of genderList"
-                              [value]="opcion.code"
-                            >
-                              {{ opcion.value }}
-                            </mat-option>
-                          </mat-select>
-
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('gender')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div fxFlex="30">
-                      <div class="row">Máximo nivel de estudio alcanzado</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          placeholder=" Seleccione"
-                          fxFlex
-                        >
-                          <mat-select
-                            formControlName="studyLevelMax"
-                            name="studyLevelMax"
-                            class="inputmat"
-                            placeholder=" Seleccione"
-                          >
-                            <mat-option
-                              *ngFor="let opcion of trainerNivel"
-                              [value]="opcion.code"
-                            >
-                              {{ opcion.value }}
-                            </mat-option>
-                          </mat-select>
-
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('studyLevelMax')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div fxFlex="30">
-                      <div class="row">Institución donde estudió</div>
-                      <div class="row-data">
-                        <mat-form-field
-                          class="matforms"
-                          appearance="outline"
-                          fxFlex
-                        >
-                          <input
-                            matInput
-                            formControlName="institutionNameStudy"
-                            required
-                            class="inputmat"
-                            placeholder="Ejemplo: Universidad XYZ"
-                          />
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('institutionNameStudy')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('institutionNameStudy')
-                                  ?.hasError('pattern')
-                              "
-                            >
-                              *Campo invalido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Vista 3: Formulario con 3 campos -->
-                <div
-                  class="form-carousel-createTrainer"
-                  *ngIf="currentPage === 2"
-                >
-                  <div
-                    fxLayout="row"
-                    fxLayoutGap="16px"
-                    fxLayoutAlign="center center"
-                  >
-                    <div fxFlex="30">
-                      <div class="row">Correo eléctronico</div>
-                      <div class="row-data">
-                        <mat-form-field class="matforms" appearance="outline">
-                          <input
-                            matInput
-                            formControlName="email"
-                            placeholder="Ejemplo: usuario@dominio.com"
-                          />
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('email')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                            <ng-container
-                              *ngIf="
-                                trainerForm.get('email')?.hasError('pattern')
-                              "
-                            >
-                              *Campo inválido
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div fxFlex="30">
-                      <div class="row">Contraseña</div>
-                      <div class="row-data">
-                        <mat-form-field class="matforms" appearance="outline">
-                          <input
-                            matInput
-                            formControlName="password"
-                            class="inputmat"
-                            type="password"
-                            placeholder="Ingrese su contraseña"
-                          />
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('password')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('password')
-                                  ?.hasError('pattern')
-                              "
-                            >
-                              Minimo 8 caracteres, con combinación de
-                              mayúsculas, minúsculas, números y símbolos.
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div fxFlex="30">
-                      <div class="row">Confirmar contraseña</div>
-                      <div class="row-data">
-                        <mat-form-field class="matforms" appearance="outline">
-                          <input
-                            matInput
-                            formControlName="passwordVerificate"
-                            class="inputmat"
-                            type="password"
-                            placeholder="Confirme su contraseña"
-                            (ngModelChange)="validatePassword()"
-                          />
-                          <mat-error class="Error">
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('passwordVerificate')
-                                  ?.hasError('required')
-                              "
-                            >
-                              *Campo requerido
-                            </ng-container>
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('passwordVerificate')
-                                  ?.hasError('pattern')
-                              "
-                            >
-                              Minimo 8 caracteres, con combinación de
-                              mayúsculas, minúsculas, números y símbolos.
-                            </ng-container>
-                            <ng-container
-                              *ngIf="
-                                trainerForm
-                                  .get('passwordVerificate')
-                                  ?.hasError('passwordMismatch')
-                              "
-                            >
-                              Las contraseñas no coinciden, vuelve a intentar.
-                            </ng-container>
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    fxLayout="row"
-                    fxLayoutGap="16px"
-                    fxLayoutAlign="start"
-                    style="padding-left: 3%"
-                  >
-                    <div fxFlex="30">
-                      <div class="row">Teléfono</div>
-                      <div class="row-data">
-                        <mat-form-field class="matforms" appearance="outline">
-                          <input
-                            matInput
-                            formControlName="phone"
-                            type="text"
-                            [placeholder]="placeHolderPhone"
-                          />
-                          <mat-error class="Error">
-                            @if ( trainerForm .get('phone')
-                            ?.hasError('required')) {
-                            <ng-container> *Campo requerido </ng-container>} @if
-                            (hasErrorRegexp('phone')) {
-                            <ng-container>
-                              El formato del teléfono no es válido. </ng-container
-                            >}
-                          </mat-error>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div
-            fxLayout="row"
-            fxLayoutAlign="center"
-            class="btones-createTrainer"
-          >
-            <div class="widthBtnLeft-createTrainer">
-              <button
-                class="slice"
-                [ngClass]="{ 'invisible-button': currentPage == 0 }"
-                (click)="setCurrentPageL()"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="15"
-                  height="16"
-                  viewBox="0 0 15 16"
-                  fill="none"
-                >
-                  <path
-                    d="M14.2002 15.1971L0.200195 8.0231L14.2002 0.67407L7.7252 8.0231L14.2002 15.1971Z"
-                    fill="#0C4CC8"
-                  />
-                  <path
-                    d="M14.2002 15.1971L0.200195 8.0231L14.2002 0.67407L7.7252 8.0231L14.2002 15.1971Z"
-                    stroke="#0C4CC8"
-                  />
-                </svg>
-              </button>
-            </div>
-            <!-- Radio buttons para navegar entre las vistas -->
-
-            <div fxLayoutAlign="center center">
-              <mat-radio-group [(ngModel)]="currentPage">
-                <mat-radio-button
-                  class="mat-radio-button-custom"
-                  [value]="0"
-                ></mat-radio-button>
-                <mat-radio-button
-                  class="mat-radio-button-custom"
-                  [value]="1"
-                ></mat-radio-button>
-                <mat-radio-button
-                  class="mat-radio-button-custom"
-                  [value]="2"
-                ></mat-radio-button>
-              </mat-radio-group>
-            </div>
-            @if (currentPage !== 2) {
-            <div class="widthBtnRigh-createTrainer">
-              <button class="slice" (click)="setCurrentPageR()">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="15"
-                  height="16"
-                  viewBox="0 0 15 16"
-                  fill="none"
-                >
-                  <path
-                    d="M0.799805 0.799194L14.7998 7.97324L0.799805 15.3223L7.2748 7.97324L0.799805 0.799194Z"
-                    fill="#0C4CC8"
-                  />
-                  <path
-                    d="M0.799805 0.799194L14.7998 7.97324L0.799805 15.3223L7.2748 7.97324L0.799805 0.799194Z"
-                    stroke="#0C4CC8"
-                  />
-                </svg>
-              </button>
-            </div>
-            } @if (currentPage === 2) {
-            <div class="contentBtnCrear-createTrainer">
-              <button mat-button class="btnCrear" (click)="createTrainer()">
-                {{ isEdit ? "Guardar" : "Crear" }}
-              </button>
-            </div>
-            }
-          </div>
+    <mat-card class="trainer-card">
+      <!-- Header with back button and title -->
+      <div class="header">
+        <button mat-icon-button class="back-button" (click)="closeCard()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="header-content">
+          <h2>Añadir nuevo entrenador</h2>
+          <p>Complete la información del entrenador</p>
         </div>
       </div>
-    </mat-card-content> </mat-card
-  >}
+
+      <!-- Main form content -->
+      <div class="form-container">
+        <form [formGroup]="trainerForm" class="trainer-form">
+
+          <!-- Top section with photo and basic info -->
+          <div class="top-section">
+            <!-- Photo upload section -->
+            <div class="photo-section">
+              <div class="photo-upload">
+                <input
+                  type="file"
+                  id="upload"
+                  accept=".png, .jpg, .webp"
+                  (change)="onFilesSelected($event)"
+                  hidden
+                />
+                @if (!selectedImageURL) {
+                  <label for="upload" class="upload-label">
+                    <mat-icon class="upload-icon">add</mat-icon>
+                    <span class="upload-text">Subir foto</span>
+                  </label>
+                } @else {
+                  <label for="upload" class="upload-label">
+                    <img [src]="selectedImageURL" alt="Foto del entrenador" class="uploaded-image" />
+                  </label>
+                }
+              </div>
+              <p class="photo-label">Foto del entrenador</p>
+            </div>
+
+            <!-- Basic info fields -->
+            <div class="basic-info">
+              <div class="field-row">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Nombre completo</mat-label>
+                  <input matInput
+                         formControlName="name"
+                         placeholder="Ingrese el nombre completo">
+                  @if (trainerForm.get('name')?.hasError('required')) {
+                    <mat-error>Campo requerido</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Tipo de documento</mat-label>
+                  <mat-select formControlName="typeIdentification" placeholder="Seleccionar">
+                    @for (option of typeIdentificationList; track option.code) {
+                      <mat-option [value]="option.code">
+                        {{ option.code + " - " + option.value }}
+                      </mat-option>
+                    }
+                  </mat-select>
+                  @if (trainerForm.get('typeIdentification')?.hasError('required')) {
+                    <mat-error>Campo requerido</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="field-row">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Número de documento</mat-label>
+                  <input matInput
+                         formControlName="identification"
+                         placeholder="Ingrese el número">
+                  @if (trainerForm.get('identification')?.hasError('required')) {
+                    <mat-error>Campo requerido</mat-error>
+                  }
+                  @if (trainerForm.get('identification')?.hasError('pattern')) {
+                    <mat-error>Campo inválido</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Fecha de nacimiento</mat-label>
+                  <input matInput
+                         [matDatepicker]="picker"
+                         formControlName="birtDate"
+                         placeholder="dd/mm/aaaa">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  @if (trainerForm.get('birtDate')?.hasError('required')) {
+                    <mat-error>Campo requerido</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal information section -->
+          <div class="section">
+            <div class="section-header">
+              <mat-icon class="section-icon">person</mat-icon>
+              <h3>Información personal</h3>
+            </div>
+
+            <div class="field-row three-columns">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>País de nacimiento</mat-label>
+                <mat-select formControlName="nationality"
+                           placeholder="Seleccionar"
+                           (selectionChange)="universalEstadoApis($event)">
+                  @for (country of listPaises; track country.country_name) {
+                    <mat-option [value]="country.country_name">
+                      {{ country.country_name }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (trainerForm.get('nationality')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Departamento de nacimiento</mat-label>
+                <mat-select formControlName="stateordepartmen"
+                           placeholder="Seleccionar"
+                           [disabled]="!activeDepto"
+                           (selectionChange)="universalCiudadesApis($event)">
+                  @for (state of listEstados; track state.state_name) {
+                    <mat-option [value]="state.state_name">
+                      {{ state.state_name }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (trainerForm.get('stateordepartmen')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Ciudad de nacimiento</mat-label>
+                <mat-select formControlName="city"
+                           placeholder="Seleccionar"
+                           [disabled]="!activeCity">
+                  @for (city of listCiudades; track city.city_name) {
+                    <mat-option [value]="city.city_name">
+                      {{ city.city_name }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (trainerForm.get('city')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="field-row three-columns">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Género</mat-label>
+                <mat-select formControlName="gender" placeholder="Seleccionar">
+                  @for (gender of genderList; track gender.code) {
+                    <mat-option [value]="gender.code">
+                      {{ gender.value }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (trainerForm.get('gender')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Teléfono</mat-label>
+                <input matInput
+                       formControlName="phone"
+                       placeholder="Ingrese el teléfono">
+                @if (trainerForm.get('phone')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+                @if (hasErrorRegexp('phone')) {
+                  <mat-error>El formato del teléfono no es válido</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Máximo nivel de estudio alcanzado</mat-label>
+                <mat-select formControlName="studyLevelMax" placeholder="Seleccionar">
+                  @for (level of trainerNivel; track level.code) {
+                    <mat-option [value]="level.code">
+                      {{ level.value }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (trainerForm.get('studyLevelMax')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="field-row single-column">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Institución donde estudió</mat-label>
+                <input matInput
+                       formControlName="institutionNameStudy"
+                       placeholder="Nombre de la institución">
+                @if (trainerForm.get('institutionNameStudy')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+                @if (trainerForm.get('institutionNameStudy')?.hasError('pattern')) {
+                  <mat-error>Campo inválido</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Contact information section -->
+          <div class="section">
+            <div class="section-header">
+              <h3>Información de contacto</h3>
+            </div>
+
+            <div class="field-row three-columns">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Correo electrónico</mat-label>
+                <input matInput
+                       formControlName="email"
+                       type="email"
+                       placeholder="correo@ejemplo.com">
+                @if (trainerForm.get('email')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+                @if (trainerForm.get('email')?.hasError('pattern')) {
+                  <mat-error>Campo inválido</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Contraseña</mat-label>
+                <input matInput
+                       formControlName="password"
+                       type="password"
+                       placeholder="Ingrese la contraseña">
+                @if (trainerForm.get('password')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+                @if (trainerForm.get('password')?.hasError('pattern')) {
+                  <mat-error>Mínimo 8 caracteres, con combinación de mayúsculas, minúsculas, números y símbolos</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Confirmar contraseña</mat-label>
+                <input matInput
+                       formControlName="passwordVerificate"
+                       type="password"
+                       placeholder="Confirme la contraseña"
+                       (input)="validatePassword()">
+                @if (trainerForm.get('passwordVerificate')?.hasError('required')) {
+                  <mat-error>Campo requerido</mat-error>
+                }
+                @if (trainerForm.get('passwordVerificate')?.hasError('pattern')) {
+                  <mat-error>Mínimo 8 caracteres, con combinación de mayúsculas, minúsculas, números y símbolos</mat-error>
+                }
+                @if (trainerForm.get('passwordVerificate')?.hasError('passwordMismatch')) {
+                  <mat-error>Las contraseñas no coinciden</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="actions">
+            <button mat-button
+                    type="button"
+                    class="cancel-btn"
+                    (click)="closeCard()">
+              Cancelar
+            </button>
+            <button mat-raised-button
+                    color="primary"
+                    type="submit"
+                    class="submit-btn"
+                    (click)="createTrainer()"
+                    [disabled]="!isFormValidForSubmission">
+              Crear entrenador
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card>
+  }
 </div>

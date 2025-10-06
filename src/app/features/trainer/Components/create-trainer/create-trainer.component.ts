@@ -41,7 +41,7 @@ import {
 } from '../../../../utils/Validators';
 import { trainerFormModel } from '../../Models/trainerFormModel';
 import { Imgs } from '../../../../core/services/imgs';
-import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
@@ -56,7 +56,6 @@ import { MatFormField } from '@angular/material/form-field';
     CommonModule,
     MatCard,
     MatIcon,
-    MatCardContent,
     FormsModule,
     ReactiveFormsModule,
     MatFormField,
@@ -69,7 +68,6 @@ export class CreateTrainerComponent implements OnInit, OnDestroy {
   public readonly showViewTrainer: boolean = true;
   private readonly destroy$ = new Subject<void>();
 
-  public currentPage: number = 0;
   public readonly trainerForm: FormGroup = new trainerFormModel().formTrainer();
 
   // Datos de configuración
@@ -96,8 +94,32 @@ export class CreateTrainerComponent implements OnInit, OnDestroy {
   public placeHolderPhone: string = '+57 Colombia';
 
   // Validación
-  private verifyPassword: boolean = false;
+  public verifyPassword: boolean = false;
   private validateRegex: RegExp | undefined;
+
+  get isFormValidForSubmission(): boolean {
+    if (!this.trainerForm) return false;
+
+    // Verificar que el formulario sea válido
+    const formValid = this.trainerForm.valid;
+
+    // Verificar que las contraseñas coincidan
+    const passwordsMatch = !this.verifyPassword;
+
+    // Verificar que todos los campos requeridos estén llenos
+    const requiredFields = [
+      'name', 'identification', 'typeIdentification', 'birtDate',
+      'nationality', 'city', 'stateordepartmen', 'institutionNameStudy',
+      'email', 'password', 'passwordVerificate', 'phone', 'gender'
+    ];
+
+    const allFieldsFilled = requiredFields.every(field => {
+      const control = this.trainerForm.get(field);
+      return control && control.value && control.value.toString().trim() !== '';
+    });
+
+    return formValid && passwordsMatch && allFieldsFilled;
+  }
 
   // Servicios
   private readonly cryptoService$ = new CryptoService();
@@ -154,9 +176,9 @@ export class CreateTrainerComponent implements OnInit, OnDestroy {
     this.verifyPassword = !passwordsMatch;
 
     const confirmPasswordControl = this.trainerForm.get('passwordVerificate');
-    if (passwordsMatch) {
+    if (passwordsMatch && password && confirmPassword) {
       confirmPasswordControl?.setErrors(null);
-    } else {
+    } else if (!passwordsMatch && confirmPassword) {
       confirmPasswordControl?.setErrors({ passwordMismatch: true });
     }
   }
@@ -220,17 +242,9 @@ export class CreateTrainerComponent implements OnInit, OnDestroy {
     phoneControl?.updateValueAndValidity();
   }
 
-  setCurrentPageR(): void {
-    this.currentPage++;
-  }
-
-  setCurrentPageL(): void {
-    this.currentPage--;
-  }
 
   private resetForm(): void {
     this.trainerForm.reset();
-    this.currentPage = 0;
     this.resetImageData();
     this.resetLocationControls();
     this.navigateToTrainerList();

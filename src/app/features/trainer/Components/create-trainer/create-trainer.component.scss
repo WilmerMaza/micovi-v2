@@ -1,249 +1,260 @@
-// #CreateEntrenador {
-//   ::ng-deep .mat-mdc-text-field-wrapper {
-//     height: 30px !important;
-//     border-radius: 14px !important;
-//     border-color: white !important;
-//     box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
-//   }
+.create-trainer-container {
+  background-color: #F9FAFB;
+  min-height: 100vh;
+  padding: 0;
 
-//   ::ng-deep .mat-mdc-form-field-subscript-wrapper {
-//     font-size: 12px;
-//     font-weight: 400;
-//   }
+  .trainer-card {
+    background-color: #F9FAFB;
+    box-shadow: none;
+    border-radius: 0;
+    height: 100vh;
+    overflow-y: auto;
 
-//   ::ng-deep .matforms .mat-mdc-form-field-icon-suffix {
-//     position: relative !important;
-//     top: -10px !important;
-//   }
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 20px 24px;
+      background-color: #F9FAFB;
+      border-bottom: none;
 
-//   ::ng-deep
-//     .mat-mdc-text-field-wrapper.mdc-text-field--outlined
-//     .mat-mdc-form-field-infix {
-//     padding-top: 4px;
-//   }
+      .back-button {
+        margin-right: 12px;
+        color: #6B7280;
+        width: 40px;
+        height: 40px;
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
 
-//   ::ng-deep.mdc-dialog__container {
-//     border-radius: 12px;
-//     overflow: hidden;
-//   }
+      .header-content {
+        h2 {
+          margin: 0;
+          font-size: 20px;
+          font-weight: 600;
+          color: #111827;
+          line-height: 1.2;
+        }
 
-//   ::ng-deep.mdc-text-field--outlined .mdc-notched-outline {
-//     display: none !important;
-//   }
-//   ::ng-deep .matforms .mat-mdc-text-field-wrapper {
-//     background-color: white !important;
-//   }
-//   .container-view-EntrenadorCreate {
-//     width: 100%;
-//     height: 100%;
-//     justify-content: center;
-//     border-radius: 20px;
-//     .close-button-createEntrenador {
-//       color: #ffffff;
-//       position: absolute;
-//       top: 8px;
-//       right: 8px;
-//       background: none;
-//       border: none;
-//       cursor: pointer;
-//       padding: 0;
-//       z-index: 1;
-//     }
+        p {
+          margin: 2px 0 0 0;
+          font-size: 14px;
+          color: #6B7280;
+        }
+      }
+    }
 
-//     .close-button-createEntrenador:focus {
-//       outline: none;
-//     }
+    .form-container {
+      padding: 0 24px 24px 24px;
+      background-color: #F9FAFB;
 
-//     ::ng-deep .ContentCreateEntrenador {
-//       padding: 0 !important;
+      .trainer-form {
+        background-color: white;
+        border-radius: 12px;
+        padding: 32px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
-//       .center-content-createEntrenador {
-//         max-width: 100%; /* El contenedor no será más ancho que su contenedor principal */
-//         height: auto;
-//         overflow: hidden;
-//         background-size: cover;
-//         .img:hover .masImg {
-//           transform: scale(
-//             1.2
-//           ); /* Hacemos que el símbolo "+" sea un poco más grande */
-//         }
-//         .img:hover .textImg {
-//           transform: scale(1.2);
-//         }
-//         .img {
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           height: 100%;
+        .top-section {
+          display: flex;
+          gap: 24px;
+          margin-bottom: 40px;
+          align-items: flex-start;
 
-//           .uploadlabel {
-//             .masImg {
-//               font-size: 150px;
-//               padding: 0;
-//               margin: 0;
-//               color: #0c4cc8;
-//               line-height: 0.7;
-//               text-align: center;
-//             }
-//             .textImg {
-//               color: #0c4cc8;
-//               text-align: center;
-//               font-family: Inria Sans;
-//               font-size: 17.36px;
-//               font-style: normal;
-//               font-weight: 400;
-//               line-height: normal;
-//             }
-//             img {
-//               max-width: 100%;
-//               object-fit: cover;
-//               border-radius: 20px 0 0 20px;
-//               width: 35vh;
-//               height: 36vh;
-//             }
-//           }
-//         }
-//       }
-//       .content-card-CreateEntrenador {
-//         background: linear-gradient(
-//           265.16deg,
-//           #0ddcf9 -0.06%,
-//           #3776f2 49.85%,
-//           #0c4cc8 92.38%
-//         );
+          .photo-section {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
-//         border-radius: 0px 20px 20px 0px;
-//         .contendorCarouselCreateEntrenador {
-//           height: 80% !important;
-//           min-height: 80% !important;
-//           padding: 2% 3%;
-//           .carouselCreateEntrenador {
-//             .form-carousel-createEntrenador {
-//               .row {
-//                 margin-bottom: 1.5%;
-//                 font-family: Inria Sans;
-//                 font-size: 18px;
-//                 font-style: normal;
-//                 font-weight: 700;
-//                 line-height: normal;
-//                 color: #ffffff;
-//                 font-size: 15px;
-//                 margin-left: 0px;
-//               }
-//               .row-data {
-//                 color: #ffffff;
-//                 font-weight: bold;
-//                 font-family: Inria Sans;
-//                 font-size: 15px;
-//                 .matforms {
-//                   width: 100%;
+            .photo-upload {
+              width: 110px;
+              height: 110px;
+              border: 2px dashed #D1D5DB;
+              border-radius: 8px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: border-color 0.3s ease;
+              background-color: #F9FAFB;
 
-//                   .inputmat {
-//                     padding: 2px;
-//                   }
-//                   .Error {
-//                     font-size: 12px;
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         }
-//         .btones-createEntrenador {
-//           justify-content: space-between !important;
+              &:hover {
+                border-color: #3B82F6;
+              }
 
-//           .widthBtnLeft-createEntrenador {
-//             display: flex;
-//             align-items: flex-end;
-//             margin: 1%;
-//             width: 10%;
+              .upload-label {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
 
-//             .slice {
-//               border-radius: 50%;
-//               border: none;
-//               width: 28px;
-//               height: 28px;
-//               margin: 1%;
-//             }
-//             .invisible-button {
-//               visibility: hidden;
-//               width: 0;
-//             }
-//           }
+                .upload-icon {
+                  font-size: 20px;
+                  color: #3B82F6;
+                  margin-bottom: 4px;
+                }
 
-//           .mat-mdc-radio-button.mat-accent {
-//             --mdc-radio-disabled-selected-icon-color: #fff;
-//             --mdc-radio-disabled-unselected-icon-color: #fff;
-//             --mdc-radio-unselected-hover-icon-color: #ffffff;
-//             --mdc-radio-unselected-icon-color: rgb(255 255 255);
-//             --mdc-radio-unselected-pressed-icon-color: rgb(255 255 255);
-//             --mdc-radio-selected-focus-icon-color: #0c4cc8;
-//             --mdc-radio-selected-hover-icon-color: #0c4cc8;
-//             --mdc-radio-selected-icon-color: #0c4cc8;
-//             --mdc-radio-selected-pressed-icon-color: #0c4cc8;
-//             --mat-radio-ripple-color: #ffffff;
-//             --mat-radio-checked-ripple-color: #0c4cc8;
-//             --mat-radio-disabled-label-color: rgb(255 255 255);
-//           }
+                .upload-text {
+                  font-size: 11px;
+                  color: #6B7280;
+                  text-align: center;
+                  font-weight: 500;
+                }
 
-//           ::ng-deep.mdc-radio__outer-circle {
-//             background-color: white;
-//           }
+                .uploaded-image {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 6px;
+                }
+              }
+            }
 
-//           ::ng-deep.mat-mdc-radio-button
-//             .mdc-radio
-//             .mdc-radio__native-control:enabled:checked
-//             + .mdc-radio__background
-//             .mdc-radio__outer-circle {
-//             background: #0c4cc8;
-//           }
-//           .widthBtnRigh-createEntrenador {
-//             display: flex;
-//             align-items: flex-end;
-//             margin: 1%;
-//             width: 10%;
-//             justify-content: flex-end;
-//             .slice {
-//               border-radius: 50%;
-//               border: none;
-//               width: 28px;
-//               height: 28px;
-//               margin: 1%;
-//             }
-//           }
-//           .contentBtnCrear-createEntrenador {
-//             margin: 1%;
-//             width: 10%;
-//             display: flex;
-//             justify-content: flex-end;
-//             .btnCrear {
-//               height: 100% !important;
-//               border-radius: 15px;
-//               background: #ffff;
-//               box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0);
-//               color: #0c4cc8;
-//               text-align: center;
-//               font-family: Inria Sans;
-//               font-size: 18px;
-//               font-style: normal;
-//               font-weight: 700;
-//               line-height: normal;
-//               margin: 1% !important;
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-//   .input-phone {
-//     display: flex;
-//     input {
-//       color: black;
-//     }
-//     .phone-prefix {
-//       width: 60px;
-//       margin-left: -10px;
-//       text-align: center;
-//     }
-//   }
-// }
+            .photo-label {
+              margin-top: 8px;
+              font-size: 12px;
+              color: #374151;
+              text-align: center;
+              font-weight: 500;
+            }
+          }
+
+          .basic-info {
+            flex: 1;
+
+            .field-row {
+              display: flex;
+              gap: 20px;
+              margin-bottom: 20px;
+
+              .form-field {
+                flex: 1;
+
+                ::ng-deep .mat-mdc-form-field-label {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #374151;
+                }
+              }
+            }
+          }
+        }
+
+        .section {
+          margin-bottom: 36px;
+
+          .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            .section-icon { margin-right: 8px; color: #3B82F6; font-size: 18px; }
+            h3 { margin: 0; font-size: 16px; font-weight: 600; color: #111827; }
+          }
+
+          .field-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+
+            &.three-columns {
+              .form-field {
+                flex: 1;
+              }
+            }
+
+            &.single-column {
+              .form-field {
+                max-width: 100%;
+                width: 100%;
+              }
+            }
+
+            .form-field {
+              flex: 1;
+
+              ::ng-deep .mat-mdc-form-field-label {
+                font-size: 14px;
+                font-weight: 500;
+                color: #374151;
+              }
+            }
+          }
+        }
+
+        .actions {
+          display: flex; justify-content: flex-end; gap: 12px; margin-top: 32px;
+          .cancel-btn { color: #6B7280; background-color: #F9FAFB; border: 1px solid #D1D5DB; padding: 10px 20px; border-radius: 8px; font-weight: 500; font-size: 14px; }
+          .submit-btn {
+            background-color: #3B82F6; color: white; padding: 10px 20px; border-radius: 8px;
+            font-weight: 500; font-size: 14px; border: none; box-shadow: none;
+            transition: all 0.2s ease;
+            &:disabled {
+              background-color: #D1D5DB !important;
+              color: #9CA3AF !important;
+              cursor: not-allowed;
+              opacity: 0.6;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Material customizations
+::ng-deep .create-trainer-container {
+  .mat-mdc-form-field {
+    width: 100%;
+    .mat-mdc-text-field-wrapper {
+      background-color: #F9FAFB;
+      border-radius: 8px;
+    }
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #D1D5DB;
+    }
+    &.mdc-text-field--focused .mdc-notched-outline__leading,
+    &.mdc-text-field--focused .mdc-notched-outline__notch,
+    &.mdc-text-field--focused .mdc-notched-outline__trailing {
+      border-color: #3B82F6 !important;
+      border-width: 2px !important;
+    }
+    .mat-mdc-form-field-label { color: #6B7280; font-size: 14px; font-weight: 500; }
+    .mat-mdc-form-field-input { color: #111827; font-size: 14px; }
+    .mat-mdc-form-field-error { font-size: 12px; color: #EF4444; }
+  }
+  .mat-mdc-select-value { color: #111827; font-size: 14px; }
+  .mat-mdc-select-placeholder { color: #9CA3AF !important; }
+  .mat-datepicker-toggle { color: #6B7280; }
+
+  // Button clean styles
+  .mat-mdc-icon-button.back-button {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+  }
+  .mat-mdc-raised-button.submit-btn { box-shadow: none !important; border: none !important; }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .create-trainer-container .trainer-card {
+    height: auto;
+    .header { padding: 16px 20px; }
+    .form-container { padding: 0 20px 20px; }
+    .trainer-form {
+      padding: 24px 20px;
+      .top-section { flex-direction: column; gap: 20px; text-align: center; }
+      .field-row.three-columns { flex-direction: column; gap: 16px; }
+      .actions {
+        flex-direction: column-reverse;
+        .cancel-btn, .submit-btn { width: 100%; padding: 12px 20px; }
+      }
+    }
+  }
+}
