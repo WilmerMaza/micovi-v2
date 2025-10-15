@@ -1,72 +1,43 @@
-import { computed, effect, Injectable, signal } from '@angular/core';
-import { Persistence } from '../../utils/persistence.service';
-import { DataUser, Ijwt, session } from '../../models/interface';
-import { jwtDecode } from 'jwt-decode';
-import { KEYSESSION } from '../../models/constan';
-import { Observable } from 'rxjs';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { MicoviApi } from './micovi.api';
+import { DataUser } from '../../view/models/dataUser';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private tokenSignal = signal<string | null>(null);
+  private user = signal<DataUser | null>(null);
 
-  // Booleano reactivo indicando si hay sesión válida
-  readonly isAuthenticated = computed((): boolean => {
-    const token: string | null = this.tokenSignal();
-    if (!token) return false;
-    try {
-      const { exp } = jwtDecode(token);
-      return exp! > Math.floor(Date.now() / 1000);
-    } catch (e) {
-      console.error(e);
+  constructor(private micoviapi: MicoviApi, private router: Router) {}
 
-      return false;
-    }
-  });
-
-  // Datos del usuario decodificados
-  readonly dataUser = computed<DataUser | null>(() => {
-    const token = this.tokenSignal();
-    return token ? jwtDecode<Ijwt>(token).dataUser : null;
-  });
-
-  constructor(private persistence: Persistence) {
-    // Recupera al iniciar
-    const saved = this.persistence.get(KEYSESSION) as string | null;
-    if (saved) this.tokenSignal.set(saved);
-
-    // Persiste cada vez que cambia token
-    effect(() => {
-      const tok = this.tokenSignal();
-      if (tok) this.persistence.save(KEYSESSION, tok);
-      else this.persistence.delete(KEYSESSION);
-    });
+  getUser(): DataUser | null {
+    return this.user();
   }
 
-  /** Establece un nuevo token y dispara efectos */
-  setToken(token: string) {
-    this.tokenSignal.set(token);
+  setUser(u: DataUser): void {
+    this.user.set(u);
   }
 
-  /** Borra sesión */
-  clearSession() {
-    this.tokenSignal.set(null);
+  clear(): void {
+    this.user.set(null);
   }
 
-  // Para el interceptor
-  getTokenSignal(): string | null {
-    return this.tokenSignal();
+  isAuthenticated(): boolean {
+    return !!this.user();
   }
 
-  /** Emite el valor actual del token y futuros cambios */
-  readonly getToken$: Observable<string | null> = toObservable(
-    this.tokenSignal
-  );
+  loadSession(): Observable<DataUser> {
+    return this.micoviapi
+      .get<DataUser>('/login/me')
+      .pipe(tap((res: DataUser) => this.setUser(res)));
+  }
 
-  /** Emite los datos de usuario decodificados */
-  readonly getDataUser$: Observable<DataUser | null> = toObservable(
-    this.dataUser
-  );
+  logout(): Observable<void> {
+    return this.micoviapi.post<void>(`/login/logout`, {}).pipe(
+      tap(() => {
+        this.clear(); // ✅ resetea usuario
+        this.router.navigate(['/login']);
+      })
+    );
+  }
 }

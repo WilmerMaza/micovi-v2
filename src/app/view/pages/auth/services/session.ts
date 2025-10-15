@@ -1,37 +1,40 @@
 import { Injectable } from '@angular/core';
-import { MicoviApi } from '../../../../core/services/micovi.api';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth';
-import { Persistence } from '../../../../utils/persistence.service';
-import { Observable, tap } from 'rxjs';
-import { session } from '../../../../models/interface';
-import { DataLoginModel } from '../models/data-login';
-import { dataToken } from '../models/data-token';
+import { MicoviApi } from '../../../../core/services/micovi.api';
+import { Toast } from '../../../../utils/alert_Toast';
+import { DataUser } from '../../../models/dataUser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Session {
   constructor(
-    private micovid$: MicoviApi,
-    private Auth$: AuthService,
-    private persistence$: Persistence
+    private api: MicoviApi,
+    private auth: AuthService,
+    private router: Router
   ) {}
 
-  sessionLogin(data: DataLoginModel): Observable<session> {
-    const endpoint = '/login';
-
-    return this.micovid$.post<session>(endpoint, data).pipe(
-      tap(async (UserInfo: session) => {
-        this.setAuth(UserInfo);
-      })
-    );
-  }
-
-  setAuth({ token }: dataToken): void {
-    this.Auth$.setToken(token);
-  }
-
-  logout(): void {
-    this.persistence$.deleteAll();
+  /** Login: backend setea cookie HttpOnly */
+  sessionLogin(data: { Name: string; Password: string }): void {
+    this.api
+      .post<{ user: DataUser }>(`/login`, data)
+      .pipe(
+        tap((res) => {
+          this.auth.setUser(res.user); // guarda usuario en señal
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/dashboard']);
+        },
+        error: (err: any) => {
+          Toast.fire({
+            icon: 'error',
+            title: 'Usuario o contraseña incorrecta',
+          });
+        },
+      });
   }
 }

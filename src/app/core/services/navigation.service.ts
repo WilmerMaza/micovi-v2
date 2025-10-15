@@ -1,7 +1,7 @@
 import { Injectable, computed } from '@angular/core';
-import { AuthService } from './auth';
 import { INavData } from '../../layout/interfaces/nav-data.interface';
 import { MENU } from '../constants/menu.constants';
+import { AuthService } from './auth';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +10,10 @@ export class NavigationService {
   private readonly ItemsInstitution: INavData[] = MENU['instucion'];
   private readonly ItemsCoach: INavData[] = MENU['entrenador'];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   readonly navigationItems = computed<INavData[]>(() => {
-    const user = this.authService.dataUser();
+    const user = this.authService.getUser();
 
     if (!user) {
       return [];
@@ -32,4 +32,4 @@ export class NavigationService {
 }
 
 export type { INavData };
- 
+

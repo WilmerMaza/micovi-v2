@@ -1,20 +1,25 @@
-import { Component, effect, input, output, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  effect,
+  input,
+  output,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { Router } from '@angular/router';
-import { INavData, NavigationService } from '../../../../core/services/navigation.service';
+import {
+  INavData,
+  NavigationService,
+} from '../../../../core/services/navigation.service';
 
 @Component({
   selector: 'app-sidenav',
-  imports: [
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-  ],
+  imports: [MatSidenavModule, MatListModule, MatIconModule, MatButtonModule],
   standalone: true,
   templateUrl: './sidenav.html',
   styleUrl: './sidenav.scss',
@@ -56,8 +61,6 @@ export class Sidenav {
   }
 
   navigateTo(url: string): void {
-    console.log(url);
-    
     this.router.navigate([url]);
     this.closeSidebar.emit();
   }

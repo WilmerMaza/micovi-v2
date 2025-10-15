@@ -6,6 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth';
 import { LogoutModal } from '../../../shared/components/logout-modal/logout-modal';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-profile-menu',
@@ -26,10 +27,9 @@ export class ProfileMenu {
     this.showLogoutModal.set(true);
   }
 
-  public confirmLogout(): void {
+  public async confirmLogout(): Promise<void> {
     this.showLogoutModal.set(false);
-    this.authService.clearSession();
-    this.router.navigate(['/login']);
+    await firstValueFrom(this.authService.logout());
   }
 
   public cancelLogout(): void {
