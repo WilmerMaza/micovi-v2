@@ -8,15 +8,13 @@ import { DataUser } from '../../view/models/dataUser';
 export class AuthService {
   private user = signal<DataUser | null>(null);
 
-  constructor(private micoviapi: MicoviApi, private router: Router) {
-
-  }
+  constructor(private micoviapi: MicoviApi, private router: Router) {}
 
   getUser(): DataUser | null {
     return this.user();
   }
 
-  setUser(u: any): void {
+  setUser(u: DataUser): void {
     this.user.set(u);
   }
 
@@ -29,19 +27,17 @@ export class AuthService {
   }
 
   loadSession(): Observable<DataUser> {
-    return this.micoviapi.get<DataUser>('/login/me')
+    return this.micoviapi
+      .get<DataUser>('/login/me')
       .pipe(tap((res: DataUser) => this.setUser(res)));
   }
 
   logout(): Observable<void> {
-    return this.micoviapi.post<void>(`/login/logout`, {})
-      .pipe(
-        tap(() => {
-          this.clear(); // ✅ resetea usuario
-          this.router.navigate(['/login']);
-        })
-      );
+    return this.micoviapi.post<void>(`/login/logout`, {}).pipe(
+      tap(() => {
+        this.clear(); // ✅ resetea usuario
+        this.router.navigate(['/login']);
+      })
+    );
   }
-
 }
-

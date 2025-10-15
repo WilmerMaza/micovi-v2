@@ -10,17 +10,14 @@ import { DataUser } from '../../../models/dataUser';
   providedIn: 'root',
 })
 export class Session {
-
   constructor(
     private api: MicoviApi,
     private auth: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   /** Login: backend setea cookie HttpOnly */
-  sessionLogin(data: { Name: string, Password: string }): void {
-
-
+  sessionLogin(data: { Name: string; Password: string }): void {
     this.api
       .post<{ user: DataUser }>(`/login`, data)
       .pipe(
@@ -33,18 +30,11 @@ export class Session {
           this.router.navigate(['/dashboard']);
         },
         error: (err: any) => {
-
           Toast.fire({
             icon: 'error',
             title: 'Usuario o contraseña incorrecta',
-          })
-        }
-
-
-
+          });
+        },
       });
   }
-
-
 }
-
