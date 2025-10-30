@@ -1,12 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,7 +9,6 @@ import { Router } from '@angular/router';
 import { NormaliceLowerValidators } from '../../../../utils/Validators';
 import { CryptoService } from '../../../../utils/crypto.service';
 import { LoginFormModel } from '../models/login-form';
-import { Session } from '../services/session';
 import { Session } from '../services/session';
 
 @Component({
@@ -39,35 +32,7 @@ export class LoginComponent implements OnInit {
   hide = true;
   submitted = false;
 
-export class LoginComponent implements OnInit {
-  hide = true;
-  submitted = false;
-
   public loginForm: FormGroup = new LoginFormModel().formLogin();
-
-  constructor(
-    private loginSession$: Session,
-    private router$: Router,
-    private cryptoService$: CryptoService
-  ) {}
-
-  ngOnInit(): void {
-    this.loadSavedCredentials();
-  }
-
-  private loadSavedCredentials(): void {
-    const savedUser = localStorage.getItem('username');
-    const savedPass = localStorage.getItem('password');
-    const rememberMe = localStorage.getItem('rememberMe') === 'true';
-
-    if (savedUser && savedPass && rememberMe) {
-      this.loginForm.patchValue({
-        username: savedUser,
-        password: this.cryptoService$.Decrypt(savedPass),
-        check: true,
-      });
-    }
-  }
 
   constructor(
     private loginSession$: Session,
@@ -100,17 +65,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const data = {
-      Name: this.loginForm.get('username')?.value,
-      Password: '',
-    };
-    this.submitted = true;
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    const data = {
+    const data: any = {
       Name: this.loginForm.get('username')?.value,
       Password: '',
     };
