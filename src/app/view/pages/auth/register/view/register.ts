@@ -1,3 +1,10 @@
+/**
+ * Pantalla de registro de colegios (wizard de 3 pasos).
+ *
+ * Orquesta el stepper de Material: datos personales → contacto → contraseña.
+ * El estado de los formularios vive en RegisterService; cada paso es un
+ * componente hijo que solo enlaza su FormGroup correspondiente.
+ */
 import { Component, inject, signal } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';

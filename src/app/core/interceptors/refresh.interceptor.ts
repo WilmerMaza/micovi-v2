@@ -1,64 +1,85 @@
+/**
+ * Interceptor de renovación automática de sesión.
+ *
+ * Ante un 401, intenta POST /api/auth/refresh (cookies se actualizan solas).
+ * Usa una cola (ReplaySubject) para que peticiones concurrentes no disparen
+ * múltiples refresh simultáneos.
+ *
+ * Si el refresh falla → limpia estado y redirige a /login.
+ */
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, filter, ReplaySubject, switchMap, take, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import {
+  catchError,
+  filter,
+  finalize,
+  ReplaySubject,
+  switchMap,
+  take,
+  throwError,
+} from 'rxjs';
+import { MeResponse } from '../models/login-response.model';
 import { MicoviApi } from '../services/micovi.api';
-import { AuthService } from './../services/auth';
-import { Error } from '../../view/models/errorsModel';
+import { AuthService } from '../services/auth';
 
-let refreshing : boolean;
-// cuando hay un refresh en curso, los demás esperan a que emita "ok"
+let refreshing = false;
 let refreshDone$: ReplaySubject<boolean> | null = null;
 
+const isAuthEndpoint = (url: string): boolean =>
+  url.includes('/auth/login') ||
+  url.includes('/auth/refresh') ||
+  url.includes('/auth/logout');
+
 export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
-  // No interceptar el propio refresh/login/logout
-  if (req.url.includes('/login/refresh') || req.url.includes('/login') || req.url.includes('/logout')) {
+  if (isAuthEndpoint(req.url)) {
     return next(req);
   }
 
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
-      if (err.status !== 401) return throwError(() => err);
+      if (err.status !== 401) {
+        return throwError(() => err);
+      }
 
-      // Si ya hay un refresh en curso: espera a que termine y reintenta
       if (refreshing && refreshDone$) {
         return refreshDone$.pipe(
-          filter(Boolean),   // solo cuando emita "true"
+          filter(Boolean),
           take(1),
-          switchMap(() => next(req.clone())) // reintenta la petición original
+          switchMap(() => next(req.clone())),
         );
       }
 
-      // Iniciar ciclo de refresh
       refreshing = true;
       refreshDone$ = new ReplaySubject<boolean>(1);
 
       const api = inject(MicoviApi);
       const auth = inject(AuthService);
+      const router = inject(Router);
 
-      return api.post<void>('/login/refresh', {}).pipe(
-        switchMap(() => {
-          // éxito → avisar a los que esperaban y reintentar la original
-          refreshing = false;
+      return api.post<MeResponse>('/auth/refresh', {}).pipe(
+        switchMap((user) => {
+          auth.setUser({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            schoolId: user.schoolId,
+          });
           refreshDone$?.next(true);
-          refreshDone$?.complete();
-          refreshDone$ = null;
           return next(req.clone());
         }),
-
-        catchError((refreshErr: Error)  => {
-          // falló el refresh → limpiar estado y propagar error
-          refreshing = false;
-          refreshDone$?.error(refreshErr);
-          refreshDone$ = null;
-
-          // opcional: cerrar sesión (borra cookies en el backend)
-          auth.logout().subscribe({
-            error: () => { /* silenciar errores de logout */ }
-          });
-
+        catchError((refreshErr) => {
+          refreshDone$?.next(false);
+          auth.clear();
+          void router.navigate(['/login']);
           return throwError(() => refreshErr);
-        })
+        }),
+        finalize(() => {
+          refreshing = false;
+          refreshDone$?.complete();
+          refreshDone$ = null;
+        }),
       );
-    })
+    }),
   );
 };
