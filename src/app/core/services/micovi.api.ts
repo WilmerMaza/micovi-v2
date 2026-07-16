@@ -1,4 +1,13 @@
-import { HttpClient, HttpEvent, HttpParams } from '@angular/common/http';
+/**
+ * Cliente HTTP centralizado de la API Micovi.
+ *
+ * Siempre usa rutas relativas (environment.apiUrl = '/api') y withCredentials: true
+ * para que el navegador envíe cookies HttpOnly en cada petición.
+ *
+ * En DEV el proxy de Angular reenvía /api → localhost:3000.
+ * En QA/PROD el reverse proxy hace el mismo rol.
+ */
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -8,57 +17,48 @@ import { RequestOptions } from '../../models/interface';
   providedIn: 'root',
 })
 export class MicoviApi {
-  /** URL base para todas las peticiones */
-  private readonly baseUrl = environment.micovi_api;
+  private readonly baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  /** GET genérico que acepta parámetros HTTP */
   get<T>(endpoint: string, params?: HttpParams): Observable<T> {
     return this.http
       .get<T>(`${this.baseUrl}${endpoint}`, { params, withCredentials: true })
       .pipe(catchError(this.handleError));
   }
 
-  /** POST para enviar datos al servidor */
-  post<T>(endpoint: string, body: any): Observable<T> {
+  post<T>(endpoint: string, body: unknown = {}): Observable<T> {
     return this.http
-      .post<T>(`${this.baseUrl}${endpoint}`, body, {withCredentials: true})
+      .post<T>(`${this.baseUrl}${endpoint}`, body, { withCredentials: true })
       .pipe(catchError(this.handleError));
   }
 
-  /** PUT para actualizar recursos */
-  put<T>(endpoint: string, body: any): Observable<T> {
+  put<T>(endpoint: string, body: unknown): Observable<T> {
     return this.http
-      .put<T>(`${this.baseUrl}${endpoint}`, body, {withCredentials: true})
+      .put<T>(`${this.baseUrl}${endpoint}`, body, { withCredentials: true })
       .pipe(catchError(this.handleError));
   }
 
-  /** DELETE para eliminar recursos */
   delete<T>(endpoint: string): Observable<T> {
     return this.http
-      .delete<T>(`${this.baseUrl}${endpoint}`,{withCredentials: true})
+      .delete<T>(`${this.baseUrl}${endpoint}`, { withCredentials: true })
       .pipe(catchError(this.handleError));
   }
 
-  request<T>(
-    method: string,
-    endpoint: string,
-    options: RequestOptions = {}
-  ): Observable<any> {
+  request<T>(method: string, endpoint: string, options: RequestOptions = {}): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
     return this.http
       .request<T>(method, url, {
         params: options.params,
         body: options.body,
         responseType: options.responseType ?? 'json',
-        observe: options.observe ?? 'body', withCredentials: true
-      } as any) // necesario para encajar con múltiples firmas internas de HttpClient.request() :contentReference[oaicite:3]{index=3}
+        observe: options.observe ?? 'body',
+        withCredentials: true,
+      } as object)
       .pipe(catchError(this.handleError));
   }
 
-  /** Manejo centralizado de errores HTTP */
-  private handleError(error: any): Observable<never> {
+  private handleError(error: unknown): Observable<never> {
     console.error('API error:', error);
     return throwError(() => error);
   }

@@ -1,3 +1,9 @@
+/**
+ * Definición del formulario reactivo de login.
+ *
+ * Centraliza reglas de validación (email obligatorio con patrón, contraseña
+ * requerida, checkbox recordarme) para mantener LoginComponent enfocado en UI.
+ */
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { regExps } from '../../../../utils/Validators';
 

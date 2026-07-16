@@ -1,8 +1,13 @@
+/**
+ * Paso 1 del registro: datos personales del colegio.
+ *
+ * Enlaza formPersonalInfo de RegisterService. Muestra mensajes de error
+ * reactivos para el campo email (required / formato inválido).
+ */
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatStep } from '@angular/material/stepper';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterService } from '../../../services/register.service';
 
@@ -10,7 +15,7 @@ import { RegisterService } from '../../../services/register.service';
   selector: 'app-personal-info-form',
   templateUrl: './personal-info-form.component.html',
   styleUrls: ['./personal-info-form.component.css'],
-  imports: [MatInputModule, MatSelectModule, MatStep, ReactiveFormsModule],
+  imports: [MatInputModule, MatSelectModule, ReactiveFormsModule],
 })
 export class PersonalInfoFormComponent {
   private _formBuilder = inject(FormBuilder);

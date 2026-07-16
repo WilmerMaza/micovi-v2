@@ -1,6 +1,11 @@
+/**
+ * Paso 2 del registro: datos de contacto del colegio.
+ *
+ * Enlaza formContactInfo de RegisterService (sede, teléfono, página web).
+ * Componente presentacional: la validación vive en RegisterRepository.
+ */
 import { Component, OnInit } from '@angular/core';
 import { MatInputModule } from "@angular/material/input";
-import { MatStep } from "@angular/material/stepper";
 import { RegisterService } from '../../../services/register.service';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -8,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   selector: 'app-datos-contacto-form',
   templateUrl: './datos-contacto-form.component.html',
   styleUrls: ['./datos-contacto-form.component.css'],
-  imports: [MatInputModule, MatStep, ReactiveFormsModule]
+  imports: [MatInputModule, ReactiveFormsModule]
 })
 export class DatosContactoFormComponent {
 

@@ -1,10 +1,20 @@
+/**
+ * Orquestador del flujo de login desde la UI.
+ *
+ * Envía credenciales a POST /api/auth/login. El backend responde con el perfil
+ * y establece cookies HttpOnly (access/refresh). Este servicio actualiza
+ * AuthService en memoria y redirige al dashboard.
+ *
+ * Separado del componente para reutilizar el mismo flujo si se agrega otro
+ * punto de entrada (ej. modal, SSO).
+ */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth';
+import { MeResponse } from '../../../../core/models/login-response.model';
 import { MicoviApi } from '../../../../core/services/micovi.api';
 import { Toast } from '../../../../utils/alert_Toast';
-import { DataUser } from '../../../models/dataUser';
 
 @Injectable({
   providedIn: 'root',
@@ -13,23 +23,27 @@ export class Session {
   constructor(
     private api: MicoviApi,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
-  /** Login: backend setea cookie HttpOnly */
-  sessionLogin(data: { Name: string; Password: string }): void {
+  sessionLogin(data: { email: string; password: string }): void {
     this.api
-      .post<{ user: DataUser }>(`/login`, data)
+      .post<MeResponse>('/auth/login', data)
       .pipe(
-        tap((res) => {
-          this.auth.setUser(res.user); // guarda usuario en señal
-        })
+        tap((user) => {
+          this.auth.setUser({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            schoolId: user.schoolId,
+          });
+        }),
       )
       .subscribe({
         next: () => {
-          this.router.navigate(['/dashboard']);
+          void this.router.navigate(['/dashboard']);
         },
-        error: (err: any) => {
+        error: () => {
           Toast.fire({
             icon: 'error',
             title: 'Usuario o contraseña incorrecta',

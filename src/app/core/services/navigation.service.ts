@@ -19,7 +19,7 @@ export class NavigationService {
       return [];
     }
 
-    if (user.account === 'Admin') {
+    if (user.role === 'ADMIN' || user.role === 'SCHOOL') {
       return this.ItemsInstitution;
     }
 

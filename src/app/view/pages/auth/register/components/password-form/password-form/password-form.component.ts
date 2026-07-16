@@ -1,3 +1,9 @@
+/**
+ * Paso 3 del registro: contraseña y confirmación.
+ *
+ * Enlaza formSecurityInfo de RegisterService. La coincidencia de contraseñas
+ * se valida en RegisterRepository (passwordsMatchValidator).
+ */
 import { Component, OnInit } from '@angular/core';
 import { MatStep, MatStepperModule } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';

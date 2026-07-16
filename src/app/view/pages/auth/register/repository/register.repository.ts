@@ -1,3 +1,10 @@
+/**
+ * Fábrica de formularios del registro.
+ *
+ * Define estructura y validadores de cada paso del stepper. Separado del
+ * servicio para mantener RegisterService como contenedor de estado y este
+ * archivo como única fuente de reglas de validación.
+ */
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import {
@@ -42,6 +49,7 @@ export class RegisterRepository {
   }
 }
 
+/** Valida que contraseña y confirmación coincidan a nivel de FormGroup. */
 function passwordsMatchValidator(
   group: AbstractControl
 ): ValidationErrors | null {
