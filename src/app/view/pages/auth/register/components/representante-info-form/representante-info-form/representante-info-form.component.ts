@@ -3,21 +3,20 @@ import { CommonModule } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatSelectModule } from "@angular/material/select";
 import { ReactiveFormsModule } from "@angular/forms";
 import { RegisterService } from "../../../services/register.service";
 
 @Component({
-  selector: "app-personal-info-form",
-  templateUrl: "./personal-info-form.component.html",
-  styleUrl: "./personal-info-form.component.css",
+  selector: "app-representante-info-form",
+  templateUrl: "./representante-info-form.component.html",
+  styleUrl: "./representante-info-form.component.css",
   standalone: true,
-  imports: [CommonModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatIconModule, ReactiveFormsModule],
+  imports: [CommonModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatFormFieldModule],
 })
-export class PersonalInfoFormComponent {
+export class RepresentanteInfoFormComponent {
   constructor(private service$: RegisterService) {}
 
   get form() {
-    return this.service$.formPersonalInfo;
+    return this.service$.formRepresentanteInfo;
   }
 }
