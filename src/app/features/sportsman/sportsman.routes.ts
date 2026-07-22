@@ -9,6 +9,14 @@ export const SPORTSMAN_ROUTES: Routes = [
         (m) => m.SportsmanComponent
       ),
   },
+{
+    path: 'create',
+    loadComponent: () =>
+      import('./Components/create-sportsman/create-sportsman.component').then(
+        (m) => m.CreateSportsmanComponent
+      ),
+  }
+
   // {
   //   path: ':id',
   //   loadComponent: () =>

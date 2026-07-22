@@ -143,9 +143,13 @@ export class SportsmanComponent implements OnInit {
       this.dataSingle = data;
       this.historyCategorico(data);
     }
+
     if (event.action === 'add') {
-      this.showViewCreateSportsman = { isVisible: true };
+       this.router.navigate(['sportsman/create'], {
+        queryParams: { id: data.ID },
+      });
     }
+
     if (action === 'Editar') {
       this.transformGenreInversa(data);
       this.showSportsman = false;
