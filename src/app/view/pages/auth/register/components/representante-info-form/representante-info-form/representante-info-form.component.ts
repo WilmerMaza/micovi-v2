@@ -17,6 +17,6 @@ export class RepresentanteInfoFormComponent {
   constructor(private representanteService$: RegisterService) {}
 
   get form() {
-    return this.representanteService$.formRepresentanteInfo;
+    return this.representanteService$.formRepresentativeInfo;
   }
 }

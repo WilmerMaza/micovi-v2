@@ -19,7 +19,7 @@ import { RegisterRepository } from '../repository/register.repository';
 export class RegisterService {
   public readonly formPersonalInfo: FormGroup;
   public readonly formContactInfo: FormGroup;
-  public readonly formRepresentanteInfo: FormGroup;
+  public readonly formRepresentativeInfo: FormGroup;
   public readonly formSecurityInfo: FormGroup;
 
   private api = inject(MicoviApi);
@@ -27,7 +27,7 @@ export class RegisterService {
   constructor(private repository: RegisterRepository) {
     this.formPersonalInfo = repository.personalInfo();
     this.formContactInfo = repository.contactInfo();
-    this.formRepresentanteInfo = repository.representativeInfo();
+    this.formRepresentativeInfo = repository.representativeInfo();
     this.formSecurityInfo = repository.securityInfo();
   }
 
@@ -35,7 +35,7 @@ export class RegisterService {
     const payload = this.repository.toPayload(
       this.formPersonalInfo,
       this.formContactInfo,
-      this.formRepresentanteInfo,
+      this.formRepresentativeInfo,
       this.formSecurityInfo
     );
     return this.api.post('/schools/register', payload);
