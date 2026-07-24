@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
 import { ReactiveFormsModule } from "@angular/forms";
 import { RegisterService } from "../../../services/register.service";
 
@@ -11,7 +12,7 @@ import { RegisterService } from "../../../services/register.service";
   templateUrl: "./representante-info-form.component.html",
   styleUrl: "./representante-info-form.component.css",
   standalone: true,
-  imports: [CommonModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatFormFieldModule],
+  imports: [CommonModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
 })
 export class RepresentanteInfoFormComponent {
   constructor(private representanteService$: RegisterService) {}

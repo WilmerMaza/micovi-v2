@@ -21,6 +21,7 @@ export interface RegisterPayload {
   headquarters: string;
   website: string;
   representativename: string;
+  representativeDocumentType: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -49,6 +50,7 @@ export class RegisterRepository {
 
   representativeInfo() {
     return this.fb.group({
+      tipoIdentificacion: ['', [Validators.required]],
       identificacion: ['', [Validators.required]],
       nombreCompleto: ['', [Validators.required]],
     });
@@ -84,6 +86,7 @@ export class RegisterRepository {
       headquarters: contact.get('sede')?.value || '—',
       website: contact.get('paginaWeb')?.value || '',
       representativename: representante.get('nombreCompleto')?.value,
+      representativeDocumentType: representante.get('tipoIdentificacion')?.value,
     };
   }
 }
