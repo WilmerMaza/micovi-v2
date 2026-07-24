@@ -2,14 +2,25 @@
   <div class="contacto-grid">
     <div class="contacto-fields">
 
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Teléfono</mat-label>
-        <mat-icon matPrefix>phone</mat-icon>
-        <input matInput placeholder="+593 99 123 4567" formControlName="telefono" />
-        <mat-error *ngIf="form.get('telefono')?.hasError('required')">
-          Este campo es obligatorio
-        </mat-error>
-      </mat-form-field>
+      <div class="phone-container" style="display: flex; gap: 8px;">
+        <mat-form-field appearance="outline" style="width: 120px;">
+          <mat-label>Prefijo</mat-label>
+          <mat-select formControlName="prefijo">
+            <mat-option value="+593">+593 (EC)</mat-option>
+            <mat-option value="+57">+57 (CO)</mat-option>
+            <mat-option value="+51">+51 (PE)</mat-option>
+            <mat-option value="+58">+58 (VE)</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Teléfono</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <input matInput placeholder="99 123 4567" formControlName="telefono" />
+          <mat-error *ngIf="form.get('telefono')?.hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
 
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Sede</mat-label>

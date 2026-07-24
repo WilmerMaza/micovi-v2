@@ -41,6 +41,7 @@ export class RegisterRepository {
 
   contactInfo() {
     return this.fb.group({
+      prefijo: ['+593', [Validators.required]],
       telefono: ['', [Validators.required]],
       sede: [''],
       paginaWeb: [''],
@@ -73,10 +74,12 @@ export class RegisterRepository {
     security: FormGroup
   ): RegisterPayload {
     const characterRaw = personal.get('caracterNombre')?.value || '';
+    const prefijo = contact.get('prefijo')?.value || '';
+    const telefono = contact.get('telefono')?.value || '';
     return {
       name: personal.get('name')?.value,
       address: contact.get('sede')?.value || '—',
-      phone: contact.get('telefono')?.value,
+      phone: `${prefijo} ${telefono}`.trim(),
       email: personal.get('email')?.value,
       password: security.get('contraseña')?.value,
       character: characterRaw.toUpperCase() === 'PÚBLICO' ? 'PUBLIC' : 'PRIVATE',
