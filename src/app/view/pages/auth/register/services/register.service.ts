@@ -10,7 +10,7 @@
 import { Injectable, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { MicoviApi } from '../../../../core/services/micovi.api';
+import { MicoviApi } from '../../../../../core/services/micovi.api';
 import { RegisterRepository } from '../repository/register.repository';
 
 @Injectable({
@@ -31,7 +31,7 @@ export class RegisterService {
     this.formSecurityInfo = repository.securityInfo();
   }
 
-  submit(): Observable<any> {
+  submit(): Observable<unknown> {
     const payload = this.repository.toPayload(
       this.formPersonalInfo,
       this.formContactInfo,
