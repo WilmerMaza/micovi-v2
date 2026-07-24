@@ -1,0 +1,46 @@
+---
+description: Estándar de documentación — qué hace cada archivo y por qué
+alwaysApply: true
+---
+
+# Documentación de código
+
+Cada archivo nuevo o modificado debe incluir documentación que permita a otro desarrollador entender **qué función cumple** y **por qué existe**, sin leer todo el código.
+
+## Estilo (seguir `auth.ts`, `micovi.api.ts`, interceptores)
+
+- Idioma: **español**.
+- Bloque JSDoc al inicio del archivo (antes de imports) para servicios, componentes, interceptores y repositorios.
+- Comentarios breves en métodos solo cuando el comportamiento no sea obvio.
+
+## Plantilla de archivo
+
+```typescript
+/**
+ * [Nombre / rol del archivo en una línea].
+ *
+ * [Qué hace: responsabilidad concreta.]
+ *
+ * [Por qué: decisión de diseño, restricción de seguridad, flujo relacionado.]
+ *
+ * [Opcional: archivos relacionados o flujo (ej. "Usado por X", "Llama a Y").]
+ */
+```
+
+## Qué documentar y qué no
+
+- **Sí:** propósito del módulo, flujos de auth/negocio, side effects (localStorage, cookies), validaciones no triviales.
+- **No:** comentarios que repitan el nombre del método (`// obtiene el usuario`), getters triviales, código autoexplicativo.
+
+## Ejemplo
+
+```typescript
+/**
+ * Orquestador de login desde la pantalla de autenticación.
+ *
+ * Envía credenciales al backend; los tokens quedan en cookies HttpOnly.
+ * Actualiza AuthService en memoria y redirige al dashboard.
+ *
+ * No persiste tokens — solo username/rememberMe en localStorage (UI).
+ */
+```

@@ -1,25 +1,28 @@
-﻿import { Component, inject } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from "@angular/router";
-import { Toast } from "../../../../../utils/alert_Toast";
+/**
+ * Pantalla de registro de colegios (wizard de 3 pasos).
+ *
+ * Orquesta el stepper de Material: datos personales → contacto → contraseña.
+ * El estado de los formularios vive en RegisterService; cada paso es un
+ * componente hijo que solo enlaza su FormGroup correspondiente.
+ */
 import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatStepperModule } from '@angular/material/stepper';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { RegisterService } from '../services/register.service';
 import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { PersonalInfoFormComponent } from "../components/personal-info-form/personal-info-form/personal-info-form.component";
-import { DatosContactoFormComponent } from "../components/datos-contacto-form/datos-contacto-form/datos-contacto-form.component";
-import { RepresentanteInfoFormComponent } from "../components/representante-info-form/representante-info-form/representante-info-form.component";
-import { PasswordFormComponent } from "../components/password-form/password-form/password-form.component";
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatStepperModule } from '@angular/material/stepper';
+import { Router } from '@angular/router';
+import { DatosContactoFormComponent } from '../components/datos-contacto-form/datos-contacto-form/datos-contacto-form.component';
+import { PasswordFormComponent } from '../components/password-form/password-form/password-form.component';
+import { PersonalInfoFormComponent } from '../components/personal-info-form/personal-info-form/personal-info-form.component';
+import { RepresentanteInfoFormComponent } from '../components/representante-info-form/representante-info-form/representante-info-form.component';
+import { RegisterService } from '../services/register.service';
 
 @Component({
   selector: 'app-register',
@@ -38,8 +41,8 @@ import { PasswordFormComponent } from "../components/password-form/password-form
     PersonalInfoFormComponent,
     DatosContactoFormComponent,
     RepresentanteInfoFormComponent,
-    PasswordFormComponent
-],
+    PasswordFormComponent,
+  ],
   standalone: true,
   templateUrl: './register.html',
   styleUrl: './register.scss',
@@ -79,6 +82,7 @@ export class Register {
     }, 700);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private stopBallRotation(): void {
     if (this.ballInterval) {
       clearInterval(this.ballInterval);

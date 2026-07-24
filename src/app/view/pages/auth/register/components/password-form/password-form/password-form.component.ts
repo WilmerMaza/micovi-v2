@@ -1,17 +1,22 @@
-import { Component } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatButtonModule } from "@angular/material/button";
-import { ReactiveFormsModule } from "@angular/forms";
-import { RegisterService } from "../../../services/register.service";
+/**
+ * Paso 3 del registro: contraseña y confirmación.
+ *
+ * Enlaza formSecurityInfo de RegisterService. La coincidencia de contraseñas
+ * se valida en RegisterRepository (passwordsMatchValidator).
+ */
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { RegisterService } from '../../../services/register.service';
 
 @Component({
-  selector: "app-password-form",
-  templateUrl: "./password-form.component.html",
-  styleUrl: "./password-form.component.css",
-  standalone: true,
+  selector: 'app-password-form',
+  templateUrl: './password-form.component.html',
+  styleUrls: ['./password-form.component.css'],
   imports: [
     CommonModule,
     MatInputModule,
@@ -32,7 +37,7 @@ export class PasswordFormComponent {
   }
 
   get passwordValue(): string {
-    return this.form.get("contraseña")?.value || "";
+    return this.form.get('contraseña')?.value || '';
   }
 
   get hasMinLength(): boolean {

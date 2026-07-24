@@ -1,17 +1,28 @@
-import { Component } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { ReactiveFormsModule } from "@angular/forms";
-import { RegisterService } from "../../../services/register.service";
+/**
+ * Paso 2 del registro: datos de contacto del colegio.
+ *
+ * Enlaza formContactInfo de RegisterService (sede, teléfono, página web).
+ * Componente presentacional: la validación vive en RegisterRepository.
+ */
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { RegisterService } from '../../../services/register.service';
 
 @Component({
-  selector: "app-datos-contacto-form",
-  templateUrl: "./datos-contacto-form.component.html",
-  styleUrl: "./datos-contacto-form.component.css",
-  standalone: true,
-  imports: [CommonModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatFormFieldModule],
+  selector: 'app-datos-contacto-form',
+  templateUrl: './datos-contacto-form.component.html',
+  styleUrls: ['./datos-contacto-form.component.css'],
+  imports: [
+    CommonModule,
+    MatInputModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+  ],
 })
 export class DatosContactoFormComponent {
   logoPreview: string | null = null;

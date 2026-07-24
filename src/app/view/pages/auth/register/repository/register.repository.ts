@@ -1,11 +1,12 @@
-import { Injectable } from "@angular/core";
-import { AbstractControl, ValidationErrors } from "@angular/forms";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
+/**
+ * Fábrica de formularios del registro.
+ *
+ * Define estructura y validadores de cada paso del stepper. Separado del
+ * servicio para mantener RegisterService como contenedor de estado y este
+ * archivo como única fuente de reglas de validación.
+ */
+import { Injectable } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 export interface RegisterPayload {
   name: string;
@@ -22,42 +23,42 @@ export interface RegisterPayload {
   representativename: string;
 }
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class RegisterRepository {
   constructor(private fb: FormBuilder) {}
 
   PersonalInfo() {
     return this.fb.group({
-      name: ["", [Validators.required]],
-      email: new FormControl("", [Validators.required, Validators.email]),
-      caracterId: [""],
-      caracterNombre: ["", [Validators.required]],
-      paisId: [""],
-      paisNombre: ["", [Validators.required]],
+      name: ['', [Validators.required]],
+      email: new FormControl('', [Validators.required, Validators.email]),
+      caracterId: [''],
+      caracterNombre: ['', [Validators.required]],
+      paisId: [''],
+      paisNombre: ['', [Validators.required]],
     });
   }
 
   contactInfo() {
     return this.fb.group({
-      telefono: ["", [Validators.required]],
-      sede: [""],
-      paginaWeb: [""],
-      logo: [""],
+      telefono: ['', [Validators.required]],
+      sede: [''],
+      paginaWeb: [''],
+      logo: [''],
     });
   }
 
   representanteInfo() {
     return this.fb.group({
-      identificacion: ["", [Validators.required]],
-      nombreCompleto: ["", [Validators.required]],
+      identificacion: ['', [Validators.required]],
+      nombreCompleto: ['', [Validators.required]],
     });
   }
 
   securityInfo() {
     return this.fb.group(
       {
-        contraseña: ["", [Validators.required, Validators.minLength(8)]],
-        confirmarContraseña: ["", [Validators.required]],
+        contraseña: ['', [Validators.required, Validators.minLength(8)]],
+        confirmarContraseña: ['', [Validators.required]],
       },
       { validators: passwordsMatchValidator }
     );
@@ -87,10 +88,11 @@ export class RegisterRepository {
   }
 }
 
+/** Valida que contraseña y confirmación coincidan a nivel de FormGroup. */
 function passwordsMatchValidator(
   group: AbstractControl
 ): ValidationErrors | null {
-  const p = group.get("contraseña")?.value;
-  const c = group.get("confirmarContraseña")?.value;
+  const p = group.get('contraseña')?.value;
+  const c = group.get('confirmarContraseña')?.value;
   return p && c && p !== c ? { passwordMismatch: true } : null;
 }

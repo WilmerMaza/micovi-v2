@@ -1,3 +1,13 @@
+/**
+ * Pantalla de inicio de sesión.
+ *
+ * Presenta el formulario de login, valida email/contraseña y delega la
+ * autenticación a Session. Gestiona la opción "recordarme" en localStorage
+ * (solo username y flag; la contraseña se guarda cifrada con CryptoService).
+ *
+ * Los tokens de sesión no se manejan aquí — el backend los establece en
+ * cookies HttpOnly tras POST /auth/login (ver Session y AuthService).
+ */
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,6 +52,7 @@ export class LoginComponent implements OnInit {
     this.loadSavedCredentials();
   }
 
+  /** Restaura username y contraseña si el usuario activó "recordarme". */
   private loadSavedCredentials(): void {
     const savedUser = localStorage.getItem('username');
     const savedPass = localStorage.getItem('password');
@@ -63,20 +74,16 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const data = {
-      Name: this.loginForm.get('username')?.value,
-      Password: '',
-    };
+    const email = String(this.loginForm.get('username')?.value ?? '')
+      .trim()
+      .toLowerCase();
+    const password = String(this.loginForm.get('password')?.value ?? '');
 
-    NormaliceLowerValidators.normaliceData(data);
-
-    const plainPassword = this.loginForm.get('password')?.value;
-    const encryptedPassword = this.cryptoService$.Encript(plainPassword);
-    data.Password = encryptedPassword;
     this.handleRememberCredentials();
-    this.loginSession$.sessionLogin(data);
+    this.loginSession$.sessionLogin({ email, password });
   }
 
+  /** Persiste o borra credenciales locales según el checkbox "recordarme". */
   private handleRememberCredentials(): void {
     const rememberMe = this.loginForm.get('check')?.value;
 
