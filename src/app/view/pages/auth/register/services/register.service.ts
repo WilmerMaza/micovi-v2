@@ -25,9 +25,9 @@ export class RegisterService {
   private api = inject(MicoviApi);
 
   constructor(private repository: RegisterRepository) {
-    this.formPersonalInfo = repository.PersonalInfo();
+    this.formPersonalInfo = repository.personalInfo();
     this.formContactInfo = repository.contactInfo();
-    this.formRepresentanteInfo = repository.representanteInfo();
+    this.formRepresentanteInfo = repository.representativeInfo();
     this.formSecurityInfo = repository.securityInfo();
   }
 

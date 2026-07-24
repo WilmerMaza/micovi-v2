@@ -27,7 +27,7 @@ export interface RegisterPayload {
 export class RegisterRepository {
   constructor(private fb: FormBuilder) {}
 
-  PersonalInfo() {
+  personalInfo() {
     return this.fb.group({
       name: ['', [Validators.required]],
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -47,7 +47,7 @@ export class RegisterRepository {
     });
   }
 
-  representanteInfo() {
+  representativeInfo() {
     return this.fb.group({
       identificacion: ['', [Validators.required]],
       nombreCompleto: ['', [Validators.required]],
