@@ -401,4 +401,11 @@ export class CreateSportsmanComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-}
+    removeImage(event: MouseEvent): void {
+      event.stopPropagation();
+      this.selectedImageURL = '';
+      this.imageSelected = false;
+      this. selectedFiles = undefined;
+    }
+  }
+
