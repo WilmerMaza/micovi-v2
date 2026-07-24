@@ -14,9 +14,9 @@ import { RegisterService } from "../../../services/register.service";
   imports: [CommonModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatFormFieldModule],
 })
 export class RepresentanteInfoFormComponent {
-  constructor(private service$: RegisterService) {}
+  constructor(private representanteService$: RegisterService) {}
 
   get form() {
-    return this.service$.formRepresentanteInfo;
+    return this.representanteService$.formRepresentanteInfo;
   }
 }

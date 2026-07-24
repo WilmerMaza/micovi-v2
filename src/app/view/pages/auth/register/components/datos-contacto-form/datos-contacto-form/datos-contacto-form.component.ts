@@ -16,10 +16,10 @@ import { RegisterService } from "../../../services/register.service";
 export class DatosContactoFormComponent {
   logoPreview: string | null = null;
 
-  constructor(private service$: RegisterService) {}
+  constructor(private contactService$: RegisterService) {}
 
   get form() {
-    return this.service$.formContactInfo;
+    return this.contactService$.formContactInfo;
   }
 
   onFileSelected(event: Event): void {

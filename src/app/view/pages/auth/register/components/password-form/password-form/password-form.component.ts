@@ -25,10 +25,10 @@ export class PasswordFormComponent {
   hidePassword = true;
   hideConfirm = true;
 
-  constructor(private service$: RegisterService) {}
+  constructor(private passwordService$: RegisterService) {}
 
   get form() {
-    return this.service$.formSecurityInfo;
+    return this.passwordService$.formSecurityInfo;
   }
 
   get passwordValue(): string {

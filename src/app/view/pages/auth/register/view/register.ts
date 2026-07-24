@@ -1,4 +1,5 @@
 ﻿import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from "@angular/router";
 import { Toast } from "../../../../../utils/alert_Toast";
 import { CommonModule } from '@angular/common';
@@ -68,7 +69,7 @@ export class Register {
     this.startBallRotation();
   }
 
-  private ballInterval: any = null;
+  private ballInterval: number | null = null;
 
   private startBallRotation(): void {
     this.ballInterval = setInterval(() => {
@@ -102,7 +103,7 @@ export class Register {
           this.router.navigate(['/login']);
         }, 2500);
       },
-      error: (err: any) => {
+      error: (err: HttpErrorResponse) => {
         this.isSubmitting = false;
         this.submitState = 'error';
         if (err.status === 409) {
