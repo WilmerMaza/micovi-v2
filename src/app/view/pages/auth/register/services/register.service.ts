@@ -38,6 +38,6 @@ export class RegisterService {
       this.formRepresentativeInfo,
       this.formSecurityInfo
     );
-    return this.api.post('/schools/register', payload);
+    return this.api.post('/instituciones', payload);
   }
 }
