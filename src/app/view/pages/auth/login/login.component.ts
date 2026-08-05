@@ -15,7 +15,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { NormaliceLowerValidators } from '../../../../utils/Validators';
 import { CryptoService } from '../../../../utils/crypto.service';
 import { LoginFormModel } from '../models/login-form';
 import { Session } from '../services/session';
@@ -30,6 +31,7 @@ import { Session } from '../services/session';
     MatCheckboxModule,
     MatIconModule,
     CommonModule,
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],

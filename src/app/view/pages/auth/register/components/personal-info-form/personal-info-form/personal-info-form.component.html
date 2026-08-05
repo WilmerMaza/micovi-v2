@@ -1,51 +1,53 @@
 <form [formGroup]="form">
-  <ng-template matStepLabel>Información general</ng-template>
-  <mat-form-field class="w-100">
-    <mat-label>Nombre de la Institución</mat-label>
-    <input
-      matInput
-      placeholder="Nombre de la Institución"
-      formControlName="name"
-      required
-    />
+  <ng-template matStepLabel>Institución</ng-template>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Nombre de la institución</mat-label>
+    <mat-icon matPrefix>business</mat-icon>
+    <input matInput placeholder="Ej. Colegio Deportivo Nacional" formControlName="name" />
+    <mat-error *ngIf="form.get('name')?.hasError('required')">
+      Este campo es obligatorio
+    </mat-error>
   </mat-form-field>
 
-  <mat-form-field class="w-100">
-    <mat-label>Correo eléctronico</mat-label>
-    <input
-      matInput
-      placeholder="Correo eléctronico"
-      formControlName="email"
-      (blur)="updateErrorMessage()"
-      required
-    />
-    <!--@if (email.invalid) {
-            <mat-error>{{errorMessage()}}</mat-error> }-->
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Correo electrónico</mat-label>
+    <mat-icon matPrefix>email</mat-icon>
+    <input matInput placeholder="correo@institucion.com" formControlName="email" type="email" />
+    <mat-error *ngIf="form.get('email')?.hasError('required')">
+      Este campo es obligatorio
+    </mat-error>
+    <mat-error *ngIf="form.get('email')?.hasError('email')">
+      Ingresa un correo electrónico válido
+    </mat-error>
   </mat-form-field>
 
-  <mat-form-field class="w-100">
-    <mat-label>Representante Legal</mat-label>
-    <input
-      matInput
-      placeholder="Representante Legal"
-      formControlName="representanteLegal"
-      required
-    />
-  </mat-form-field>
-
-  <div class="header_register">
-    <mat-form-field style="width: 45%">
-      <mat-label>Caracter</mat-label>
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="w-50">
+      <mat-label>Carácter</mat-label>
+      <mat-icon matPrefix>category</mat-icon>
       <mat-select formControlName="caracterNombre">
-        <mat-option value="one"></mat-option>
+        <mat-option value="Público">Público</mat-option>
+        <mat-option value="Privado">Privado</mat-option>
       </mat-select>
+      <mat-error *ngIf="form.get('caracterNombre')?.hasError('required')">
+        Selecciona un carácter
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field style="width: 45%; margin-left: 10px">
-      <mat-label>Pais</mat-label>
+    <mat-form-field appearance="outline" class="w-50">
+      <mat-label>País</mat-label>
+      <mat-icon matPrefix>public</mat-icon>
       <mat-select formControlName="paisNombre">
-        <mat-option value="one">First option</mat-option>
+        <mat-option value="México">México</mat-option>
+        <mat-option value="Colombia">Colombia</mat-option>
+        <mat-option value="Argentina">Argentina</mat-option>
+        <mat-option value="Chile">Chile</mat-option>
+        <mat-option value="Perú">Perú</mat-option>
       </mat-select>
+      <mat-error *ngIf="form.get('paisNombre')?.hasError('required')">
+        Selecciona un país
+      </mat-error>
     </mat-form-field>
   </div>
 </form>

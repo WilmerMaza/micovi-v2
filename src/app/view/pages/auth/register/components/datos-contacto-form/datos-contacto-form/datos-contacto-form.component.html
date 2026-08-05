@@ -1,26 +1,68 @@
-<form [formGroup]="form">
-  <mat-form-field class="w-100">
-    <mat-label>Sede</mat-label>
-    <input matInput placeholder="sede" formControlName="sede" required />
-  </mat-form-field>
+<form [formGroup]="form" class="contacto-form-container">
+  <div class="contacto-grid">
+    <div class="contacto-fields">
 
-  <mat-form-field class="w-100">
-    <mat-label>Página Web</mat-label>
-    <input
-      matInput
-      placeholder="Página Web"
-      formControlName="paginaWeb"
-      required
-    />
-  </mat-form-field>
+      <div class="phone-container" style="display: flex; gap: 8px;">
+        <mat-form-field appearance="outline" style="width: 120px;">
+          <mat-label>Prefijo</mat-label>
+          <mat-select formControlName="prefijo">
+            <mat-option value="+593">+593 (EC)</mat-option>
+            <mat-option value="+57">+57 (CO)</mat-option>
+            <mat-option value="+51">+51 (PE)</mat-option>
+            <mat-option value="+58">+58 (VE)</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="flex: 1;">
+          <mat-label>Teléfono</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <input matInput placeholder="99 123 4567" formControlName="telefono" />
+          <mat-error *ngIf="form.get('telefono')?.hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field class="w-100">
-    <mat-label>Télefono</mat-label>
-    <input
-      matInput
-      placeholder="Ingresa tu Télefono"
-      formControlName="telefono"
-      required
-    />
-  </mat-form-field>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Sede</mat-label>
+        <mat-icon matPrefix>location_on</mat-icon>
+        <input matInput placeholder="Ciudad o dirección principal" formControlName="sede" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Página web</mat-label>
+        <mat-icon matPrefix>language</mat-icon>
+        <input matInput placeholder="www.institucion.com" formControlName="paginaWeb" />
+      </mat-form-field>
+
+    </div>
+    <div class="contacto-logo-side">
+
+      <!-- Subida de Logo -->
+      <div class="logo-upload-section">
+        <label class="logo-label">Logo de la institución *</label>
+        <div class="logo-dropzone" (click)="fileInput.click()">
+          <input type="file" #fileInput accept="image/*" style="display: none" (change)="onFileSelected($event)" />
+          @if (logoPreview) {
+            <div class="preview-container">
+              <img [src]="logoPreview" class="logo-preview" alt="Logo preview" />
+              <span class="preview-change">Cambiar</span>
+            </div>
+          } @else {
+            <div class="dropzone-content">
+              <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+              <div class="dropzone-texts">
+                <p class="dropzone-main-text">Arrastra tu logo o haz clic para subirlo</p>
+                <span class="file-specs">Formatos: PNG, JPG o SVG · Máx. 5 MB</span>
+              </div>
+            </div>
+          }
+        </div>
+        @if (form.get('logo')?.value) {
+          <p class="selected-file-name">✓ {{ form.get('logo')?.value }}</p>
+        }
+        <span class="file-hint">Se muestra en tu perfil e informes.</span>
+      </div>
+
+    </div>
+  </div>
 </form>
