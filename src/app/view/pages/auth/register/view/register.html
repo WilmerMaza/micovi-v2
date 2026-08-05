@@ -1,33 +1,139 @@
 <section class="content_register" id="register">
+  <div class="register-bg-deco">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+
   <mat-card class="card_register" appearance="outlined">
-    <div class="header_register">
-      <div><h1 style="margin-left: 8px">Registrate</h1></div>
-      <div><img style="margin-right: 8px" src="./images/logo_register.png" class="img" alt="logo_register"/></div>
+    <!-- Cabecera Azul (siempre visible) -->
+    <div class="card-header-blue">
+      <div class="header_register">
+        <div>
+          <h1>Regístrate</h1>
+          <p class="subtitle">Plataforma deportiva institucional</p>
+        </div>
+        <div>
+          <img src="./images/logo_register.png" class="img" alt="logo_register" />
+        </div>
+      </div>
+      <div class="stepper-header-custom">
+        <div class="step-nodes">
+          <div class="step-node" [class.active]="selectedStep === 0" [class.completed]="selectedStep > 0">
+            <div class="node-circle">
+              @if (selectedStep > 0) { <span class="check-icon">✓</span> } @else { 1 }
+            </div>
+            <span class="node-label">Institución</span>
+          </div>
+          <div class="step-line" [class.completed]="selectedStep > 0"></div>
+          <div class="step-node" [class.active]="selectedStep === 1" [class.completed]="selectedStep > 1">
+            <div class="node-circle">
+              @if (selectedStep > 1) { <span class="check-icon">✓</span> } @else { 2 }
+            </div>
+            <span class="node-label">Contacto</span>
+          </div>
+          <div class="step-line" [class.completed]="selectedStep > 1"></div>
+          <div class="step-node" [class.active]="selectedStep === 2" [class.completed]="selectedStep > 2">
+            <div class="node-circle">
+              @if (selectedStep > 2) { <span class="check-icon">✓</span> } @else { 3 }
+            </div>
+            <span class="node-label">Representante</span>
+          </div>
+          <div class="step-line" [class.completed]="selectedStep > 2"></div>
+          <div class="step-node" [class.active]="selectedStep === 3">
+            <div class="node-circle">4</div>
+            <span class="node-label">Acceso</span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    @if (submitState === 'idle') {
+      <mat-stepper [linear]="true" #stepper class="stepper-wrapper" (selectionChange)="selectedStep = $event.selectedIndex">
+        <mat-step [stepControl]="service.formPersonalInfo">
+          <div class="step-header-info">
+            <span class="step-counter">Paso 1 de 4</span>
+            <span class="step-title">Datos de la Institución</span>
+          </div>
+          <div class="stepper-content"><app-personal-info-form></app-personal-info-form></div>
+          <div class="step-actions">
+            <button mat-flat-button matStepperNext>Siguiente &rarr;</button>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="service.formContactInfo">
+          <div class="step-header-info">
+            <span class="step-counter">Paso 2 de 4</span>
+            <span class="step-title">Contacto e Imagen</span>
+          </div>
+          <div class="stepper-content"><app-datos-contacto-form></app-datos-contacto-form></div>
+          <div class="step-actions">
+            <button mat-stroked-button matStepperPrevious>Atrás</button>
+            <button mat-flat-button matStepperNext>Siguiente &rarr;</button>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="service.formRepresentativeInfo">
+          <div class="step-header-info">
+            <span class="step-counter">Paso 3 de 4</span>
+            <span class="step-title">Datos del Representante</span>
+          </div>
+          <div class="stepper-content"><app-representante-info-form></app-representante-info-form></div>
+          <div class="step-actions">
+            <button mat-stroked-button matStepperPrevious>Atrás</button>
+            <button mat-flat-button matStepperNext>Siguiente &rarr;</button>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="service.formSecurityInfo">
+          <div class="step-header-info">
+            <span class="step-counter">Paso 4 de 4</span>
+            <span class="step-title">Crear acceso al sistema</span>
+          </div>
+          <div class="stepper-content"><app-password-form></app-password-form></div>
+          <div class="step-actions">
+            <button mat-stroked-button matStepperPrevious>Atrás</button>
+            <button mat-flat-button (click)="onSubmit()" [disabled]="isSubmitting">Finalizar</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    }
+
+    @if (submitState === 'loading') {
+      <div class="loading-section">
+        <div class="ball-bouncer">
+          <mat-icon class="sport-ball">{{ currentBall }}</mat-icon>
+        </div>
+        <p class="loading-text">Registrando institución...</p>
+        <p class="loading-subtext">Por favor espera un momento</p>
+        <div class="loading-bar-container">
+          <div class="loading-bar"></div>
+        </div>
+      </div>
+    }
+
+    @if (submitState === 'success') {
+      <div class="result-section success">
+        <div class="success-icon-box">✓</div>
+        <h2>¡Institución registrada!</h2>
+        <p>Ya eres parte de la plataforma deportiva.</p>
+        <button mat-flat-button class="success-btn" (click)="goToLogin()">Volver al inicio</button>
+      </div>
+    }
+
+    @if (submitState === 'error') {
+      <div class="result-section error">
+        <div class="error-icon-box">!</div>
+        <h2>¡Oops! Error al guardar</h2>
+        <p>No pudimos guardar el registro. Verifica tu conexión e intenta de nuevo.</p>
+        <span class="error-code">ERR_293</span>
+        <div class="error-actions">
+          <button mat-flat-button class="retry-btn" (click)="retrySubmit()">Intentar de nuevo</button>
+          <button mat-stroked-button class="cancel-btn" (click)="goToLogin()">Cancelar</button>
+        </div>
+      </div>
+    }
+
   </mat-card>
 
-  <mat-card class="card_register" appearance="outlined">
-    <mat-stepper [linear]="true" #stepper>
-      <!-- Paso uno -->
-      <mat-step [stepControl]="service.formPersonalInfo">
-        <app-personal-info-form></app-personal-info-form>
-
-        <button matButton matStepperNext>Siguiente</button>
-      </mat-step>
-
-      <!-- Paso dos -->
-      <mat-step [stepControl]="service.formContactInfo">
-        <app-datos-contacto-form></app-datos-contacto-form>
-        <button matButton matStepperPrevious>Atrás</button>
-        <button matButton matStepperNext>Siguiente</button>
-      </mat-step>
-      <!-- Paso tres -->
-
-      <mat-step [stepControl]="service.formSecurityInfo">
-        <app-password-form></app-password-form>
-        <button matButton matStepperPrevious>Atrás</button>
-        <button matButton (click)="stepper.reset()">Hecho</button>
-      </mat-step>
-    </mat-stepper>
-  </mat-card>
+  <footer class="register-footer">
+    &copy; 2025 &mdash; Plataforma Deportiva
+  </footer>
 </section>

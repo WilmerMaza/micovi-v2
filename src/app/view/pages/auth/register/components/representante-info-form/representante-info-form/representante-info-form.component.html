@@ -1,0 +1,35 @@
+<form [formGroup]="form">
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Tipo de Identificación</mat-label>
+    <mat-icon matPrefix>badge</mat-icon>
+    <mat-select formControlName="tipoIdentificacion" placeholder="Selecciona el tipo">
+      <mat-option value="CC">Cédula de Ciudadanía</mat-option>
+      <mat-option value="CE">Cédula de Extranjería</mat-option>
+      <mat-option value="NIT">NIT</mat-option>
+      <mat-option value="PA">Pasaporte</mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('tipoIdentificacion')?.hasError('required')">
+      Este campo es obligatorio
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Número de Identidad</mat-label>
+    <mat-icon matPrefix>tag</mat-icon>
+    <input matInput placeholder="Ej. 1234567890" formControlName="identificacion" />
+    <mat-error *ngIf="form.get('identificacion')?.hasError('required')">
+      Este campo es obligatorio
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Nombre Completo</mat-label>
+    <mat-icon matPrefix>person</mat-icon>
+    <input matInput placeholder="Nombre y apellidos" formControlName="nombreCompleto" />
+    <mat-error *ngIf="form.get('nombreCompleto')?.hasError('required')">
+      Este campo es obligatorio
+    </mat-error>
+  </mat-form-field>
+
+</form>
