@@ -11,13 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: npm ci
-      - name: Build Angular app
-        run: npx ng build --configuration=production
+      - run: npm ci && npx ng build --configuration=production
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MICOVIV2 }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MICOVIV2_5E14D }}
           channelId: live
-          projectId: micoviv2
+          projectId: micoviv2-5e14d

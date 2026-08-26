@@ -1,11 +1,15 @@
 {
   "hosting": {
     "public": "dist/micovi-v2/browser",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [{ "source": "**", "destination": "/index.html" }],
     "headers": [
       {
-        "source": "**/*.@(js|css)",
+        "source": "*/.@(js|css)",
         "headers": [
           {
             "key": "Cache-Control",
