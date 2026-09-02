@@ -1,7 +1,7 @@
 {
   "/api": {
     "target": "https://back-micovi.vercel.app",
-    "secure": false,
+    "secure": true,
     "changeOrigin": true,
     "logLevel": "info"
   }
