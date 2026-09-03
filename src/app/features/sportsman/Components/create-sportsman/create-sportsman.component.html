@@ -13,20 +13,9 @@
     
       <section class="registration-card">
         <div class="card-header">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          width="22"
-          height="22"
-          aria-hidden="true">
-          <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-        </svg>
+          <mat-icon>
+            person
+          </mat-icon>
           <h3>Identificación</h3>
         </div>
 
@@ -44,12 +33,21 @@
 
               <!-- Campo: Tipo de Documento -->
               <div class="form-group">
-                <select id="tipo-documento">
-                <!-- Opción por defecto vacía para el truco visual -->
-                <option value="" disabled selected hidden></option> 
-                <option value="cc">Cédula de Ciudadanía</option>
-                <option value="ti">Tarjeta de Identidad</option>
-                </select>
+                <mat-form-field appearance="outline">
+
+                  <mat-label>
+                    Tipo de documento
+                  </mat-label>
+                  <mat-select>
+                    <mat-option value="cc">
+                      Cédula
+                    </mat-option>
+
+                    <mat-option value="ti">
+                      Tarjeta de identidad
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
                 <label for="tipo-documento">Seleccionar tipo de documento <span>*</span></label>
               </div>
 
@@ -61,11 +59,29 @@
 
             </div>
 
-            <div class="photo-upload">
-              <!--Ícono-->
-            <h4>Añadir foto</h4>
-            <p>Formatos: JPG o PNG</p>
-            <p>Máx. 2MB</p>
+            <div class="photo-upload" (click)="fileInput.click()">
+              
+              <button 
+              *ngIf="imageSelected"
+              class="remove-image"
+              type="button"
+              (click)="removeImage($event)"><mat-icon>close</mat-icon>
+              </button>
+              
+              <ng-container *ngIf="!imageSelected">
+                <mat-icon>upload</mat-icon>
+                <h4>Añadir foto</h4>
+                <p>Formatos: JPG o PNG</p>
+                <p>Máx. 2MB</p>
+              </ng-container>
+
+              <ng-container *ngIf="imageSelected">
+                <img [src]="selectedImageURL"
+                alt="Vista previa"
+                class="preview-image">
+
+              </ng-container>
+              <input type="file" hidden #fileInput accept="image/png, image/jpeg" (change)="onFilesSelected($event)"  >
             
             </div>
 
@@ -77,21 +93,9 @@
     
       <section class="registration-card">
         <div class="card-header">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          width="22"
-          height="22"
-          aria-hidden="true">
-          <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/>
-          <path d="m14.5 12.5 2-2"/>
-          <path d="m11.5 9.5 2-2"/>
-          <path d="m8.5 6.5 2-2"/>
-          <path d="m17.5 15.5 2-2"/>
-        </svg>
+          <mat-icon>
+            straighten
+          </mat-icon>
           <h3>Información fisica</h3>
         </div>
 
@@ -103,20 +107,9 @@
     
       <section class="registration-card">
         <div class="card-header">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          width="22"
-          height="22"
-          aria-hidden="true">
-          <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-        </svg>
+          <mat-icon>
+            calendar_today
+          </mat-icon>
           <h3>Datos personales</h3>
         </div>
 
@@ -128,36 +121,13 @@
       <footer class="form-actions">
       
       <button class="btn-back">
-        <svg
-        width="20"
-        height="20"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        viewBox="0 0 24 24">
-        <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
-        </svg>
+        <mat-icon>arrow_back</mat-icon>
         <span>Atrás</span>
       </button>
 
       <button class="btn-save">
         <span>Guardar deportista</span>
-        <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        width="20"
-        height="20">
-        <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-        </svg>
+        <mat-icon>arrow_forward</mat-icon>
       </button>
     
       </footer>
