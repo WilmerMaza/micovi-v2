@@ -9,19 +9,18 @@ export const SPORTSMAN_ROUTES: Routes = [
         (m) => m.SportsmanComponent
       ),
   },
-{
+  {
     path: 'create',
     loadComponent: () =>
-      import('./Components/create-sportsman/create-sportsman.component').then(
-        (m) => m.CreateSportsmanComponent
+      import('./pages/athlete-form/athlete-form.component').then(
+        (m) => m.AthleteFormComponent
       ),
-  }
-
-  // {
-  //   path: ':id',
-  //   loadComponent: () =>
-  //     import('../../view/sportsman/pages/detail/detail.component').then(
-  //       (m) => m.SportsmanDetailComponent
-  //     ),
-  // },
+  },
+  {
+    path: 'edit/:id',
+    loadComponent: () =>
+      import('./pages/athlete-form/athlete-form.component').then(
+        (m) => m.AthleteFormComponent
+      ),
+  },
 ];
