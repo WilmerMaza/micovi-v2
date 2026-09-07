@@ -7,15 +7,15 @@ import { Page404Component } from './view/pages/page404/page404.component';
 import { Page500Component } from './view/pages/page500/page500.component';
 
 export const routes: Routes = [
-  // Landing pública (cuando no esté logueado)
-  // {
-  //   path: '',
-  //   pathMatch: 'full',
-  //   loadComponent: () =>
-  //     import('./view/pages/landing/landing-page.component').then(
-  //       (m) => m.LandingPageComponent
-  //     ),
-  // },
+  // Landing pública
+  {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./view/pages/landing/landing-page.component').then(
+        (m) => m.LandingPageComponent
+      ),
+  },
 
   // Auth pública
   {

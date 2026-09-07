@@ -1,0 +1,309 @@
+<main class="landing-page">
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="navbar-container">
+      <a class="navbar-brand" routerLink="/" aria-label="MiCovi - Inicio">
+        <img src="/icono/LOGO.webp" alt="MiCovi" class="navbar-logo" />
+      </a>
+
+      <nav class="navbar-nav" role="navigation" aria-label="Navegación principal">
+        <ul class="navbar-links">
+          <li><a class="navbar-link" href="#">Campo</a></li>
+          <li><a class="navbar-link" href="#">Campo</a></li>
+          <li><a class="navbar-link" href="#">Campo</a></li>
+          <li><a class="navbar-link" href="#">Campo</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar-actions">
+        <button class="btn btn-outline" routerLink="/login" type="button">
+          Ingresar
+        </button>
+        <button class="btn btn-primary" routerLink="/registers" type="button">
+          registrarse
+        </button>
+      </div>
+
+      <button class="navbar-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" type="button">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <div class="navbar-mobile" id="mobile-menu" role="navigation" aria-label="Menú móvil">
+      <ul class="navbar-mobile-links">
+        <li><a class="navbar-mobile-link" href="#">Campo</a></li>
+        <li><a class="navbar-mobile-link" href="#">Campo</a></li>
+        <li><a class="navbar-mobile-link" href="#">Campo</a></li>
+        <li><a class="navbar-mobile-link" href="#">Campo</a></li>
+      </ul>
+      <div class="navbar-mobile-actions">
+        <button class="btn btn-outline" routerLink="/login" type="button">Ingresar</button>
+        <button class="btn btn-primary" routerLink="/registers" type="button">registrarse</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-background" aria-hidden="true">
+      <img src="/images/fondoBanner.png" alt="" class="hero-bg-image" />
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-logo">
+          <img src="/icono/MICOVI.webp" alt="MiCovi" class="hero-logo-image" />
+        </div>
+        <h1 id="hero-title" class="hero-title">
+          <span class="hero-title-line">SPORTS</span>
+          <span class="hero-title-line">TECHNOLOGY</span>
+        </h1>
+        <p class="hero-description">
+          Orientados a las necesidades del Sector del Deporte. Nos especializamos en todo lo
+          relacionado con Eventos deportivos, la Administración, Organización, Difusión,
+          Planificación, Control y Evaluación de los mismos. Nuestro compromiso como equipo
+          es ofrecer soluciones integrales y eficientes para potenciar el desarrollo y el
+          éxito de nuestros clientes en el ámbito deportivo.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn btn-hero-outline" routerLink="/login" type="button">
+            Ingresar
+          </button>
+          <button class="btn btn-hero-primary" routerLink="/registers" type="button">
+            registrarse
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANES MICOVI SECTION -->
+  <section class="plans" aria-labelledby="plans-title">
+    <div class="plans-container">
+      <header class="plans-header">
+        <h2 id="plans-title" class="plans-title">
+          <span class="plans-title-blue">PLANES</span>
+          <span class="plans-title-black">MICOVI</span>
+        </h2>
+      </header>
+
+      <div class="plans-grid" role="list">
+        <article class="plan-card plan-card--free" role="listitem">
+          <div class="plan-card-header">
+            <h3 class="plan-name">PRUEBA GRATIS</h3>
+          </div>
+          <div class="plan-price-wrapper">
+            <span class="plan-price plan-price--free">$ 0</span>
+          </div>
+          <p class="plan-description">
+            Ideal para probar la plataforma con funcionalidades básicas.
+          </p>
+        </article>
+
+        <article class="plan-card plan-card--plan100" role="listitem">
+          <div class="plan-card-header">
+            <h3 class="plan-name">PLAN 100</h3>
+          </div>
+          <div class="plan-price-wrapper">
+            <span class="plan-price plan-price--plan100">$ 47</span>
+          </div>
+          <p class="plan-description">
+            Hasta 100 atletas. Gestión completa de eventos y entrenadores.
+          </p>
+        </article>
+
+        <article class="plan-card plan-card--plan250" role="listitem">
+          <div class="plan-card-header">
+            <h3 class="plan-name">PLAN 250</h3>
+          </div>
+          <div class="plan-price-wrapper">
+            <span class="plan-price plan-price--plan250">$ 68</span>
+          </div>
+          <p class="plan-description">
+            Hasta 250 atletas. Incluye reportes avanzados y categorías ilimitadas.
+          </p>
+        </article>
+
+        <article class="plan-card plan-card--unlimited" role="listitem">
+          <div class="plan-card-header">
+            <h3 class="plan-name">ILIMITADO</h3>
+          </div>
+          <div class="plan-price-wrapper">
+            <span class="plan-price plan-price--unlimited">$ 89</span>
+          </div>
+          <p class="plan-description">
+            Atletas ilimitados. Acceso total a todas las funcionalidades premium.
+          </p>
+        </article>
+      </div>
+
+      <p class="plans-note">
+        NOTA: El tiempo de uso se maneja en: mes, trimestre, semestre y año.
+      </p>
+    </div>
+  </section>
+
+  <!-- VIDEO SECTION -->
+  <section class="video-section" aria-labelledby="video-title">
+    <div class="video-container">
+      <h2 id="video-title" class="video-title">TITULO DEL VIDEO</h2>
+
+      <div class="video-wrapper">
+        <video
+          class="video-player"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          disablepictureinpicture
+          poster="/images/fondoBanner.png"
+        >
+          <source src="assets/video/video-one.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBRESÍAS MICOVI SECTION -->
+  <section class="memberships" aria-labelledby="memberships-title">
+    <div class="memberships-container">
+      <header class="memberships-header">
+        <h2 id="memberships-title" class="memberships-title">
+          <span class="memberships-title-blue">MEMBRESÍAS</span>
+          <span class="memberships-title-black">MICOVI</span>
+        </h2>
+      </header>
+
+      <div class="memberships-grid" role="list">
+        <article class="membership-card membership-card--basica" role="listitem">
+          <div class="membership-card-header">
+            <h3 class="membership-name">BÁSICA</h3>
+            <div class="membership-badge">Inicial</div>
+          </div>
+          <div class="membership-price-wrapper">
+            <span class="membership-price membership-price--basica">$ 29</span>
+            <span class="membership-period">/mes</span>
+          </div>
+          <ul class="membership-features">
+            <li>Hasta 50 atletas registrados</li>
+            <li>Gestión de eventos básica</li>
+            <li>1 entrenador incluido</li>
+            <li>Reportes esenciales</li>
+            <li>Soporte por email</li>
+          </ul>
+        </article>
+
+        <article class="membership-card membership-card--profesional" role="listitem">
+          <div class="membership-card-header">
+            <h3 class="membership-name">PROFESIONAL</h3>
+            <div class="membership-badge membership-badge--popular">Popular</div>
+          </div>
+          <div class="membership-price-wrapper">
+            <span class="membership-price membership-price--profesional">$ 59</span>
+            <span class="membership-period">/mes</span>
+          </div>
+          <ul class="membership-features">
+            <li>Hasta 200 atletas registrados</li>
+            <li>Gestión completa de eventos</li>
+            <li>5 entrenadores incluidos</li>
+            <li>Reportes avanzados</li>
+            <li>Soporte prioritario</li>
+            <li>App móvil para atletas</li>
+          </ul>
+        </article>
+
+        <article class="membership-card membership-card--institucional" role="listitem">
+          <div class="membership-card-header">
+            <h3 class="membership-name">INSTITUCIONAL</h3>
+            <div class="membership-badge">Completa</div>
+          </div>
+          <div class="membership-price-wrapper">
+            <span class="membership-price membership-price--institucional">$ 99</span>
+            <span class="membership-period">/mes</span>
+          </div>
+          <ul class="membership-features">
+            <li>Atletas ilimitados</li>
+            <li>Eventos y torneos ilimitados</li>
+            <li>Entrenadores ilimitados</li>
+            <li>Analytics y BI completo</li>
+            <li>Soporte 24/7 dedicado</li>
+            <li>App móvil + marca blanca</li>
+            <li>API de integración</li>
+          </ul>
+        </article>
+      </div>
+
+      <p class="memberships-note">
+        * Precios mensuales. Descuentos disponibles en planes trimestrales, semestrales y anuales.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="/icono/LOGO.webp" alt="MiCovi" class="footer-logo" />
+      </div>
+
+      <hr class="footer-divider footer-divider--top" />
+
+      <div class="footer-grid">
+        <div class="footer-column footer-contact">
+          <h3 class="footer-column-title">Contacto</h3>
+          <address class="footer-address">
+            <p>(57) 3217481983</p>
+            <p>micovi1960&#64;gmail.com</p>
+          </address>
+        </div>
+
+        <div class="footer-column footer-location">
+          <h3 class="footer-column-title">Dónde estamos</h3>
+          <address class="footer-address">
+            <p>TV 54 No. 30-403</p>
+            <p>Santillana de los Patios Ed. Coabas</p>
+            <p>Bosque</p>
+            <p>Cartagena - Colombia</p>
+          </address>
+        </div>
+
+        <div class="footer-column footer-nav">
+          <h3 class="footer-column-title">Campo</h3>
+          <ul class="footer-links">
+            <li><a href="#">Campo campo</a></li>
+            <li><a href="#">Campo campo</a></li>
+            <li><a href="#">Campo campo</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column footer-nav">
+          <h3 class="footer-column-title">Campo</h3>
+          <ul class="footer-links">
+            <li><a href="#">Campo campo</a></li>
+            <li><a href="#">Campo campo</a></li>
+            <li><a href="#">Campo campo</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="footer-divider footer-divider--bottom" />
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 MICOVI. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BACK TO TOP BUTTON -->
+  <button
+    class="back-to-top"
+    (click)="scrollToTop()"
+    aria-label="Volver arriba"
+    type="button"
+    title="Volver arriba"
+  >
+    <mat-icon>keyboard_arrow_up</mat-icon>
+  </button>
+</main>

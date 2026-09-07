@@ -50,4 +50,33 @@
       </mat-error>
     </mat-form-field>
   </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="w-50">
+      <mat-label>Departamento / Estado</mat-label>
+      <mat-icon matPrefix>map</mat-icon>
+      <input matInput placeholder="Ej. Bolívar" formControlName="departamento" />
+      <mat-error *ngIf="form.get('departamento')?.hasError('required')">
+        Este campo es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-50">
+      <mat-label>Ciudad</mat-label>
+      <mat-icon matPrefix>location_city</mat-icon>
+      <input matInput placeholder="Ej. Cartagena" formControlName="ciudad" />
+      <mat-error *ngIf="form.get('ciudad')?.hasError('required')">
+        Este campo es obligatorio
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Dirección</mat-label>
+    <mat-icon matPrefix>home</mat-icon>
+    <input matInput placeholder="Ej. Cra. 45 #23-90" formControlName="direccion" />
+    <mat-error *ngIf="form.get('direccion')?.hasError('required')">
+      Este campo es obligatorio
+    </mat-error>
+  </mat-form-field>
 </form>

@@ -19,9 +19,8 @@ export interface RegisterPayload {
   state: string;
   city: string;
   headquarters: string;
-  website: string;
+  website?: string;
   representativename: string;
-  representativeDocumentType: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -30,30 +29,30 @@ export class RegisterRepository {
 
   personalInfo() {
     return this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       email: new FormControl('', [Validators.required, Validators.email]),
       caracterId: [''],
       caracterNombre: ['', [Validators.required]],
       paisId: [''],
       paisNombre: ['', [Validators.required]],
+      departamento: ['', [Validators.required, Validators.minLength(3)]],
+      ciudad: ['', [Validators.required, Validators.minLength(3)]],
+      direccion: ['', [Validators.required, Validators.minLength(5)]],
     });
   }
 
   contactInfo() {
     return this.fb.group({
-      prefijo: ['+593', [Validators.required]],
-      telefono: ['', [Validators.required]],
-      sede: [''],
-      paginaWeb: [''],
-      logo: [''],
+      prefijo: ['+57', [Validators.required]],
+      telefono: ['', [Validators.required, Validators.minLength(7)]],
+      sede: ['', [Validators.required, Validators.minLength(3)]],
+      paginaWeb: ['', [Validators.minLength(5)]],
     });
   }
 
   representativeInfo() {
     return this.fb.group({
-      tipoIdentificacion: ['', [Validators.required]],
-      identificacion: ['', [Validators.required]],
-      nombreCompleto: ['', [Validators.required]],
+      nombreCompleto: ['', [Validators.required, Validators.minLength(3)]],
     });
   }
 
@@ -75,22 +74,25 @@ export class RegisterRepository {
   ): RegisterPayload {
     const characterRaw = personal.get('caracterNombre')?.value || '';
     const prefijo = contact.get('prefijo')?.value || '';
-    const telefono = contact.get('telefono')?.value || '';
-    return {
-      name: personal.get('name')?.value,
-      address: contact.get('sede')?.value || '—',
+    const telefono = (contact.get('telefono')?.value || '').trim();
+    const website = (contact.get('paginaWeb')?.value || '').trim();
+    const payload: RegisterPayload = {
+      name: (personal.get('name')?.value || '').trim(),
+      address: (personal.get('direccion')?.value || '').trim(),
       phone: `${prefijo} ${telefono}`.trim(),
-      email: personal.get('email')?.value,
+      email: (personal.get('email')?.value || '').trim(),
       password: security.get('contraseña')?.value,
       character: characterRaw.toUpperCase() === 'PÚBLICO' ? 'PUBLIC' : 'PRIVATE',
       country: personal.get('paisNombre')?.value,
-      state: contact.get('sede')?.value || '—',
-      city: '—',
-      headquarters: contact.get('sede')?.value || '—',
-      website: contact.get('paginaWeb')?.value || '',
-      representativename: representante.get('nombreCompleto')?.value,
-      representativeDocumentType: representante.get('tipoIdentificacion')?.value,
+      state: (personal.get('departamento')?.value || '').trim(),
+      city: (personal.get('ciudad')?.value || '').trim(),
+      headquarters: (contact.get('sede')?.value || '').trim(),
+      representativename: (representante.get('nombreCompleto')?.value || '').trim(),
     };
+    if (website) {
+      payload.website = website;
+    }
+    return payload;
   }
 }
 

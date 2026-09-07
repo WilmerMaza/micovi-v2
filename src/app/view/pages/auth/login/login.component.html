@@ -1,152 +1,201 @@
-<div class="contenMax">
-  <div class="conten">
-    <!--  TÍTULO DE BIENVENIDA -->
-    <h2 class="titulo-externo">¡Hola de nuevo!</h2>
+<section class="login-stage">
+  <video
+    #loginBg
+    class="login-bg"
+    [autoplay]="true"
+    [muted]="true"
+    [loop]="true"
+    playsinline
+    preload="auto"
+    disablepictureinpicture
+    aria-hidden="true"
+    (canplay)="loginBg.play()"
+  >
+    <source src="assets/video/video-one.mp4" type="video/mp4" />
+  </video>
+  <div class="login-veil" aria-hidden="true"></div>
 
-    <div class="group_login">
-      <div class="formLogin">
-        <p class="registro">
-          No tienes cuenta?
-          <a class="linkRegistro" routerLink="/registers">Regístrate ahora</a>
-        </p>
-        <hr class="divider" />
+  <div class="login-card">
+    <!-- Panel de marca -->
+    <aside class="login-brand">
+      <img class="brand-logo" src="/images/dashboard-1.png" alt="MiCOVI" />
+      <h1 class="brand-title">
+        Potenciamos el<br />
+        <span>talento deportivo</span><br />
+        de tu institución
+      </h1>
+      <p class="brand-sub">
+        Administra atletas, planes, entrenadores y mucho más, desde un solo lugar.
+      </p>
+      <ul class="brand-feats">
+        <li>
+          <span class="feat-ic">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </span>
+          <span class="feat-tx"><strong>Seguro</strong><small>Información protegida</small></span>
+        </li>
+        <li>
+          <span class="feat-ic">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </span>
+          <span class="feat-tx"><strong>Eficiente</strong><small>Procesos optimizados</small></span>
+        </li>
+        <li>
+          <span class="feat-ic">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+          </span>
+          <span class="feat-tx"><strong>Confiable</strong><small>Diseñado para instituciones</small></span>
+        </li>
+      </ul>
+      <p class="brand-foot">© 2024 MICOVI. Todos los derechos reservados.</p>
+    </aside>
 
-        <!-- FORMULARIO -->
-        <form
-          [formGroup]="loginForm"
-          class="example-form"
-          [ngClass]="{ 'form-submitted': submitted }"
-        >
-          <!-- Usuario -->
-          <mat-form-field class="mat-input-custom" appearance="fill">
-            <mat-label>Email</mat-label>
-            <span matPrefix>
-              <img src="./images/account.svg" class="custom-icon" />
-            </span>
-            <input
-              matInput
-              type="text"
-              formControlName="username"
-              placeholder="Ej. JuanPerez"
-              required
-            />
+    <!-- Panel de formulario -->
+    <div class="login-panel">
+      <h2 class="panel-title">Bienvenido a <span>MiCOVI</span></h2>
+      <p class="registro">
+        ¿No tienes cuenta?
+        <a class="linkRegistro" routerLink="/registers">Regístrate ahora</a>
+      </p>
 
-            @if (loginForm.get('username')?.hasError('required') && submitted) {
-            <mat-error> Usuario es <strong>obligatorio</strong> </mat-error>
-            }
-          </mat-form-field>
+      <!-- FORMULARIO (lógica intacta) -->
+      <form
+        [formGroup]="loginForm"
+        class="example-form"
+        [ngClass]="{ 'form-submitted': submitted }"
+      >
+        <!-- Usuario -->
+        <mat-form-field class="mat-input-custom" appearance="fill">
+          <mat-label>Correo electrónico</mat-label>
+          <span matPrefix>
+            <img src="./images/account.svg" class="custom-icon" />
+          </span>
+          <input
+            matInput
+            type="text"
+            formControlName="username"
+            placeholder="ejemplo@correo.com"
+            required
+          />
 
-          <!-- Contraseña -->
-          <mat-form-field class="mat-input-custom" appearance="fill">
-            <mat-label>Contraseña</mat-label>
-            
-            <span matPrefix>
-              <img src="./images/segure.svg" class="custom-icon" />
-            </span>
+          @if (loginForm.get('username')?.hasError('required') && submitted) {
+          <mat-error> Usuario es <strong>obligatorio</strong> </mat-error>
+          }
+        </mat-form-field>
 
-            <input
-              matInput
-              [type]="hide ? 'password' : 'text'"
-              formControlName="password"
-              placeholder="********"
-              required
-            />
+        <!-- Contraseña -->
+        <mat-form-field class="mat-input-custom" appearance="fill">
+          <mat-label>Contraseña</mat-label>
 
+          <span matPrefix>
+            <img src="./images/segure.svg" class="custom-icon" />
+          </span>
 
-            <span
-              matSuffix
-              (click)="togglePasswordVisibility()"
-              style="cursor: pointer"
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Ingrese su contraseña"
+            required
+          />
+
+          <span
+            matSuffix
+            (click)="togglePasswordVisibility()"
+            style="cursor: pointer"
+          >
+            @if (hide) {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 512 512"
+              class="custom-icon"
             >
-              @if (hide) {
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 512 512"
-                class="custom-icon"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="32"
-                  d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
-                />
-                <circle
-                  cx="256"
-                  cy="256"
-                  r="80"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-miterlimit="10"
-                  stroke-width="32"
-                />
-              </svg>
-              } @else {
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 512 512"
-                class="custom-icon"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="32"
-                  d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
-                />
-                <circle
-                  cx="256"
-                  cy="256"
-                  r="80"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-miterlimit="10"
-                  stroke-width="32"
-                />
-                <line
-                  x1="96"
-                  y1="96"
-                  x2="416"
-                  y2="416"
-                  stroke="currentColor"
-                  stroke-width="32"
-                  stroke-linecap="round"
-                />
-              </svg>
-              }
-            </span>
-
-            @if (loginForm.get('password')?.hasError('required') && submitted) {
-            <mat-error> Contraseña es <strong>obligatoria</strong> </mat-error>
-            }
-          </mat-form-field>
-
-          <!-- Recordar y Olvidar -->
-          <div class="contenFlex">
-            <mat-checkbox formControlName="check" color="primary">Recordar contraseña</mat-checkbox>
-            <a class="buttonOlvidar">¿Olvidaste tu contraseña?</a>
-          </div>
-
-          <!-- Botón -->
-          <div class="content-button">
-            <button
-              mat-button
-              class="button-tonal"
-              type="button"
-              (click)="sessionLogin()"
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="32"
+                d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
+              />
+              <circle
+                cx="256"
+                cy="256"
+                r="80"
+                fill="none"
+                stroke="currentColor"
+                stroke-miterlimit="10"
+                stroke-width="32"
+              />
+            </svg>
+            } @else {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 512 512"
+              class="custom-icon"
             >
-              Iniciar
-            </button>
-          </div>
-        </form>
-      </div>
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="32"
+                d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
+              />
+              <circle
+                cx="256"
+                cy="256"
+                r="80"
+                fill="none"
+                stroke="currentColor"
+                stroke-miterlimit="10"
+                stroke-width="32"
+              />
+              <line
+                x1="96"
+                y1="96"
+                x2="416"
+                y2="416"
+                stroke="currentColor"
+                stroke-width="32"
+                stroke-linecap="round"
+              />
+            </svg>
+            }
+          </span>
+
+          @if (loginForm.get('password')?.hasError('required') && submitted) {
+          <mat-error> Contraseña es <strong>obligatoria</strong> </mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Recordar y Olvidar -->
+        <div class="contenFlex">
+          <mat-checkbox formControlName="check" color="primary">Recordar contraseña</mat-checkbox>
+          <a class="buttonOlvidar">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Botón -->
+        <div class="content-button">
+          <button
+            mat-button
+            class="button-tonal"
+            type="button"
+            (click)="sessionLogin()"
+          >
+            Iniciar sesión
+          </button>
+        </div>
+      </form>
+
+      <p class="secure-note">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Plataforma segura y confiable
+      </p>
     </div>
   </div>
-</div>
+</section>
