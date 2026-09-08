@@ -157,8 +157,7 @@ export class SportsmanComponent implements OnInit {
 
   getPhotoUrl(athlete: Athlete): string {
     if (athlete.photoUrl) {
-      const baseUrl = '/api';
-      return baseUrl + athlete.photoUrl;
+      return athlete.photoUrl;
     }
     return 'assets/images/default-avatar.png';
   }
