@@ -1,152 +1,243 @@
-<header class="landing-header">
-  <div class="header-inner">
-    <div class="header-brand">
-      <img src="/images/login-min.png" alt="MiCOVI" class="header-logo-icon" />
-    </div>
-    <nav class="header-nav">
-      <span>Campo</span>
-      <span>Campo</span>
-      <span>Campo</span>
-      <span>Campo</span>
-    </nav>
-    <div class="header-actions">
-      <a routerLink="/login" class="btn-header-link">Ingresar</a>
-      <a routerLink="/registers" class="btn-header-green">¡Comienza ya!</a>
-    </div>
-  </div>
-</header>
+<main class="landing-page">
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="navbar-container">
+      <a class="navbar-brand" routerLink="/" aria-label="MiCovi - Inicio">
+        <img src="/images/login-min.png" alt="MiCovi" class="navbar-logo" />
+      </a>
 
-<main>
-  <!-- Hero -->
-  <section class="hero-section">
-    <div class="hero-card">
-      <div class="hero-card-inner">
-        <!-- Formas geométricas decorativas -->
-        <div class="geo geo-1"></div>
-        <div class="geo geo-2"></div>
-        <div class="geo geo-3"></div>
-        <div class="geo geo-4"></div>
+      <nav class="navbar-nav" role="navigation" aria-label="Navegación principal">
+        <ul class="navbar-links">
+          <li><span class="navbar-link">Campo</span></li>
+          <li><span class="navbar-link">Campo</span></li>
+          <li><span class="navbar-link">Campo</span></li>
+          <li><span class="navbar-link">Campo</span></li>
+        </ul>
+      </nav>
 
-        <div class="hero-content">
-          <img src="/images/iconoBanner.png" alt="MiCOVI" class="hero-logo-white" />
-          <h1>SPORTS<br />TECHNOLOGY</h1>
-          <p>
-            orientados a las necesidades del Sector del Deporte. Nos especializamos
-            en todo lo relacionado con Eventos deportivos, la Administración,
-            Organización, Difusión, Planificación, Control y Evaluación de los
-            mismos. Nuestro compromiso como equipo es ofrecer soluciones integrales
-            y eficientes para potenciar el desarrollo y el éxito de nuestros clientes
-            en el ámbito deportivo. Trabajamos con pasión y dedicación para estar a
-            la vanguardia de la industria, brindando servicios de alta calidad que
-            impulsen el crecimiento y la excelencia en el sector.
-          </p>
+      <div class="navbar-actions">
+        <button class="btn btn-outline" routerLink="/login" type="button">
+          Ingresar
+        </button>
+        <button class="btn btn-primary" routerLink="/registers" type="button">
+          ¡Comienza ya!
+        </button>
+      </div>
+
+      <button class="navbar-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" type="button">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <div class="navbar-mobile" id="mobile-menu" role="navigation" aria-label="Menú móvil">
+      <ul class="navbar-mobile-links">
+        <li><span class="navbar-mobile-link">Campo</span></li>
+        <li><span class="navbar-mobile-link">Campo</span></li>
+        <li><span class="navbar-mobile-link">Campo</span></li>
+        <li><span class="navbar-mobile-link">Campo</span></li>
+      </ul>
+      <div class="navbar-mobile-actions">
+        <button class="btn btn-outline" routerLink="/login" type="button">Ingresar</button>
+        <button class="btn btn-primary" routerLink="/registers" type="button">¡Comienza ya!</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-background" aria-hidden="true">
+      <img src="/images/fondoBanner.png" alt="" class="hero-bg-image" />
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-logo">
+          <img src="/images/iconoBanner.png" alt="MiCovi" class="hero-logo-image" />
         </div>
+        <h1 id="hero-title" class="hero-title">
+          <span class="hero-title-line">SPORTS</span>
+          <span class="hero-title-line">TECHNOLOGY</span>
+        </h1>
+        <p class="hero-description">
+          orientados a las necesidades del Sector del Deporte. Nos especializamos
+          en todo lo relacionado con Eventos deportivos, la Administración,
+          Organización, Difusión, Planificación, Control y Evaluación de los
+          mismos. Nuestro compromiso como equipo es ofrecer soluciones integrales
+          y eficientes para potenciar el desarrollo y el éxito de nuestros clientes
+          en el ámbito deportivo. Trabajamos con pasión y dedicación para estar a
+          la vanguardia de la industria, brindando servicios de alta calidad que
+          impulsen el crecimiento y la excelencia en el sector.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- Planes -->
-  <section id="planes" class="plans">
-    <h2>PLANES MICOVI</h2>
-    <div class="plans-grid">
-      <div class="plan-card plan-yellow">
-        <div class="plan-header">
-          <h3>PRUEBA GRATIS</h3>
-          <div class="plan-price">$0.00<span>/mes</span></div>
-        </div>
-        <ul>
-          <li>15 deportistas</li>
-          <li>Acceso básico a módulos</li>
-          <li>Soporte limitado</li>
-        </ul>
-        <a routerLink="/registers" class="btn-plan">Empezar gratis</a>
+  <!-- PLANES MICOVI SECTION -->
+  <section class="plans" aria-labelledby="plans-title">
+    <div class="plans-container">
+      <header class="plans-header">
+        <h2 id="plans-title" class="plans-title">
+          <span class="plans-title-blue">PLANES</span>
+          <span class="plans-title-black">MICOVI</span>
+        </h2>
+      </header>
+
+      <div class="plans-grid" role="list">
+        <article class="plan-card plan-card--free" role="listitem">
+          <div class="plan-card-header">
+            <h3 class="plan-name">PRUEBA GRATIS</h3>
+          </div>
+          <div class="plan-price-wrapper">
+            <span class="plan-price plan-price--free">$0.00</span>
+            <span class="plan-period">/mes</span>
+          </div>
+          <ul class="plan-features">
+            <li>15 deportistas</li>
+            <li>Acceso básico a módulos</li>
+            <li>Soporte limitado</li>
+          </ul>
+          <button class="btn btn-plan btn-plan--free" routerLink="/registers" type="button">Empezar gratis</button>
+        </article>
+
+        <article class="plan-card plan-card--plan100" role="listitem">
+          <div class="plan-card-header">
+            <h3 class="plan-name">PLAN 100</h3>
+          </div>
+          <div class="plan-price-wrapper">
+            <span class="plan-price plan-price--plan100">$47.900</span>
+            <span class="plan-period">/mes</span>
+          </div>
+          <ul class="plan-features">
+            <li>Hasta 100 deportistas</li>
+            <li>Todos los módulos</li>
+            <li>Soporte prioritario</li>
+          </ul>
+          <button class="btn btn-plan btn-plan--plan100" routerLink="/registers" type="button">Seleccionar</button>
+        </article>
+
+        <article class="plan-card plan-card--plan250" role="listitem">
+          <div class="plan-card-header">
+            <h3 class="plan-name">PLAN 250</h3>
+          </div>
+          <div class="plan-price-wrapper">
+            <span class="plan-price plan-price--plan250">$68.900</span>
+            <span class="plan-period">/mes</span>
+          </div>
+          <ul class="plan-features">
+            <li>Hasta 250 deportistas</li>
+            <li>Todos los módulos</li>
+            <li>Soporte prioritario</li>
+          </ul>
+          <button class="btn btn-plan btn-plan--plan250" routerLink="/registers" type="button">Seleccionar</button>
+        </article>
+
+        <article class="plan-card plan-card--unlimited" role="listitem">
+          <div class="plan-card-header">
+            <h3 class="plan-name">ILIMITADO</h3>
+          </div>
+          <div class="plan-price-wrapper">
+            <span class="plan-price plan-price--unlimited">$89.900</span>
+            <span class="plan-period">/mes</span>
+          </div>
+          <ul class="plan-features">
+            <li>Deportistas ilimitados</li>
+            <li>Todos los módulos</li>
+            <li>Soporte 24/7</li>
+          </ul>
+          <button class="btn btn-plan btn-plan--unlimited" routerLink="/registers" type="button">Seleccionar</button>
+        </article>
       </div>
-      <div class="plan-card plan-blue">
-        <div class="plan-header">
-          <h3>PLAN 100</h3>
-          <div class="plan-price">$47.900<span>/mes</span></div>
-        </div>
-        <ul>
-          <li>Hasta 100 deportistas</li>
-          <li>Todos los módulos</li>
-          <li>Soporte prioritario</li>
-        </ul>
-        <a routerLink="/registers" class="btn-plan">Seleccionar</a>
-      </div>
-      <div class="plan-card plan-magenta">
-        <div class="plan-header">
-          <h3>PLAN 250</h3>
-          <div class="plan-price">$68.900<span>/mes</span></div>
-        </div>
-        <ul>
-          <li>Hasta 250 deportistas</li>
-          <li>Todos los módulos</li>
-          <li>Soporte prioritario</li>
-        </ul>
-        <a routerLink="/registers" class="btn-plan">Seleccionar</a>
-      </div>
-      <div class="plan-card plan-green">
-        <div class="plan-header">
-          <h3>ILIMITADO</h3>
-          <div class="plan-price">$89.900<span>/mes</span></div>
-        </div>
-        <ul>
-          <li>Deportistas ilimitados</li>
-          <li>Todos los módulos</li>
-          <li>Soporte 24/7</li>
-        </ul>
-        <a routerLink="/registers" class="btn-plan">Seleccionar</a>
-      </div>
+
+      <p class="plans-note">Los precios son por facturación mensual. IVA incluido.</p>
     </div>
-    <p class="plans-note">Los precios son por facturación mensual. IVA incluido.</p>
   </section>
 
-  <!-- Video -->
-  <section id="video" class="video-section">
-    <h2>TITULO DEL VIDEO</h2>
-    <div class="video-wrapper">
-      <div class="video-placeholder">
-        <div class="play-icon">&#9654;</div>
+  <!-- VIDEO SECTION -->
+  <section class="video-section" aria-labelledby="video-title">
+    <div class="video-container">
+      <h2 id="video-title" class="video-title">TITULO DEL VIDEO</h2>
+
+      <div class="video-wrapper">
+        <video
+          class="video-player"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          disablepictureinpicture
+          poster="/images/fondoBanner.png"
+        >
+          <source src="assets/video/fondoBanner_AnimadoV3.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
   </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="/icono/LOGO.webp" alt="MiCovi" class="footer-logo" />
+      </div>
+
+      <hr class="footer-divider footer-divider--top" />
+
+      <div class="footer-grid">
+        <div class="footer-column footer-contact">
+          <h3 class="footer-column-title">Contacto</h3>
+          <address class="footer-address">
+            <p>(57) 3217481983</p>
+            <p>micovi1960&#64;gmail.com</p>
+          </address>
+        </div>
+
+        <div class="footer-column footer-location">
+          <h3 class="footer-column-title">Oficina central</h3>
+          <address class="footer-address">
+            <p>TV 54 No. 30-403</p>
+            <p>Santillana de los Patios Ed.</p>
+            <p>Caobas, Bosque,</p>
+            <p>Cartagena - Colombia</p>
+          </address>
+        </div>
+
+        <div class="footer-column footer-nav">
+          <h3 class="footer-column-title">Síguenos</h3>
+          <ul class="footer-links">
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">YouTube</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column footer-nav">
+          <h3 class="footer-column-title">Legal</h3>
+          <ul class="footer-links">
+            <li><a href="#">Política de privacidad</a></li>
+            <li><a href="#">Términos de uso</a></li>
+            <li><a href="#">Soporte</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="footer-divider footer-divider--bottom" />
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 MICOVI. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BACK TO TOP BUTTON -->
+  <button
+    class="back-to-top"
+    (click)="scrollToTop()"
+    aria-label="Volver arriba"
+    type="button"
+    title="Volver arriba"
+  >
+    <mat-icon>keyboard_arrow_up</mat-icon>
+  </button>
 </main>
-
-<!-- Footer -->
-<footer id="contacto" class="landing-footer">
-  <div class="footer-top">
-    <div class="footer-inner">
-      <div class="footer-col footer-brand">
-        <div class="footer-logo">
-          <img src="/icono/MICOVI.webp" alt="MiCOVI" class="footer-logo-icon" />
-          <span class="footer-logo-text">MiCOVI</span>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Contacto</h4>
-        <p>(57) 3217481983</p>
-        <p>micovi1960&#64;gmail.com</p>
-      </div>
-      <div class="footer-col">
-        <h4>Oficina centros</h4>
-        <p>TV 54 No. 30-403</p>
-        <p>Santillana de los Patios Ed.</p>
-        <p>Caobas, Bosque,</p>
-        <p>Cartagena-</p>
-        <p>Colombia</p>
-      </div>
-      <div class="footer-col">
-        <h4>Síguenos</h4>
-        <p>Facebook</p>
-        <p>Instagram</p>
-        <p>YouTube</p>
-      </div>
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <p>Política de privacidad</p>
-        <p>Términos de uso</p>
-        <p>Soporte</p>
-      </div>
-    </div>
-  </div>
-</footer>

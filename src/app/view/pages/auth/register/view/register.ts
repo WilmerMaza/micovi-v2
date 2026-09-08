@@ -52,6 +52,8 @@ export class Register {
   isSubmitting = false;
   submitState: 'idle' | 'loading' | 'success' | 'error' = 'idle';
   errorMessage = '';
+  fieldErrors: Record<string, string> = {};
+  registeredName = '';
   currentBallIndex = 0;
   selectedStep = 0;
 
@@ -98,9 +100,13 @@ export class Register {
     if (this.isSubmitting) return;
     this.isSubmitting = true;
     this.submitState = 'loading';
+    this.errorMessage = '';
+    this.fieldErrors = {};
 
     this.service.submit().subscribe({
-      next: () => {
+      next: (res: unknown) => {
+        const body = res as { name?: string } | null;
+        this.registeredName = body?.name ?? '';
         this.submitState = 'success';
         this.isSubmitting = false;
         setTimeout(() => {
@@ -113,7 +119,19 @@ export class Register {
         if (err.status === 409) {
           this.errorMessage = 'El correo electrónico ya está registrado';
         } else if (err.status === 400) {
-          this.errorMessage = 'Verifica los datos ingresados';
+          const backendError = err.error;
+          if (backendError?.message && Array.isArray(backendError.message)) {
+            this.errorMessage = 'Verifica los datos ingresados';
+            this.parseFieldErrors(backendError.message);
+          } else if (backendError?.message) {
+            this.errorMessage = backendError.message;
+          } else {
+            this.errorMessage = 'Verifica los datos ingresados';
+          }
+        } else if (err.status === 429) {
+          this.errorMessage = 'Demasiadas solicitudes. Espera un momento e intenta de nuevo.';
+        } else if (err.status === 0) {
+          this.errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión.';
         } else {
           this.errorMessage = 'Error al registrar. Intenta de nuevo.';
         }
@@ -121,9 +139,83 @@ export class Register {
     });
   }
 
+  private parseFieldErrors(messages: string[]): void {
+    const fieldMap: Record<string, string> = {
+      name: 'name',
+      address: 'direccion',
+      phone: 'telefono',
+      country: 'paisNombre',
+      state: 'departamento',
+      city: 'ciudad',
+      character: 'caracterNombre',
+      headquarters: 'sede',
+      website: 'paginaWeb',
+      representativename: 'nombreCompleto',
+      email: 'email',
+      password: 'contraseña',
+    };
+
+    for (const msg of messages) {
+      for (const [backendField, frontendField] of Object.entries(fieldMap)) {
+        if (msg.toLowerCase().includes(backendField.toLowerCase())) {
+          this.fieldErrors[frontendField] = msg;
+          break;
+        }
+      }
+    }
+
+    if (Object.keys(this.fieldErrors).length > 0) {
+      this.applyFieldErrorsToForms();
+    }
+  }
+
+  private applyFieldErrorsToForms(): void {
+    const allForms = [
+      this.service.formPersonalInfo,
+      this.service.formContactInfo,
+      this.service.formRepresentativeInfo,
+      this.service.formSecurityInfo,
+    ];
+
+    for (const form of allForms) {
+      for (const [field, errorMsg] of Object.entries(this.fieldErrors)) {
+        const control = form.get(field);
+        if (control) {
+          control.setErrors({ backend: errorMsg });
+        }
+      }
+    }
+  }
+
   retrySubmit(): void {
     this.submitState = 'idle';
     this.errorMessage = '';
+    this.fieldErrors = {};
+    this.clearFieldErrors();
+  }
+
+  private clearFieldErrors(): void {
+    const allForms = [
+      this.service.formPersonalInfo,
+      this.service.formContactInfo,
+      this.service.formRepresentativeInfo,
+      this.service.formSecurityInfo,
+    ];
+
+    for (const form of allForms) {
+      Object.keys(form.controls).forEach(key => {
+        const control = form.get(key);
+        if (control?.hasError('backend')) {
+          const errors = { ...control.errors };
+          delete errors['backend'];
+          control.setErrors(Object.keys(errors).length ? errors : null);
+        }
+      });
+    }
+  }
+
+  getFieldError(fieldName: string): string | null {
+    return this.fieldErrors[fieldName] ?? null;
   }
 
   goToLogin(): void {
