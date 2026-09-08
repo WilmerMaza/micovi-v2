@@ -8,14 +8,14 @@ import { Page500Component } from './view/pages/page500/page500.component';
 
 export const routes: Routes = [
   // Landing pública (cuando no esté logueado)
-  // {
-  //   path: '',
-  //   pathMatch: 'full',
-  //   loadComponent: () =>
-  //     import('./view/pages/landing/landing-page.component').then(
-  //       (m) => m.LandingPageComponent
-  //     ),
-  // },
+  {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./view/pages/landing/landing-page.component').then(
+        (m) => m.LandingPageComponent
+      ),
+  },
 
   // Auth pública
   {
@@ -35,7 +35,7 @@ export const routes: Routes = [
 
   // Shell protegido, sólo cuando está logueado
   {
-    path: '',
+    path: 'app',
     canActivate: [JwtGuard],
     children: [
       {
@@ -54,7 +54,6 @@ export const routes: Routes = [
             (m) => m.SETTINGS_ROUTES
           ),
       },
-      // podrías agregar otras rutas bajo Shell aquí
     ],
   },
 

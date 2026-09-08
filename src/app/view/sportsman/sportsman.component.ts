@@ -150,7 +150,7 @@ export class SportsmanComponent implements OnInit {
     }
 
     if (action === 'verEjercicios') {
-      this.router.navigate(['sportsman/view'], {
+      this.router.navigate(['app/sportsman/view'], {
         queryParams: { id: data.ID },
       });
     }

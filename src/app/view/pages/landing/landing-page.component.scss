@@ -1,0 +1,464 @@
+/* Landing page — MiCOVI */
+
+/* ─── Scroll fix: override global overflow:hidden from styles.scss ─── */
+:host {
+  display: block;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+}
+
+body {
+  overflow-y: auto !important;
+  height: auto !important;
+}
+
+.hero-section,
+.plans,
+.video-section,
+.landing-footer {
+  scroll-snap-align: start;
+}
+
+/* ─── Header ─────────────────────────────────────────────── */
+.landing-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo-icon {
+  height: 36px;
+  width: auto;
+}
+
+.header-nav {
+  display: flex;
+  gap: 40px;
+
+  span {
+    color: #374151;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+.header-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn-header-link {
+  color: #374151;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+
+  &:hover {
+    color: #2563eb;
+  }
+}
+
+.btn-header-green {
+  padding: 10px 22px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border: none;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #1d4ed8;
+  }
+}
+
+/* ─── Hero Section ───────────────────────────────────────── */
+.hero-section {
+  margin-top: 60px;
+  padding: 40px 32px;
+}
+
+.hero-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.92) 0%, rgba(37, 99, 235, 0.88) 40%, rgba(59, 130, 246, 0.85) 100%),
+              url('/images/fondoBanner.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-card-inner {
+  padding: 60px 48px;
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+}
+
+/* Formas geométricas decorativas */
+.geo {
+  position: absolute;
+  border-radius: 12px;
+}
+
+.geo-1 {
+  width: 280px;
+  height: 280px;
+  background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+  top: -40px;
+  right: 5%;
+  transform: rotate(25deg);
+  opacity: 0.4;
+  border-radius: 20px;
+}
+
+.geo-2 {
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+  top: 20px;
+  right: 22%;
+  transform: rotate(-15deg);
+  opacity: 0.35;
+  border-radius: 16px;
+}
+
+.geo-3 {
+  width: 220px;
+  height: 220px;
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  bottom: -60px;
+  right: 2%;
+  transform: rotate(40deg);
+  opacity: 0.25;
+  border-radius: 24px;
+}
+
+.geo-4 {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+  bottom: 30px;
+  right: 35%;
+  transform: rotate(-30deg);
+  opacity: 0.3;
+  border-radius: 14px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.hero-logo-white {
+  height: 48px;
+  width: auto;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.hero-content h1 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  margin: 0 0 16px;
+  color: #fff;
+}
+
+.hero-content p {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  opacity: 0.9;
+  margin: 0;
+  max-width: 540px;
+  color: #fff;
+}
+
+/* ─── Plans ──────────────────────────────────────────────── */
+.plans {
+  padding: 70px 32px 50px;
+  text-align: center;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    letter-spacing: 3px;
+    margin: 0 0 36px;
+  }
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.plan-card {
+  border-radius: 14px;
+  padding: 0;
+  text-align: center;
+  overflow: hidden;
+  border: none;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+  }
+
+  .plan-header {
+    padding: 24px 20px 16px;
+
+    h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 0 10px;
+      color: #fff;
+    }
+
+    .plan-price {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #fff;
+
+      span {
+        font-size: 0.8rem;
+        font-weight: 400;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 16px 20px;
+    margin: 0;
+    background: #fff;
+
+    li {
+      padding: 7px 0;
+      font-size: 0.82rem;
+      color: #374151;
+      border-bottom: 1px solid #f3f4f6;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .btn-plan {
+    display: block;
+    margin: 12px 20px 20px;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    text-align: center;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.plan-yellow {
+  .plan-header {
+    background: linear-gradient(135deg, #eab308, #facc15);
+  }
+  .btn-plan {
+    background: #eab308;
+    color: #fff;
+  }
+}
+
+.plan-blue {
+  .plan-header {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+  }
+  .btn-plan {
+    background: #2563eb;
+    color: #fff;
+  }
+}
+
+.plan-magenta {
+  .plan-header {
+    background: linear-gradient(135deg, #c026d3, #d946ef);
+  }
+  .btn-plan {
+    background: #c026d3;
+    color: #fff;
+  }
+}
+
+.plan-green {
+  .plan-header {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+  }
+  .btn-plan {
+    background: #16a34a;
+    color: #fff;
+  }
+}
+
+.plans-note {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* ─── Video section ──────────────────────────────────────── */
+.video-section {
+  padding: 50px 32px 70px;
+  text-align: center;
+  background: #fff;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    letter-spacing: 3px;
+    margin: 0 0 32px;
+  }
+}
+
+.video-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.video-placeholder {
+  aspect-ratio: 16 / 9;
+  background: #0f172a;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.landing-footer {
+  background: #1e3a8a;
+  color: #e2e8f0;
+}
+
+.footer-top {
+  padding: 48px 32px 40px;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr;
+  gap: 32px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.footer-logo-icon {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.footer-logo-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.footer-col {
+  h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: #fff;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: #93c5fd;
+    margin: 3px 0;
+    line-height: 1.5;
+  }
+}
