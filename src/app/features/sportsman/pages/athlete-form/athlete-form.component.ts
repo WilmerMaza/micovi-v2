@@ -15,6 +15,7 @@ import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { SportsmanService } from '../../services/sportsman.service';
+import { AuthService } from '../../../../core/services/auth';
 import { Athlete, CatalogItem } from '../../../../view/models/athlete.model';
 import { Toast } from '../../../../utils/alert_Toast';
 
@@ -51,7 +52,8 @@ export class AthleteFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private athleteService: SportsmanService
+    private athleteService: SportsmanService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -90,6 +92,12 @@ export class AthleteFormComponent implements OnInit {
     this.athleteService.getGenders().subscribe((res) => (this.genders = res));
     this.athleteService.getCountries().subscribe((res) => (this.countries = res));
     this.athleteService.getEducationLevels().subscribe((res) => (this.educationLevels = res));
+
+    const user = this.authService.getUser();
+    if (user?.schoolId) {
+      this.athleteService.getCategoriesBySchool(user.schoolId).subscribe((res) => (this.categories = res));
+      this.athleteService.getDisciplinesBySchool(user.schoolId).subscribe((res) => (this.disciplines = res));
+    }
 
     this.form.get('birthCountryId')?.valueChanges.subscribe((countryId) => {
       this.departments = [];
