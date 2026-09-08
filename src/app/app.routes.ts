@@ -7,7 +7,7 @@ import { Page404Component } from './view/pages/page404/page404.component';
 import { Page500Component } from './view/pages/page500/page500.component';
 
 export const routes: Routes = [
-  // Landing pública
+  // Landing pública (cuando no esté logueado)
   {
     path: '',
     pathMatch: 'full',
@@ -35,7 +35,7 @@ export const routes: Routes = [
 
   // Shell protegido, sólo cuando está logueado
   {
-    path: '',
+    path: 'app',
     canActivate: [JwtGuard],
     children: [
       {
@@ -54,7 +54,6 @@ export const routes: Routes = [
             (m) => m.SETTINGS_ROUTES
           ),
       },
-      // podrías agregar otras rutas bajo Shell aquí
     ],
   },
 

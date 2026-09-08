@@ -4,7 +4,7 @@ export const MENU: Record<string, INavData[]> = {
   entrenador: [
     {
       name: 'Deportista',
-      url: '/sportsman',
+      url: '/app/sportsman',
       iconComponent: { name: 'directions_run' },
     },
     {
@@ -22,7 +22,7 @@ export const MENU: Record<string, INavData[]> = {
   instucion: [
     {
       name: 'Deportista',
-      url: '/sportsman',
+      url: '/app/sportsman',
       iconComponent: { name: 'directions_run' },
     },
     {

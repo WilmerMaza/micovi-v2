@@ -173,7 +173,7 @@ export class AthleteFormComponent implements OnInit {
       },
       error: () => {
         Toast.fire({ icon: 'error', title: 'Error al cargar deportista' });
-        this.router.navigate(['/sportsman']);
+        this.router.navigate(['/app/sportsman']);
       },
     });
   }
@@ -315,7 +315,7 @@ export class AthleteFormComponent implements OnInit {
         icon: 'success',
         title: this.isEditMode ? 'Deportista actualizado' : 'Deportista registrado',
       });
-      this.router.navigate(['/sportsman']);
+      this.router.navigate(['/app/sportsman']);
     } catch (error: any) {
       const msg = error?.error?.message || error?.message || 'Error al guardar';
       Toast.fire({ icon: 'error', title: msg });
@@ -325,7 +325,7 @@ export class AthleteFormComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/sportsman']);
+    this.router.navigate(['/app/sportsman']);
   }
 
   getErrorMessage(field: string): string {

@@ -10,7 +10,7 @@ export class IgnoreLoginGuard {
   constructor(private authService$: AuthService, private router: Router) {}
   canActivate(): boolean {
     if (this.authService$.isAuthenticated()) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/app']);
       return false;
     } else {
       return true;

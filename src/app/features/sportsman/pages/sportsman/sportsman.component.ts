@@ -109,7 +109,7 @@ export class SportsmanComponent implements OnInit {
   }
 
   createAthlete(): void {
-    this.router.navigate(['/sportsman/create']);
+    this.router.navigate(['/app/sportsman/create']);
   }
 
   viewAthlete(athlete: Athlete): void {
@@ -117,7 +117,7 @@ export class SportsmanComponent implements OnInit {
   }
 
   editAthlete(athlete: Athlete): void {
-    this.router.navigate(['/sportsman/edit', athlete.id]);
+    this.router.navigate(['/app/sportsman/edit', athlete.id]);
   }
 
   deleteAthlete(athlete: Athlete): void {

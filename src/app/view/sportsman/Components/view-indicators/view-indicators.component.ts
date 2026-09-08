@@ -114,7 +114,7 @@ export class ViewIndicatorsComponent implements OnInit {
         this.nameEjerc = data.Name;
         break;
       case 'ver rubrica':
-        this.redirect$.navigate(['sportsman/rubrica'], {
+        this.redirect$.navigate(['app/sportsman/rubrica'], {
           queryParams: { id: this.routeId, ejercicio: data.ID },
         });
         break;
