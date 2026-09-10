@@ -1,24 +1,52 @@
-.w-100 {
-  width: 100%;
+@use '@angular/material' as mat;
+@include mat.form-field-density(-1);
+
+:host {
   display: block;
+  width: 100%;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .form-row {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .w-50 {
-  flex: 1;
-  min-width: 0;
+  width: 100%;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+  @include mat.form-field-density(-2);
+
+  .form-wrapper,
   .form-row {
-    flex-direction: column;
-    gap: 0;
+    gap: 6px;
   }
+}
+
+@media (min-width: 641px) {
+  .form-wrapper {
+    gap: 14px;
+  }
+
+  .form-row {
+    flex-direction: row;
+    gap: 16px;
+  }
+
   .w-50 {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
   }
 }

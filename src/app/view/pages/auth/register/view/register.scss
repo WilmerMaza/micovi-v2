@@ -66,3 +66,535 @@
 @keyframes ball-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px) scale(1.1,.9)}}
 @keyframes loading-slide{0%{transform:translateX(-100%);width:30%}50%{width:60%}100%{transform:translateX(400%);width:30%}}
 @media(max-width:640px){.register-stage{padding:14px 10px;align-items:flex-start}.register-card{border-radius:16px}#register .card-header-blue{padding:20px 18px 16px}#register .header-logo{height:38px}#register .step-header-info{padding:16px 18px 4px}#register .stepper-content{padding:6px 18px 0}#register .step-actions{padding:12px 18px 20px;flex-direction:column}#register .step-actions .mdc-button{width:100%}#register .node-label{display:none}#register .step-line{margin-top:17px}#register .have-account{padding:0 18px 20px}#register .error-actions{flex-direction:column}}
+@use '@angular/material' as mat;
+@include mat.form-field-density(-1);
+
+#register {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #eef2fb;
+  padding: 24px 16px;
+  position: relative;
+  overflow-y: auto;
+  font-family: "Inter", "Inria Sans", Roboto, sans-serif;
+
+  .register-bg-deco {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+    }
+    .circle-1 {
+      top: -160px;
+      left: -160px;
+      width: 500px;
+      height: 500px;
+      background: #c7d8f866;
+    }
+    .circle-2 {
+      top: 60%;
+      right: -120px;
+      width: 400px;
+      height: 400px;
+      background: #bfd0f54c;
+    }
+    .circle-3 {
+      bottom: -100px;
+      left: 40%;
+      width: 360px;
+      height: 360px;
+      background: #d0e0fb66;
+    }
+  }
+
+  .img {
+    width: 48px;
+    height: auto;
+  }
+
+  .card_register {
+    margin: 0 auto;
+    padding: 0 !important;
+    width: 100%;
+    max-width: 600px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0px 8px 10px -6px #e2e8f0cc, 0px 20px 25px -5px #e2e8f0cc;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  // ── Cabecera azul ──────────────────────────────────────────
+  .card-header-blue {
+    background: linear-gradient(135deg, #0c4cc8 0%, #1a6aff 100%);
+    padding: 28px 24px 20px 24px;
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .header_register {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  // ── Stepper personalizado en la cabecera azul ───────────────────
+  .stepper-header-custom {
+    margin-top: 12px;
+
+    .step-nodes {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.25);
+      margin: 0 8px;
+      position: relative;
+      top: -10px;
+      transition: background 0.3s;
+
+      &.completed {
+        background: #ffffff;
+      }
+    }
+
+    .step-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+
+      .node-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.65);
+        font-weight: 700;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+      }
+
+      .node-label {
+        margin-top: 6px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.55);
+        white-space: nowrap;
+      }
+
+      &.active {
+        .node-circle {
+          background: #ffffff;
+          border-color: #ffffff;
+          color: #0c4cc8;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .node-label {
+          color: #ffffff;
+          font-weight: 700;
+        }
+      }
+
+      &.completed {
+        .node-circle {
+          background: #ffffff;
+          border-color: #ffffff;
+          color: #0c4cc8;
+        }
+        .node-label {
+          color: rgba(255, 255, 255, 0.85);
+        }
+      }
+    }
+  }
+
+  // ── Contenido de cada paso ──────────────────────────────────────
+  .step-header-info {
+    padding: 20px 24px 8px 24px;
+
+    .step-counter {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #62748e;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+
+    .step-title {
+      display: block;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #1d293d;
+    }
+  }
+
+  .stepper-content {
+    padding: 8px 24px 0 24px;
+  }
+
+  // Oculta la cabecera nativa del mat-stepper
+  ::ng-deep .stepper-wrapper {
+    background: transparent !important;
+
+    .mat-horizontal-stepper-header-container {
+      display: none !important;
+    }
+
+    .mat-horizontal-content-container {
+      padding: 0 !important;
+    }
+  }
+
+  // ── Botones de navegación ───────────────────────────────────────
+  .step-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px 24px 24px;
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────
+  .register-footer {
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: #62748e;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  // ── Loading / resultado ────────────────────────────────────────
+  .loading-section {
+    text-align: center;
+    padding: 48px 24px 40px 24px;
+
+    .ball-bouncer {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: ball-bounce 0.7s ease-in-out infinite;
+
+      .sport-ball {
+        font-size: 48px !important;
+        width: 48px !important;
+        height: 48px !important;
+        color: #0c4cc8;
+      }
+    }
+
+    .loading-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1d293d;
+      margin: 0 0 6px 0;
+    }
+
+    .loading-subtext {
+      font-size: 0.875rem;
+      color: #62748e;
+      margin: 0 0 20px 0;
+    }
+
+    .loading-bar-container {
+      width: 240px;
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .loading-bar {
+      width: 30%;
+      height: 100%;
+      background: linear-gradient(90deg, #0c4cc8, #1a6aff);
+      border-radius: 4px;
+      animation: loading-slide 1.4s ease-in-out infinite;
+    }
+  }
+
+  .result-section {
+    text-align: center;
+    padding: 40px 24px 32px 24px;
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: #1d293d;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #62748e;
+      margin: 0 0 4px 0;
+      line-height: 1.5;
+    }
+  }
+
+  .success-icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #2e7d32;
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    font-family: "Inter", Roboto, sans-serif;
+  }
+
+  .success-btn {
+    margin-top: 20px;
+    background: linear-gradient(90deg, #0c4cc8 0%, #1a6aff 100%) !important;
+    border-radius: 24px !important;
+    padding: 0 32px !important;
+    height: 40px !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+  }
+
+  .error-icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #d32f2f;
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    font-family: "Inter", Roboto, sans-serif;
+  }
+
+  .error-code {
+    display: block;
+    font-size: 0.75rem;
+    color: #90a1b9;
+    font-family: monospace;
+    margin-top: 12px;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+
+    .retry-btn {
+      background: linear-gradient(90deg, #0c4cc8 0%, #1a6aff 100%) !important;
+      border-radius: 24px !important;
+      padding: 0 28px !important;
+      height: 40px !important;
+      color: #ffffff !important;
+      font-weight: 600 !important;
+    }
+
+    .cancel-btn {
+      border-radius: 24px !important;
+      padding: 0 28px !important;
+      height: 40px !important;
+      border-color: #e2e8f0 !important;
+      color: #62748e !important;
+      font-weight: 600 !important;
+    }
+  }
+
+  // ── Animaciones ────────────────────────────────────────────────
+  @keyframes ball-bounce {
+    0%, 100% { transform: translateY(0) scale(1, 1); }
+    40% { transform: translateY(-26px) scale(1, 1); }
+    50% { transform: translateY(-26px) scale(1.1, 0.9); }
+    60% { transform: translateY(-26px) scale(1, 1); }
+  }
+
+  @keyframes loading-slide {
+    0% { transform: translateX(-100%); width: 30%; }
+    50% { width: 60%; }
+    100% { transform: translateX(400%); width: 30%; }
+  }
+}
+
+// ── Responsive: Móvil ────────────────────────────────────────────
+@media (max-width: 640px) {
+  #register {
+    padding: 6px;
+
+    .card_register {
+      border-radius: 10px;
+    }
+
+    .card-header-blue {
+      padding: 12px 10px 8px 10px;
+    }
+
+    .header_register {
+      margin-bottom: 8px;
+
+      h1 {
+        font-size: 1.05rem;
+        margin-bottom: 1px;
+      }
+      .subtitle { font-size: 0.6875rem; }
+    }
+
+    .img { width: 28px; }
+
+    .stepper-header-custom {
+      margin-top: 4px;
+
+      .node-label {
+        display: none;
+      }
+      .step-line {
+        top: 0;
+        margin: 0 3px;
+        height: 1.5px;
+      }
+      .node-circle {
+        width: 22px;
+        height: 22px;
+        font-size: 0.6875rem;
+        border-width: 1.5px;
+      }
+    }
+
+    .step-header-info {
+      padding: 10px 10px 2px 10px;
+
+      .step-counter {
+        font-size: 0.6rem;
+        margin-bottom: 0;
+      }
+      .step-title {
+        font-size: 0.875rem;
+      }
+    }
+
+    .stepper-content {
+      padding: 2px 10px 0 10px;
+    }
+
+    .step-actions {
+      padding: 8px 10px 12px 10px;
+      flex-direction: column;
+      gap: 6px;
+
+      button {
+        width: 100%;
+        height: 36px !important;
+        font-size: 0.8125rem !important;
+      }
+    }
+
+    .register-footer {
+      margin-top: 6px;
+      font-size: 0.6rem;
+    }
+
+    .loading-section {
+      padding: 28px 14px 24px 14px;
+
+      .ball-bouncer {
+        width: 52px;
+        height: 52px;
+        margin-bottom: 12px;
+
+        .sport-ball {
+          font-size: 32px !important;
+          width: 32px !important;
+          height: 32px !important;
+        }
+      }
+
+      .loading-text {
+        font-size: 1rem;
+        margin-bottom: 3px;
+      }
+
+      .loading-subtext {
+        font-size: 0.75rem;
+        margin-bottom: 14px;
+      }
+
+      .loading-bar-container {
+        width: 180px;
+      }
+    }
+
+    .result-section {
+      padding: 24px 14px 20px 14px;
+
+      h2 { font-size: 1.05rem; }
+      p { font-size: 0.8rem; }
+    }
+
+    .success-icon-box,
+    .error-icon-box {
+      width: 44px;
+      height: 44px;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .success-btn,
+    .error-actions .retry-btn,
+    .error-actions .cancel-btn {
+      height: 36px !important;
+      padding: 0 20px !important;
+      font-size: 0.8125rem !important;
+    }
+
+    .error-actions {
+      margin-top: 14px;
+      flex-direction: column;
+      gap: 6px;
+
+      button { width: 100%; }
+    }
+  }
+}

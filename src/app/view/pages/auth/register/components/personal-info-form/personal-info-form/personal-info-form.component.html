@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="form-wrapper">
   <ng-template matStepLabel>Institución</ng-template>
 
   <mat-form-field appearance="outline" class="w-100">
@@ -17,8 +17,8 @@
     <mat-error *ngIf="form.get('email')?.hasError('required')">
       Este campo es obligatorio
     </mat-error>
-    <mat-error *ngIf="form.get('email')?.hasError('email')">
-      Ingresa un correo electrónico válido
+    <mat-error *ngIf="!form.get('email')?.hasError('required') && form.get('email')?.hasError('email')">
+      Ingresa un correo electrónico válido (ej. nombre@dominio.com)
     </mat-error>
   </mat-form-field>
 
@@ -79,4 +79,5 @@
       Este campo es obligatorio
     </mat-error>
   </mat-form-field>
+</form>
 </form>
