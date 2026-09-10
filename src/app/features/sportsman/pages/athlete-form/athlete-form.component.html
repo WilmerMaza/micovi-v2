@@ -1,0 +1,277 @@
+<div class="athlete-form-container">
+  <header class="form-header">
+    <div class="header-text">
+      <h2>{{ isEditMode ? 'Editar Deportista' : 'Registrar Deportista' }}</h2>
+      <p>{{ isEditMode ? 'Modifica la información del deportista' : 'Completa la información para registrar un nuevo deportista' }}</p>
+    </div>
+    <img src="/micovi.ico" alt="Logo-micovi">
+  </header>
+
+  <div class="progress-bar">
+    <div class="progress-steps">
+      <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+        <div class="step-circle">1</div>
+        <span class="step-label">Identificación</span>
+      </div>
+      <div class="step-line" [class.active]="currentStep > 1"></div>
+      <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+        <div class="step-circle">2</div>
+        <span class="step-label">Datos físicos</span>
+      </div>
+      <div class="step-line" [class.active]="currentStep > 2"></div>
+      <div class="step" [class.active]="currentStep >= 3">
+        <div class="step-circle">3</div>
+        <span class="step-label">Información deportiva</span>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="form" class="registration-form">
+    <!-- FASE 1: Identificación y datos personales -->
+    <section *ngIf="currentStep === 1" class="form-step">
+      <div class="step-header">
+        <mat-icon>person</mat-icon>
+        <h3>Identificación y Datos Personales</h3>
+      </div>
+
+      <div class="form-content">
+        <div class="identification-layout">
+          <div class="identification-form">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Nombres</mat-label>
+                <input matInput formControlName="firstName" placeholder="Ej. Juan Felipe">
+                <mat-error>{{ getErrorMessage('firstName') }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Apellidos</mat-label>
+                <input matInput formControlName="lastName" placeholder="Ej. Pérez Mendoza">
+                <mat-error>{{ getErrorMessage('lastName') }}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo de documento</mat-label>
+                <mat-select formControlName="documentTypeId">
+                  <mat-option *ngFor="let dt of documentTypes" [value]="dt.id">
+                    {{ dt.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error>{{ getErrorMessage('documentTypeId') }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Número de documento</mat-label>
+                <input matInput formControlName="documentNumber" placeholder="Ej. 12345678">
+                <mat-error>{{ getErrorMessage('documentNumber') }}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="birthDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error>{{ getErrorMessage('birthDate') }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Género</mat-label>
+                <mat-select formControlName="genderId">
+                  <mat-option *ngFor="let g of genders" [value]="g.id">
+                    {{ g.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error>{{ getErrorMessage('genderId') }}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="photo-upload" (click)="fileInput.click()">
+            <button *ngIf="imagePreview || currentPhotoUrl" class="remove-image" type="button"
+              (click)="removePhoto(); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <ng-container *ngIf="!imagePreview && !currentPhotoUrl">
+              <mat-icon>upload</mat-icon>
+              <h4>Añadir foto</h4>
+              <p>Formatos: JPG o PNG</p>
+              <p>Max. 2MB</p>
+            </ng-container>
+            <ng-container *ngIf="imagePreview || currentPhotoUrl">
+              <img [src]="imagePreview || currentPhotoUrl" alt="Vista previa" class="preview-image">
+            </ng-container>
+            <input type="file" hidden #fileInput accept="image/png, image/jpeg"
+              (change)="onFileSelected($event)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FASE 2: Ubicación, datos físicos y educación -->
+    <section *ngIf="currentStep === 2" class="form-step">
+      <div class="step-header">
+        <mat-icon>straighten</mat-icon>
+        <h3>Ubicación, Datos Físicos y Educación</h3>
+      </div>
+
+      <div class="form-content">
+        <h4 class="section-title">Lugar de nacimiento</h4>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>País</mat-label>
+            <mat-select formControlName="birthCountryId">
+              <mat-option *ngFor="let c of countries" [value]="c.id">{{ c.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('birthCountryId') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Departamento</mat-label>
+            <mat-select formControlName="birthDepartmentId" [disabled]="departments.length === 0">
+              <mat-option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('birthDepartmentId') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Ciudad</mat-label>
+            <mat-select formControlName="birthCityId" [disabled]="cities.length === 0">
+              <mat-option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('birthCityId') }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <h4 class="section-title">Lugar de residencia</h4>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>País</mat-label>
+            <mat-select formControlName="residenceCountryId">
+              <mat-option *ngFor="let c of countries" [value]="c.id">{{ c.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('residenceCountryId') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Departamento</mat-label>
+            <mat-select formControlName="residenceDepartmentId">
+              <mat-option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('residenceDepartmentId') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Ciudad</mat-label>
+            <mat-select formControlName="residenceCityId">
+              <mat-option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('residenceCityId') }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <h4 class="section-title">Datos físicos</h4>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Peso (kg)</mat-label>
+            <input matInput type="number" formControlName="weight" placeholder="Ej. 65.4">
+            <mat-error>{{ getErrorMessage('weight') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Altura (m)</mat-label>
+            <input matInput type="number" step="0.01" formControlName="height" placeholder="Ej. 1.72">
+            <mat-error>{{ getErrorMessage('height') }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <h4 class="section-title">Educación</h4>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Nivel educativo</mat-label>
+            <mat-select formControlName="educationLevelId">
+              <mat-option *ngFor="let el of educationLevels" [value]="el.id">{{ el.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('educationLevelId') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Institución educativa</mat-label>
+            <input matInput formControlName="educationInstitution" placeholder="Ej. I.E.D. San José">
+          </mat-form-field>
+        </div>
+      </div>
+    </section>
+
+    <!-- FASE 3: Información deportiva y contacto -->
+    <section *ngIf="currentStep === 3" class="form-step">
+      <div class="step-header">
+        <mat-icon>sports</mat-icon>
+        <h3>Información Deportiva y Contacto</h3>
+      </div>
+
+      <div class="form-content">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Categoría</mat-label>
+            <mat-select formControlName="categoryId">
+              <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('categoryId') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Disciplina</mat-label>
+            <mat-select formControlName="disciplineId">
+              <mat-option *ngFor="let d of disciplines" [value]="d.id">{{ d.name }}</mat-option>
+            </mat-select>
+            <mat-error>{{ getErrorMessage('disciplineId') }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="email" placeholder="correo@ejemplo.com">
+            <mat-error>{{ getErrorMessage('email') }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phone" placeholder="Ej. 3001234567">
+          </mat-form-field>
+        </div>
+      </div>
+    </section>
+
+    <footer class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancel()">
+        <mat-icon>close</mat-icon>
+        <span>Cancelar</span>
+      </button>
+
+      <div class="nav-buttons">
+        <button *ngIf="currentStep > 1" type="button" class="btn-back" (click)="prevStep()">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Atrás</span>
+        </button>
+
+        <button *ngIf="currentStep < totalSteps" type="button" class="btn-next"
+          [disabled]="!isStepValid(currentStep)" (click)="nextStep()">
+          <span>Siguiente</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+
+        <button *ngIf="currentStep === totalSteps" type="button" class="btn-save"
+          [disabled]="isSaving || form.invalid" (click)="onSubmit()">
+          <mat-icon *ngIf="!isSaving">save</mat-icon>
+          <mat-spinner *ngIf="isSaving" diameter="20"></mat-spinner>
+          <span>{{ isSaving ? 'Guardando...' : (isEditMode ? 'Actualizar' : 'Guardar') }}</span>
+        </button>
+      </div>
+    </footer>
+  </form>
+</div>

@@ -18,8 +18,8 @@
       <button
         class="nav-button"
         [class.collapsed]="collapsed()"
-        [class.active]="isActive('/dashboard')"
-        (click)="navigateTo('/dashboard')"
+        [class.active]="isActive('/app/dashboard')"
+        (click)="navigateTo('/app/dashboard')"
       >
         <mat-icon>home</mat-icon>
         @if (!collapsed() && showText()) {

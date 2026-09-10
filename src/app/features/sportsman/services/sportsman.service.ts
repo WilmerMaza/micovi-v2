@@ -1,79 +1,122 @@
+/**
+ * Servicio para gestión de deportistas.
+ * Se comunica con el backend REST usando endpoints reales de /api/athletes.
+ */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { responseAssing } from '../Models/indicatorsModel';
+import { Observable, map } from 'rxjs';
 import { MicoviApi } from '../../../core/services/micovi.api';
-import { DynamicObject } from '../../../shared/model/filterModel';
-import { ICalificacion, Sportsman } from '../../../view/models/DataSportsman';
-import { categoryModel } from '../../../view/models/categoryModel';
-import { HistorialCategory } from '../../../view/models/HistorialCategoryModel';
-import { SuccessResponse } from '../../../view/models/SuccessResponse';
+import { Athlete, AthleteListResponse, AthleteFilters, CatalogItem } from '../../../view/models/athlete.model';
+
 @Injectable({
   providedIn: 'root',
 })
 export class SportsmanService {
-  constructor(private micovid$: MicoviApi) {}
-  private redirectSportmanInfo: Sportsman[] = [];
+  constructor(private micoviApi: MicoviApi) {}
 
-  getSportmanInfoRedirect(): Sportsman[] {
+  getAthletes(filters?: AthleteFilters): Observable<AthleteListResponse> {
+    let params = new URLSearchParams();
+    if (filters?.search) params.set('search', filters.search);
+    if (filters?.categoryId) params.set('categoryId', filters.categoryId);
+    if (filters?.disciplineId) params.set('disciplineId', filters.disciplineId);
+    if (filters?.genderId) params.set('genderId', filters.genderId);
+    if (filters?.page) params.set('page', filters.page.toString());
+    if (filters?.limit) params.set('limit', filters.limit.toString());
+
+    const queryString = params.toString();
+    const url = `/athletes${queryString ? '?' + queryString : ''}`;
+    return this.micoviApi.get(url);
+  }
+
+  getAthleteById(id: string): Observable<Athlete> {
+    return this.micoviApi.get(`/athletes/${id}`);
+  }
+
+  createAthlete(data: Partial<Athlete>): Observable<Athlete> {
+    return this.micoviApi.post('/athletes', data);
+  }
+
+  updateAthlete(id: string, data: Partial<Athlete>): Observable<Athlete> {
+    return this.micoviApi.put(`/athletes/${id}`, data);
+  }
+
+  deleteAthlete(id: string): Observable<{ message: string }> {
+    return this.micoviApi.delete(`/athletes/${id}`);
+  }
+
+  uploadPhoto(athleteId: string, file: File): Observable<{ photoUrl: string; message: string }> {
+    const formData = new FormData();
+    formData.append('photo', file);
+    return this.micoviApi.request('POST', `/athletes/${athleteId}/photo`, { body: formData });
+  }
+
+  getDocumentTypes(): Observable<CatalogItem[]> {
+    return this.micoviApi.get('/catalogs/document-types');
+  }
+
+  getGenders(): Observable<CatalogItem[]> {
+    return this.micoviApi.get('/catalogs/genders');
+  }
+
+  getCountries(): Observable<CatalogItem[]> {
+    return this.micoviApi.get('/catalogs/countries');
+  }
+
+  getDepartmentsByCountry(countryId: string): Observable<CatalogItem[]> {
+    return this.micoviApi.get(`/catalogs/countries/${countryId}/departments`);
+  }
+
+  getCitiesByDepartment(departmentId: string): Observable<CatalogItem[]> {
+    return this.micoviApi.get(`/catalogs/departments/${departmentId}/cities`);
+  }
+
+  getEducationLevels(): Observable<CatalogItem[]> {
+    return this.micoviApi.get('/catalogs/education-levels');
+  }
+
+  getDisciplinesBySchool(schoolId: string): Observable<CatalogItem[]> {
+    return this.micoviApi.get(`/catalogs/schools/${schoolId}/disciplines`);
+  }
+
+  getCategoriesBySchool(schoolId: string): Observable<CatalogItem[]> {
+    return this.micoviApi.get(`/catalogs/schools/${schoolId}/categories`);
+  }
+
+  // Legacy methods for backward compatibility with indicators/rubrica components
+  private redirectSportmanInfo: any[] = [];
+
+  setSportmanInfoRedirect(data: any): void {
+    this.redirectSportmanInfo = [];
+    this.redirectSportmanInfo.push(data);
+  }
+
+  getSportmanInfoRedirect(): any[] {
     const data = [...this.redirectSportmanInfo];
     this.redirectSportmanInfo = [];
     return data;
   }
 
-  setSportmanInfoRedirect(data: Sportsman): void {
-    this.redirectSportmanInfo = [];
-    this.redirectSportmanInfo.push(data);
+  getAlldataIndicators(ID: string): Observable<any> {
+    return this.micoviApi.get(`/indicators/get-indicators?id=${ID}`);
   }
 
-  getSportsman(): Observable<Sportsman[]> {
-    const endpoint = '/sportMan/getAll';
-    return this.micovid$.get(endpoint);
+  getAllCalifications(sportmanid: string, ejercicioid: string): Observable<any[]> {
+    return this.micoviApi.get(`/sportMan/calificacion?SportsManID=${sportmanid}&EjercicioID=${ejercicioid}`);
   }
 
-  getSFilterSportsman(filterData: DynamicObject<any>): Observable<Sportsman[]> {
-    const endpoint = '/sportMan/get';
-    return this.micovid$.post(endpoint, filterData);
+  // Legacy methods for old create-sportsman component
+  getAllCategory(): Observable<any[]> {
+    return this.micoviApi.get('/Categoria/getAll');
   }
 
-  getAllCategory(): Observable<categoryModel[]> {
-    const endpoint = '/Categoria/getAll';
-    return this.micovid$.get(endpoint);
+  createSportsman(data: any): Observable<any> {
+    return this.micoviApi.post('/sportMan/create', data);
   }
 
-  getHistoryCategory(idObject: {
-    id: string;
-  }): Observable<HistorialCategory[]> {
-    const endpoint = '/sportMan/getHistorialCategory';
-    return this.micovid$.post(endpoint, idObject);
+  updateSportsman(data: any): Observable<any> {
+    return this.micoviApi.post('/sportMan/update', data);
   }
 
-  createSportsman(data: Sportsman): Observable<SuccessResponse> {
-    const endpoint = '/sportMan/create';
-    return this.micovid$.post(endpoint, data);
-  }
-
-  updateSportsman(data: Sportsman): Observable<SuccessResponse> {
-    const endpoint = '/sportMan/update';
-    return this.micovid$.post(endpoint, data);
-  }
-
-  getAlldataIndicators(ID: string): Observable<responseAssing> {
-    const url = `/indicators/get-indicators?id=${ID}`;
-    return this.micovid$.get(url);
-  }
-
-  enviarDataCalificacionFinal(data: {
-    [key: string]: number | string;
-  }): Observable<SuccessResponse> {
-    const url = `/sportMan/calificacion`;
-    return this.micovid$.post(url, data);
-  }
-
-  getAllCalifications(
-    sportmanid: string,
-    ejercicioid: string
-  ): Observable<ICalificacion[]> {
-    const url = `/sportMan/calificacion?SportsManID=${sportmanid}&EjercicioID=${ejercicioid}`;
-    return this.micovid$.get(url);
+  enviarDataCalificacionFinal(data: { [key: string]: number | string }): Observable<any> {
+    return this.micoviApi.post('/sportMan/calificacion', data);
   }
 }

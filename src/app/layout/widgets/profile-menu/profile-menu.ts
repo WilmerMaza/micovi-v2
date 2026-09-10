@@ -37,6 +37,6 @@ export class ProfileMenu {
   }
 
   public configuracion(): void {
-    this.router.navigate(['configuration']);
+    this.router.navigate(['app/configuration']);
   }
 }

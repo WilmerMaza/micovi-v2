@@ -1,3 +1,71 @@
+#register,.register-stage *{font-family:"Inria Sans","Inter",Roboto,sans-serif!important}
+.register-stage{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 24px}
+.register-bg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;background:#0a2456;pointer-events:none}
+.register-veil{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;background:linear-gradient(115deg,rgba(7,26,72,.5),rgba(12,76,200,.28) 52%,rgba(7,26,72,.44))}
+.register-card{position:relative;z-index:2;width:min(760px,100%)}
+#register .card_register{margin:0;padding:0!important;width:100%;background:rgba(255,255,255,.98);border-radius:20px;box-shadow:0 24px 70px rgba(3,15,50,.5);display:flex;flex-direction:column;overflow:hidden}
+#register .card-header-blue{background:linear-gradient(135deg,#0a2a6b,#0c4cc8 60%,#1a6aff);padding:26px 34px 22px;color:#fff}
+#register .header-logo{display:block;height:46px;width:auto;margin:0 auto 14px;filter:drop-shadow(0 4px 8px #0006)}
+#register .header_register{text-align:center;margin-bottom:18px}
+#register .header_register h1{font-size:1.5rem;font-weight:800;margin:0;color:#fff}
+#register .header_register .subtitle{margin:4px 0 0;font-size:.82rem;color:rgba(255,255,255,.85)}
+#register .head-hint{margin:10px auto 0;font-size:.72rem;color:#cfe1ff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:5px 14px;display:inline-block}
+#register .step-nodes{display:flex;align-items:flex-start;width:100%}
+#register .step-line{flex:1;height:2px;background:rgba(255,255,255,.25);margin:17px 8px 0;border-radius:2px}
+#register .step-line.completed{background:linear-gradient(90deg,#7db4ff,#fff)}
+#register .step-node{display:flex;flex-direction:column;align-items:center;min-width:64px}
+#register .node-circle{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);font-weight:800;font-size:.85rem}
+#register .node-label{margin-top:7px;font-size:.66rem;font-weight:600;color:rgba(255,255,255,.6)}
+#register .step-node.active .node-circle{background:#fff;border-color:#fff;color:#0c4cc8;box-shadow:0 4px 14px rgba(0,0,0,.25);transform:scale(1.08)}
+#register .step-node.active .node-label{color:#fff;font-weight:800}
+#register .step-node.completed .node-circle{background:#1a6aff;border-color:#7db4ff;color:#fff}
+#register .step-node.completed .node-label{color:#cfe1ff}
+#register .step-header-info{padding:22px 34px 6px}
+#register .step-counter{display:block;font-size:.7rem;font-weight:700;color:#0c4cc8;text-transform:uppercase;margin-bottom:2px}
+#register .step-title{display:block;font-size:1.1rem;font-weight:800;color:#101c33}
+#register .stepper-content{padding:8px 34px 0}
+:host ::ng-deep .stepper-wrapper{background:transparent!important}
+:host ::ng-deep .stepper-wrapper .mat-horizontal-stepper-header-container{display:none!important}
+:host ::ng-deep .stepper-wrapper .mat-horizontal-content-container{padding:0!important}
+:host ::ng-deep .stepper-content .mat-mdc-form-field{width:100%;margin-bottom:4px}
+:host ::ng-deep .stepper-content .mdc-text-field--outlined{background:#fbfdff;border-radius:12px;min-height:54px;transition:box-shadow .2s ease,background .2s ease}
+:host ::ng-deep .stepper-content .mdc-notched-outline>*{border-color:#c4d2ec!important}
+:host ::ng-deep .stepper-content .mdc-text-field:hover .mdc-notched-outline>*{border-color:#7ea4ec!important}
+:host ::ng-deep .stepper-content .mat-focused .mdc-notched-outline>*{border-color:#0c4cc8!important}
+:host ::ng-deep .stepper-content .mat-focused .mdc-text-field--outlined{box-shadow:0 0 0 3px rgba(12,76,200,.14)}
+:host ::ng-deep .stepper-content .mat-form-field-invalid .mdc-notched-outline>*{border-color:#d32f2f!important}
+:host ::ng-deep .stepper-content .mat-mdc-form-field-icon-prefix{color:#0c4cc8}
+:host ::ng-deep .stepper-content input::placeholder{color:#9db1d1}
+#register .step-actions{display:flex;justify-content:flex-end;gap:12px;padding:16px 34px 26px}
+#register .step-actions .mdc-button{border-radius:12px!important;height:44px!important;padding:0 30px!important;font-weight:700!important}
+#register .step-actions .mat-mdc-unelevated-button:not(:disabled){background:linear-gradient(180deg,#1a5fd7,#0c4cc8)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,76,200,.3)!important}
+#register .step-actions .mat-mdc-unelevated-button:not(:disabled):hover{filter:brightness(1.08)}
+#register .step-actions .mat-mdc-unelevated-button:not(:disabled):active{filter:brightness(.94)}
+#register .step-actions .mat-mdc-unelevated-button:disabled{background:#cbd5e1!important;color:#f1f5f9!important}
+#register .step-actions .mat-mdc-outlined-button{color:#0c4cc8!important;border-color:#bfcdf3!important}
+#register .have-account{text-align:center;font-size:.86rem;color:#3c4d68;margin:4px 0 0;padding:14px 34px 26px;background:linear-gradient(180deg,transparent,rgba(12,76,200,.06))}
+#register .have-account a{color:#0c4cc8;font-weight:800;cursor:pointer;text-decoration:none;border-bottom:2px solid #bfd4f7;padding-bottom:1px}
+#register .have-account a:hover{border-color:#0c4cc8}
+#register .loading-section{text-align:center;padding:56px 28px 44px}
+#register .ball-bouncer{width:80px;height:80px;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;animation:ball-bounce .7s ease-in-out infinite}
+#register .sport-ball{font-size:54px!important;width:54px!important;height:54px!important;color:#0c4cc8}
+#register .loading-text{font-size:1.2rem;font-weight:800;color:#101c33;margin:0 0 6px}
+#register .loading-subtext{font-size:.85rem;color:#62748e;margin:0 0 22px}
+#register .loading-bar-container{width:230px;height:4px;background:#e2e8f0;border-radius:4px;margin:0 auto;overflow:hidden}
+#register .loading-bar{width:30%;height:100%;background:linear-gradient(90deg,#0c4cc8,#1a6aff);border-radius:4px;animation:loading-slide 1.4s ease-in-out infinite}
+#register .result-section{text-align:center;padding:44px 28px 36px}
+#register .success-icon-box,#register .error-icon-box{width:54px;height:54px;border-radius:50%;color:#fff;font-size:1.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+#register .success-icon-box{background:#2e7d32}
+#register .error-icon-box{background:#d32f2f}
+#register .result-section h2{font-size:1.3rem;font-weight:800;margin:0 0 6px;color:#101c33}
+#register .result-section p{font-size:.9rem;color:#62748e;margin:0 0 4px}
+#register .error-code{display:block;font-size:.72rem;color:#90a1b9;margin-top:10px}
+#register .error-actions{display:flex;gap:12px;justify-content:center;margin-top:22px}
+#register .success-btn,#register .retry-btn{background:linear-gradient(180deg,#1a5fd7,#0c4cc8)!important;border-radius:12px!important;padding:0 28px!important;height:42px!important;color:#fff!important;font-weight:700!important}
+#register .cancel-btn{border-radius:12px!important;padding:0 28px!important;height:42px!important;border-color:#bfcdf3!important;color:#0c4cc8!important;font-weight:700!important}
+@keyframes ball-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px) scale(1.1,.9)}}
+@keyframes loading-slide{0%{transform:translateX(-100%);width:30%}50%{width:60%}100%{transform:translateX(400%);width:30%}}
+@media(max-width:640px){.register-stage{padding:14px 10px;align-items:flex-start}.register-card{border-radius:16px}#register .card-header-blue{padding:20px 18px 16px}#register .header-logo{height:38px}#register .step-header-info{padding:16px 18px 4px}#register .stepper-content{padding:6px 18px 0}#register .step-actions{padding:12px 18px 20px;flex-direction:column}#register .step-actions .mdc-button{width:100%}#register .node-label{display:none}#register .step-line{margin-top:17px}#register .have-account{padding:0 18px 20px}#register .error-actions{flex-direction:column}}
 @use '@angular/material' as mat;
 @include mat.form-field-density(-1);
 

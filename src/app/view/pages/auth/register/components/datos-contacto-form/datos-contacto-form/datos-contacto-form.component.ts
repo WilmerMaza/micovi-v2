@@ -27,26 +27,9 @@ import { RegisterService } from '../../../services/register.service';
   ],
 })
 export class DatosContactoFormComponent {
-  logoPreview: string | null = null;
-
   constructor(private contactService$: RegisterService) {}
 
   get form() {
     return this.contactService$.formContactInfo;
-  }
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.form.patchValue({ logo: file.name });
-
-      // Leer el archivo para previsualización
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.logoPreview = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
   }
 }

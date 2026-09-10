@@ -1,8 +1,13 @@
 {
   "/api": {
-    "target": "https://back-micovi.vercel.app",
-    "secure": true,
+    "target": "http://localhost:3000",
+    "secure": false,
     "changeOrigin": true,
-    "logLevel": "info"
+    "logLevel": "debug"
+  },
+  "/uploads": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
   }
 }

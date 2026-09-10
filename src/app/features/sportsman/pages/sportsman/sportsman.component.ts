@@ -1,274 +1,175 @@
+/**
+ * Componente principal del módulo de deportistas.
+ *
+ * Muestra el listado de deportistas con búsqueda, filtros, paginación,
+ * y acciones de ver, editar y eliminar. Utiliza datos reales del backend.
+ */
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { SportsmanService } from '../../services/sportsman.service';
-import { listInfo } from '../../../../models/interface';
-import { Imgs } from '../../../../core/services/imgs';
-import {
-  DateValidators,
-  NormaliceUpperUnicosValidators,
-} from '../../../../utils/Validators';
-import { ImageLoader } from '../../../../utils/readerBlodImg';
-import { ActionResponse } from '../../../../shared/model/Response/DefaultResponse';
-import { filterResult } from '../../../../shared/model/filterModel';
-import { DinamicFilterComponent } from '../../../../shared/components/dinamic-filter/dinamic-filter.component';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
-import { DinamicTableComponent } from '../../../../shared/components/dinamic-table/dinamic-table.component';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CreateSportsmanComponent } from '../../Components/create-sportsman/create-sportsman.component';
-import { Sportsman } from '../../../../view/models/DataSportsman';
-import { columnsValue } from '../../../../view/models/columnDataSportman';
-import {
-  HistorialCategory,
-  visible,
-} from '../../../../view/models/HistorialCategoryModel';
-import {
-  jsonData,
-  SportsmanData,
-} from '../../../../view/models/dataFilterSportsman';
-import { gender } from '../../../../view/entrenador/Model/constantesEntrenador';
-import { categoryModel } from '../../../../view/models/categoryModel';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { SportsmanService } from '../../services/sportsman.service';
+import { Athlete, AthleteFilters, CatalogItem } from '../../../../view/models/athlete.model';
+import { Toast } from '../../../../utils/alert_Toast';
 
 @Component({
   selector: 'app-sportsman',
+  standalone: true,
+  imports: [CommonModule, FormsModule, MatProgressSpinnerModule, MatButtonModule, ...MATERIAL_IMPORTS],
   templateUrl: './sportsman.component.html',
   styleUrls: ['./sportsman.component.scss'],
-  standalone: true,
-  imports: [
-    DinamicFilterComponent,
-    MatCard,
-    ...MATERIAL_IMPORTS,
-    MatCardContent,
-    DinamicTableComponent,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CreateSportsmanComponent,
-  ],
 })
 export class SportsmanComponent implements OnInit {
-  public dataSportman: Sportsman[] = [];
-  public data = columnsValue;
-  public jsonFilter = jsonData;
-  public showSportsman: Boolean = false;
-  public dataSingle: Sportsman | undefined;
-  public dataSingleAux: Sportsman | undefined;
-  public isCheck = true;
-  public selectItemCount: number = 0;
-  public historyCategory: HistorialCategory[] | undefined;
-  public dataCreateSportsman: SportsmanData[] = [{}] as SportsmanData[];
-  public showViewCreateSportsman: visible | undefined;
-  public fechaFormateada: string = '';
-  public birdData: string = '';
-  public generos: listInfo[] | undefined;
-  public selectedImageURL: string = '';
-  public isDownload: boolean = false;
-  public nameAdd: string = 'deportista';
+  athletes: Athlete[] = [];
+  categories: CatalogItem[] = [];
+  disciplines: CatalogItem[] = [];
+  genders: CatalogItem[] = [];
+
+  totalCount = 0;
+  currentPage = 1;
+  pageSize = 20;
+  totalPages = 0;
+
+  searchQuery = '';
+  selectedCategory = '';
+  selectedDiscipline = '';
+  selectedGender = '';
+
+  isLoading = false;
+  selectedAthlete: Athlete | null = null;
 
   constructor(
-    private sporsmanService$: SportsmanService,
-    private router: Router,
-    private imagenFuntionsService$: Imgs
+    private athleteService: SportsmanService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.generos = gender;
-    this.getSportsman();
-    this.getCategory();
-    this.actionShowSportmanByIndicator();
+    this.loadAthletes();
+    this.loadFilters();
   }
 
-  calculateCirclePosition(index: number): number {
-    const circleSpacing = 100; // Ajusta el espaciado entre círculos
-    return index * circleSpacing;
-  }
-
-  getCategory(): void {
-    this.sporsmanService$.getAllCategory().subscribe((res: categoryModel[]) => {
-      const categoriaIndex = jsonData.findIndex(
-        (section) => section.title === 'Categoria'
-      );
-      // Si se encuentra la sección "Categoria"
-      if (categoriaIndex !== -1) {
-        jsonData[categoriaIndex].control = res.map((item) => ({
-          name: item.name,
-          value: item.name,
-          code: item.ID,
-        }));
-      }
-    });
-
-    this.dataCreateSportsman = this.jsonFilter;
-  }
-
-  getSportsman(): void {
-    this.sporsmanService$.getSportsman().subscribe((res: Sportsman[]) => {
-      res.forEach((item: Sportsman) => {
-        item.name = NormaliceUpperUnicosValidators.normaliceData(item.name);
-        item.gender = NormaliceUpperUnicosValidators.normaliceData(item.gender);
-        item.typeIdentification = item.typeIdentification.toLocaleUpperCase();
-      });
-      this.transformGenre(res);
-    });
-  }
-
-  viewImage(nameImg: string | undefined): void {
-    if (nameImg && nameImg !== 'Default.png') {
-      const imageLoader = new ImageLoader(this.imagenFuntionsService$);
-      imageLoader.loadImage(nameImg, false, (imageUrl) => {
-        this.selectedImageURL = imageUrl;
-      });
-    }
-  }
-
-  getActionEvent(event: ActionResponse): void {
-    const {
-      action: { action },
-      data: { birtDate },
-      data,
-    } = event;
-
-    if (action === 'verDeportista') {
-      this.birdData = DateValidators.parseDate(birtDate);
-      const generoItem = this.generos?.find(
-        (generoSet: listInfo) => generoSet.code === data.gender
-      );
-      if (generoItem) {
-        data.gender = generoItem.value;
-      }
-
-      this.viewImage(data.image);
-      this.showSportsman = true;
-      this.dataSingle = data;
-      this.historyCategorico(data);
-    }
-
-    if (event.action === 'add') {
-       this.router.navigate(['sportsman/create'], {
-        queryParams: { id: data.ID },
-      });
-    }
-
-    if (action === 'Editar') {
-      this.transformGenreInversa(data);
-      this.showSportsman = false;
-      this.showViewCreateSportsman = {
-        isVisible: true,
-        data: this.dataSingleAux,
-      };
-    }
-
-    if (action === 'verEjercicios') {
-      this.router.navigate(['sportsman/view'], {
-        queryParams: { id: data.ID },
-      });
-    }
-  }
-
-  transformGenre(data: Sportsman[]): void {
-    this.dataSportman = data.map((item: Sportsman) => {
-      const generoItem = this.generos?.find(
-        (generoSet: listInfo) => generoSet.code === item.gender
-      );
-      if (generoItem) {
-        item.gender = generoItem.value;
-      }
-      return item;
-    });
-  }
-
-  transformGenreInversa(data: Sportsman): void {
-    const generoItem = this.generos?.find(
-      (generoSet: listInfo) => generoSet.value === data.gender
-    );
-
-    if (generoItem) {
-      data.gender = generoItem.code;
-    }
-    this.dataSingleAux = data;
-  }
-
-  reloadData(): void {
-    this.getSportsman();
-  }
-
-  editSportman(): void {
-    const event = {
-      action: {
-        action: 'Editar',
-      },
-      data: this.dataSingle, // Aquí debes proporcionar los datos adecuados
+  loadAthletes(): void {
+    this.isLoading = true;
+    const filters: AthleteFilters = {
+      page: this.currentPage,
+      limit: this.pageSize,
     };
 
-    this.getActionEvent(event);
-  }
+    if (this.searchQuery) filters.search = this.searchQuery;
+    if (this.selectedCategory) filters.categoryId = this.selectedCategory;
+    if (this.selectedDiscipline) filters.disciplineId = this.selectedDiscipline;
+    if (this.selectedGender) filters.genderId = this.selectedGender;
 
-  historyCategorico(data: Sportsman): void {
-    const idObject = {
-      id: data.ID, // Aquí asigna el valor de tu variable "id"
-    };
-    this.sporsmanService$.getHistoryCategory(idObject).subscribe(
-      (res: HistorialCategory[]) => {
-        this.historyCategory = res;
-        this.historyCategory.forEach((item) => {
-          // Transforma FechaInicio
-          const fechaInicio = new Date(item.FechaInicio);
-          item.FechaInicio = fechaInicio.toISOString().split('T')[0]; // Obtén el formato YYYY-MM-DD
-
-          // Transforma FechaFin
-          const fechaFin = new Date(item.FechaFin);
-          item.FechaFin = fechaFin.toISOString().split('T')[0]; // Obtén el formato YYYY-MM-DD
-        });
+    this.athleteService.getAthletes(filters).subscribe({
+      next: (res) => {
+        this.athletes = res.data;
+        this.totalCount = res.total;
+        this.totalPages = res.totalPages;
+        this.isLoading = false;
       },
-      (error) => {
-        if (error.status === 404) {
-          this.historyCategory = []; // Asignar un vector vacío si no se encontraron deportistas
-        }
-      }
-    );
-  }
-
-  closeCard(): void {
-    this.showSportsman = false;
-  }
-  getselectItemCount($event: number): void {
-    this.selectItemCount = $event;
-  }
-
-  getDataFilter(event: filterResult): void {
-    event.jsonData.forEach((item) => {
-      if (!item.disable) {
-        event.filterData[item.property] = [];
-      }
+      error: () => {
+        this.athletes = [];
+        this.isLoading = false;
+        Toast.fire({ icon: 'error', title: 'Error al cargar deportistas' });
+      },
     });
-    this.sporsmanService$.getSFilterSportsman(event.filterData).subscribe(
-      (res: Sportsman[]) => {
-        this.transformGenre(res); // Asignar el resultado a dataSportman
-      },
-      (error: Error) => {
-        this.dataSportman = []; // Asignar un vector vacío si no se encontraron deportistas
-      }
-    );
   }
 
-  actionShowSportmanByIndicator(): void {
-    const dataSportman = [...this.sporsmanService$.getSportmanInfoRedirect()];
-    if (dataSportman.length > 0) {
-      const data = dataSportman[0];
-      const { birtDate } = data;
-      this.birdData = DateValidators.parseDate(birtDate);
-      const generoItem = this.generos?.find(
-        (generoSet: listInfo) => generoSet.code === data.gender
-      );
-      if (generoItem) {
-        data.gender = generoItem.value;
-      }
+  private loadFilters(): void {
+    this.athleteService.getCategoriesBySchool('current').subscribe({
+      next: (res) => (this.categories = res),
+      error: () => {},
+    });
+    this.athleteService.getGenders().subscribe({
+      next: (res) => (this.genders = res),
+      error: () => {},
+    });
+  }
 
-      this.viewImage(data.image);
-      this.showSportsman = true;
-      this.dataSingle = data;
-      this.historyCategorico(data);
+  onSearch(): void {
+    this.currentPage = 1;
+    this.loadAthletes();
+  }
+
+  onFilterChange(): void {
+    this.currentPage = 1;
+    this.loadAthletes();
+  }
+
+  clearFilters(): void {
+    this.searchQuery = '';
+    this.selectedCategory = '';
+    this.selectedDiscipline = '';
+    this.selectedGender = '';
+    this.currentPage = 1;
+    this.loadAthletes();
+  }
+
+  createAthlete(): void {
+    this.router.navigate(['/app/sportsman/create']);
+  }
+
+  viewAthlete(athlete: Athlete): void {
+    this.selectedAthlete = athlete;
+  }
+
+  editAthlete(athlete: Athlete): void {
+    this.router.navigate(['/app/sportsman/edit', athlete.id]);
+  }
+
+  deleteAthlete(athlete: Athlete): void {
+    if (confirm(`¿Está seguro de eliminar a ${athlete.firstName} ${athlete.lastName}?`)) {
+      this.athleteService.deleteAthlete(athlete.id).subscribe({
+        next: () => {
+          Toast.fire({ icon: 'success', title: 'Deportista eliminado' });
+          this.loadAthletes();
+          if (this.selectedAthlete?.id === athlete.id) {
+            this.selectedAthlete = null;
+          }
+        },
+        error: () => {
+          Toast.fire({ icon: 'error', title: 'Error al eliminar deportista' });
+        },
+      });
     }
+  }
+
+  closeDetail(): void {
+    this.selectedAthlete = null;
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadAthletes();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadAthletes();
+    }
+  }
+
+  getPhotoUrl(athlete: Athlete): string {
+    if (athlete.photoUrl) {
+      return athlete.photoUrl;
+    }
+    return 'assets/images/default-avatar.png';
+  }
+
+  getAge(birthDate: string): number {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
   }
 }
