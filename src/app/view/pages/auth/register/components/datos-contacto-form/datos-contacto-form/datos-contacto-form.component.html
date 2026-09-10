@@ -2,8 +2,8 @@
   <div class="contacto-grid">
     <div class="contacto-fields">
 
-      <div class="phone-container" style="display: flex; gap: 8px;">
-        <mat-form-field appearance="outline" style="width: 120px;">
+      <div class="phone-container">
+        <mat-form-field appearance="outline" class="w-120">
           <mat-label>Prefijo</mat-label>
           <mat-select formControlName="prefijo">
             <mat-option value="+593">+593 (EC)</mat-option>
@@ -12,7 +12,7 @@
             <mat-option value="+58">+58 (VE)</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-form-field appearance="outline" class="w-flex">
           <mat-label>Teléfono</mat-label>
           <mat-icon matPrefix>phone</mat-icon>
           <input matInput placeholder="99 123 4567" formControlName="telefono" />

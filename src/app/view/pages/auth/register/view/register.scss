@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@include mat.form-field-density(-1);
+
 #register {
   width: 100%;
   min-height: 100vh;
@@ -6,7 +9,7 @@
   justify-content: center;
   align-items: center;
   background: #eef2fb;
-  padding: 40px 20px;
+  padding: 24px 16px;
   position: relative;
   overflow-y: auto;
   font-family: "Inter", "Inria Sans", Roboto, sans-serif;
@@ -45,15 +48,15 @@
   }
 
   .img {
-    width: 50px;
+    width: 48px;
     height: auto;
   }
 
   .card_register {
-    margin: auto;
+    margin: 0 auto;
     padding: 0 !important;
     width: 100%;
-    max-width: 580px;
+    max-width: 600px;
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0px 8px 10px -6px #e2e8f0cc, 0px 20px 25px -5px #e2e8f0cc;
@@ -64,10 +67,10 @@
     overflow: hidden;
   }
 
-  // ── Cabecera azul fija ──────────────────────────────────────────
+  // ── Cabecera azul ──────────────────────────────────────────
   .card-header-blue {
     background: linear-gradient(135deg, #0c4cc8 0%, #1a6aff 100%);
-    padding: 32px 32px 24px 32px;
+    padding: 28px 24px 20px 24px;
     color: #ffffff;
     flex-shrink: 0;
   }
@@ -76,7 +79,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 
     h1 {
       font-size: 1.5rem;
@@ -94,7 +97,7 @@
 
   // ── Stepper personalizado en la cabecera azul ───────────────────
   .stepper-header-custom {
-    margin-top: 16px;
+    margin-top: 12px;
 
     .step-nodes {
       display: flex;
@@ -106,7 +109,7 @@
       flex: 1;
       height: 2px;
       background: rgba(255, 255, 255, 0.25);
-      margin: 0 10px;
+      margin: 0 8px;
       position: relative;
       top: -10px;
       transition: background 0.3s;
@@ -123,8 +126,8 @@
       z-index: 2;
 
       .node-circle {
-        width: 34px;
-        height: 34px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.1);
         border: 2px solid rgba(255, 255, 255, 0.3);
@@ -173,7 +176,7 @@
 
   // ── Contenido de cada paso ──────────────────────────────────────
   .step-header-info {
-    padding: 24px 32px 8px 32px;
+    padding: 20px 24px 8px 24px;
 
     .step-counter {
       display: block;
@@ -194,7 +197,7 @@
   }
 
   .stepper-content {
-    padding: 8px 32px 0 32px;
+    padding: 8px 24px 0 24px;
   }
 
   // Oculta la cabecera nativa del mat-stepper
@@ -207,8 +210,6 @@
 
     .mat-horizontal-content-container {
       padding: 0 !important;
-      overflow-y: auto !important;
-      max-height: calc(100vh - 360px) !important;
     }
   }
 
@@ -217,7 +218,7 @@
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    padding: 16px 32px 28px 32px;
+    padding: 16px 24px 24px 24px;
   }
 
   // ── Footer ─────────────────────────────────────────────────────
@@ -230,55 +231,39 @@
     z-index: 1;
   }
 
-  // ── Overlay de carga / resultado ──────────────────────────────
-  .result-overlay {
-    width: 100%;
-    max-width: 580px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0px 8px 10px -6px #e2e8f0cc, 0px 20px 25px -5px #e2e8f0cc;
-    padding: 60px 32px;
-    position: relative;
-    z-index: 1;
-  }
-
+  // ── Loading / resultado ────────────────────────────────────────
   .loading-section {
     text-align: center;
-    padding: 60px 32px 48px 32px;
+    padding: 48px 24px 40px 24px;
 
     .ball-bouncer {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 24px auto;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px auto;
       display: flex;
       align-items: center;
       justify-content: center;
       animation: ball-bounce 0.7s ease-in-out infinite;
 
       .sport-ball {
-        font-size: 56px !important;
-        width: 56px !important;
-        height: 56px !important;
+        font-size: 48px !important;
+        width: 48px !important;
+        height: 48px !important;
         color: #0c4cc8;
       }
     }
 
     .loading-text {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #1d293d;
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
     }
 
     .loading-subtext {
       font-size: 0.875rem;
       color: #62748e;
-      margin: 0 0 24px 0;
+      margin: 0 0 20px 0;
     }
 
     .loading-bar-container {
@@ -301,39 +286,23 @@
 
   .result-section {
     text-align: center;
-    padding: 48px 32px 40px 32px;
-
-    .result-icon {
-      font-size: 64px !important;
-      width: 64px !important;
-      height: 64px !important;
-      margin-bottom: 16px;
-    }
+    padding: 40px 24px 32px 24px;
 
     h2 {
-      font-size: 1.375rem;
+      font-size: 1.3rem;
       font-weight: 700;
       margin: 0 0 8px 0;
       color: #1d293d;
     }
 
     p {
-      font-size: 0.9375rem;
+      font-size: 0.9rem;
       color: #62748e;
       margin: 0 0 4px 0;
       line-height: 1.5;
     }
-
-    .redirect-text {
-      font-size: 0.8125rem;
-      color: #90a1b9;
-      margin-top: 16px;
-    }
-
-    &.success .result-icon { color: #2e7d32; }
   }
 
-  // ── Éxito (Figma) ──────────────────────────────────────────────
   .success-icon-box {
     width: 56px;
     height: 56px;
@@ -350,7 +319,7 @@
   }
 
   .success-btn {
-    margin-top: 24px;
+    margin-top: 20px;
     background: linear-gradient(90deg, #0c4cc8 0%, #1a6aff 100%) !important;
     border-radius: 24px !important;
     padding: 0 32px !important;
@@ -359,7 +328,6 @@
     font-weight: 600 !important;
   }
 
-  // ── Error (Figma) ──────────────────────────────────────────────
   .error-icon-box {
     width: 56px;
     height: 56px;
@@ -387,7 +355,7 @@
     display: flex;
     gap: 12px;
     justify-content: center;
-    margin-top: 24px;
+    margin-top: 20px;
 
     .retry-btn {
       background: linear-gradient(90deg, #0c4cc8 0%, #1a6aff 100%) !important;
@@ -411,9 +379,9 @@
   // ── Animaciones ────────────────────────────────────────────────
   @keyframes ball-bounce {
     0%, 100% { transform: translateY(0) scale(1, 1); }
-    40% { transform: translateY(-30px) scale(1, 1); }
-    50% { transform: translateY(-30px) scale(1.1, 0.9); }
-    60% { transform: translateY(-30px) scale(1, 1); }
+    40% { transform: translateY(-26px) scale(1, 1); }
+    50% { transform: translateY(-26px) scale(1.1, 0.9); }
+    60% { transform: translateY(-26px) scale(1, 1); }
   }
 
   @keyframes loading-slide {
@@ -423,48 +391,142 @@
   }
 }
 
-// ── Responsive ────────────────────────────────────────────────────
+// ── Responsive: Móvil ────────────────────────────────────────────
 @media (max-width: 640px) {
   #register {
-    padding: 20px 12px;
+    padding: 6px;
 
     .card_register {
-      border-radius: 12px;
+      border-radius: 10px;
     }
 
     .card-header-blue {
-      padding: 24px 20px 16px 20px;
+      padding: 12px 10px 8px 10px;
     }
 
-    .step-header-info {
-      padding: 20px 20px 8px 20px;
-    }
+    .header_register {
+      margin-bottom: 8px;
 
-    .stepper-content {
-      padding: 8px 20px 0 20px;
-    }
-
-    .mat-horizontal-content-container {
-      overflow-y: auto !important;
-      max-height: calc(100vh - 380px) !important;
-    }
-
-    .step-actions {
-      padding: 12px 20px 20px 20px;
-      flex-direction: column;
-
-      button {
-        width: 100%;
+      h1 {
+        font-size: 1.05rem;
+        margin-bottom: 1px;
       }
+      .subtitle { font-size: 0.6875rem; }
     }
+
+    .img { width: 28px; }
 
     .stepper-header-custom {
+      margin-top: 4px;
+
       .node-label {
         display: none;
       }
       .step-line {
         top: 0;
+        margin: 0 3px;
+        height: 1.5px;
       }
+      .node-circle {
+        width: 22px;
+        height: 22px;
+        font-size: 0.6875rem;
+        border-width: 1.5px;
+      }
+    }
+
+    .step-header-info {
+      padding: 10px 10px 2px 10px;
+
+      .step-counter {
+        font-size: 0.6rem;
+        margin-bottom: 0;
+      }
+      .step-title {
+        font-size: 0.875rem;
+      }
+    }
+
+    .stepper-content {
+      padding: 2px 10px 0 10px;
+    }
+
+    .step-actions {
+      padding: 8px 10px 12px 10px;
+      flex-direction: column;
+      gap: 6px;
+
+      button {
+        width: 100%;
+        height: 36px !important;
+        font-size: 0.8125rem !important;
+      }
+    }
+
+    .register-footer {
+      margin-top: 6px;
+      font-size: 0.6rem;
+    }
+
+    .loading-section {
+      padding: 28px 14px 24px 14px;
+
+      .ball-bouncer {
+        width: 52px;
+        height: 52px;
+        margin-bottom: 12px;
+
+        .sport-ball {
+          font-size: 32px !important;
+          width: 32px !important;
+          height: 32px !important;
+        }
+      }
+
+      .loading-text {
+        font-size: 1rem;
+        margin-bottom: 3px;
+      }
+
+      .loading-subtext {
+        font-size: 0.75rem;
+        margin-bottom: 14px;
+      }
+
+      .loading-bar-container {
+        width: 180px;
+      }
+    }
+
+    .result-section {
+      padding: 24px 14px 20px 14px;
+
+      h2 { font-size: 1.05rem; }
+      p { font-size: 0.8rem; }
+    }
+
+    .success-icon-box,
+    .error-icon-box {
+      width: 44px;
+      height: 44px;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .success-btn,
+    .error-actions .retry-btn,
+    .error-actions .cancel-btn {
+      height: 36px !important;
+      padding: 0 20px !important;
+      font-size: 0.8125rem !important;
+    }
+
+    .error-actions {
+      margin-top: 14px;
+      flex-direction: column;
+      gap: 6px;
+
+      button { width: 100%; }
     }
   }
 }

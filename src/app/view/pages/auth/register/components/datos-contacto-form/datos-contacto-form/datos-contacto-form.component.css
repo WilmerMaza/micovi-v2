@@ -1,31 +1,49 @@
+@use '@angular/material' as mat;
+@include mat.form-field-density(-1);
+
+:host {
+  display: block;
+  width: 100%;
+}
+
 .contacto-form-container {
   width: 100%;
 }
 
 .contacto-grid {
   display: flex;
-  gap: 20px;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .contacto-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.phone-container {
+  display: flex;
+  gap: 8px;
+}
+
+.phone-container .w-120 {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.phone-container .w-flex {
   flex: 1;
   min-width: 0;
 }
 
-.contacto-logo-side {
-  width: 180px;
-  flex-shrink: 0;
-}
-
 .w-100 {
   width: 100%;
-  display: block;
 }
 
-/* Sección del logo - version compacta */
+/* Logo upload */
 .logo-upload-section {
-  margin-top: 0;
+  width: 100%;
 }
 
 .logo-label {
@@ -37,11 +55,10 @@
   font-family: "Inter", Roboto, sans-serif;
 }
 
-/* Dropzone estirado hacia abajo */
 .logo-dropzone {
   border: 1.5px dashed #cbd5e1;
   border-radius: 8px;
-  padding: 32px 10px 28px 10px;
+  padding: 22px 14px;
   background-color: #fafafa;
   cursor: pointer;
   transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -109,7 +126,6 @@
   word-break: break-all;
 }
 
-/* Previsualización del logo */
 .preview-container {
   display: flex;
   flex-direction: column;
@@ -133,13 +149,100 @@
   cursor: pointer;
 }
 
-/* Responsive: apilar en mobile */
 @media (max-width: 640px) {
+  @include mat.form-field-density(-2);
+
   .contacto-grid {
-    flex-direction: column;
+    gap: 8px;
+  }
+
+  .contacto-fields {
+    gap: 6px;
+  }
+
+  .phone-container {
+    gap: 5px;
+  }
+
+  .phone-container .w-120 {
+    width: 90px;
+  }
+
+  .logo-dropzone {
+    padding: 12px 8px;
+    min-height: auto;
+  }
+
+  .cloud-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .dropzone-content {
+    gap: 3px;
+  }
+
+  .dropzone-main-text {
+    font-size: 0.65rem;
+  }
+
+  .file-specs {
+    font-size: 0.58rem;
+  }
+
+  .logo-preview {
+    max-width: 80px;
+    max-height: 52px;
+  }
+
+  .logo-label {
+    font-size: 0.6875rem;
+    margin-bottom: 3px;
+  }
+
+  .file-hint {
+    font-size: 0.6rem;
+  }
+
+  .selected-file-name {
+    font-size: 0.65rem;
+    margin-top: 3px;
+  }
+
+  .preview-change {
+    font-size: 0.625rem;
+  }
+}
+
+@media (min-width: 641px) {
+  .contacto-fields {
+    gap: 14px;
+  }
+
+  .phone-container .w-120 {
+    width: 130px;
+  }
+}
+
+@media (min-width: 768px) {
+  .contacto-grid {
+    flex-direction: row;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .contacto-fields {
+    flex: 1;
+    min-width: 0;
   }
 
   .contacto-logo-side {
-    width: 100%;
+    width: 220px;
+    flex-shrink: 0;
+  }
+
+  .logo-dropzone {
+    padding: 32px 14px;
   }
 }
