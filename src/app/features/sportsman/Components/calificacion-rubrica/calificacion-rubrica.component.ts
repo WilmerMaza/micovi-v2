@@ -7,7 +7,7 @@ import {
 } from '../../Models/indicatorsModel';
 
 import { ActivatedRoute } from '@angular/router';
-import { Toast } from '../../../../utils/alert_Toast';
+import { fireToast } from '../../../../utils/alert_Toast';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
@@ -192,14 +192,14 @@ export class CalificacionRubricaComponent implements OnInit {
         this.arregloNivelSeleccionados = [];
         this.nivel_numero = {};
         this.nivelSeleccionados = {};
-        await Toast.fire({
+        await fireToast({
           icon: 'success',
           title: `${res.Message}`,
         });
       },
       (respError): void => {
         const { error } = respError;
-        Toast.fire({
+        void fireToast({
           icon: 'error',
           title: error,
         });

@@ -26,12 +26,19 @@ import { AuthService } from '../services/auth';
 let refreshing = false;
 let refreshDone$: ReplaySubject<boolean> | null = null;
 
+/** Rutas de auth donde un 401 es respuesta esperada — no intentar refresh. */
 const isAuthEndpoint = (url: string): boolean =>
   url.includes('/auth/login') ||
-  url.includes('/auth/refresh') ||
-  url.includes('/auth/logout');
+  url.includes('/auth/logout') ||
+  url.includes('/auth/register') ||
+  url.includes('/auth/me') ||
+  url.includes('/auth/refresh');
 
 export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
+  const api = inject(MicoviApi);
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
   if (isAuthEndpoint(req.url)) {
     return next(req);
   }
@@ -52,10 +59,6 @@ export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
 
       refreshing = true;
       refreshDone$ = new ReplaySubject<boolean>(1);
-
-      const api = inject(MicoviApi);
-      const auth = inject(AuthService);
-      const router = inject(Router);
 
       return api.post<MeResponse>('/auth/refresh', {}).pipe(
         switchMap((user) => {

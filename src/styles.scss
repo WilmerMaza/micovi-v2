@@ -1,6 +1,7 @@
 /* -------------------------------
    Import Angular Material theming
 -------------------------------- */
+@use 'styles/fonts';
 @use 'styles/colors' as *;
 @use '@angular/material' as mat;
 

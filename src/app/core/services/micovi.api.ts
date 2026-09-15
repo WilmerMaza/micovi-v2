@@ -7,7 +7,12 @@
  * En DEV el proxy de Angular reenvía /api → localhost:3000.
  * En QA/PROD el reverse proxy hace el mismo rol.
  */
-import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpContext,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -97,7 +102,18 @@ export class MicoviApi {
   }
 
   private handleError(error: unknown): Observable<never> {
-    console.error('API error:', error);
+    if (!this.isExpectedAuthProbeError(error)) {
+      console.error('API error:', error);
+    }
     return throwError(() => error);
+  }
+
+  /** 401 en sonda de sesión sin cookie — flujo normal, no es fallo de app. */
+  private isExpectedAuthProbeError(error: unknown): boolean {
+    if (!(error instanceof HttpErrorResponse) || error.status !== 401) {
+      return false;
+    }
+    const url = error.url ?? '';
+    return url.includes('/auth/me') || url.includes('/auth/refresh');
   }
 }

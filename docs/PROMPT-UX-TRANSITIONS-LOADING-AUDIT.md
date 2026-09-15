@@ -1,267 +1,236 @@
-# Prompt Cursor — Auditoría y optimización de transiciones / loading (Micovi Angular 20)
+# Auditoría y optimización — Arranque, loading y bundle (Micovi Angular 20)
 
-**Fase 1 completada.** Este documento incluye el informe de auditoría del repo y el prompt
-para la **Fase 2–4** (propuesta + implementación tras tu aprobación).
-
-Stack real: Angular 20 · Signals · RxJS · Angular Material · SCSS · Inria Sans · MASTER Micovi.
+**Estado: cerrado (Fases A–C loading + Fases 1–5 arranque/performance).**  
+Stack: Angular 20 · Signals · RxJS · Angular Material · SCSS · Inria Sans self-hosted · MASTER Micovi.
 
 ---
 
-## INFORME DE AUDITORÍA (baseline del repo)
+## Resumen ejecutivo
 
-### Arquitectura actual de loading
-
-| Mecanismo | Archivo | Qué hace |
-|-----------|---------|----------|
-| Contador global | `src/app/shared/services/spinner.service.ts` | `_count` signal; `show()`/`hide()` con **1500 ms mínimo visible** |
-| HTTP (todas las peticiones) | `src/app/core/interceptors/loading.interceptor.ts` | `show()` al enviar, `hide()` en `finalize()` — **sin opt-out** |
-| Router (toda navegación) | `src/app/core/loading/provide-router-spinner.ts` | `show()` en `NavigationStart`, `hide()` en End/Cancel/Error |
-| Overlay visual | `src/app/shared/components/spinner/spinner.ts` | Solo montado en `layout/home/layout.html` |
-| Loading local auth | `register.html` + `register.scss` | Patrón correcto: UI en card + botón disabled |
-| Login | `login.component.html` | **Sin** feedback visual de submit |
-| Skeletons | — | **No existen** |
-| `@angular/animations` | — | **No usado** en app |
-| Resolvers | — | **Ninguno** |
-
-### Problema UX principal (confirmado en código)
-
-> **Cada cambio de ruta Y cada HTTP activan el mismo overlay global.**
-
-Efectos colaterales:
-
-1. Navegar `dashboard → sportsman` dispara spinner de router **+** posible HTTP del componente.
-2. Peticiones rápidas (<300 ms) igual pasan por overlay; el **mínimo 1500 ms** las hace sentir lentas.
-3. No hay **delay antes de mostrar** — aparece al instante; solo hay delay al ocultar.
-4. Auth (login/register) ejecuta interceptor pero **no hay `<app-spinner>`** en esas rutas.
-5. Texto legacy `loading..` en 3 templates — no funcional.
-
-### Rutas lazy activas
-
-```
-/login, /registers          → loadComponent (auth)
-/                           → JwtGuard → HomeLayout + app-spinner
-  /dashboard                → loadComponent
-  /sportsman                → loadChildren
-    /                       → listado (SportsmanComponent)
-    /create, /edit/:id      → formulario
-/configuration              → ConfigLayout (sin app-spinner)
-```
-
-### Animaciones existentes (conservar)
-
-- Shell: sidebar 180 ms, backdrop fade — **🟢 Mantener**
-- Spinner: pulse + barra 1.4 s — **🟢 Mantener** (solo cuando overlay sea necesario)
-- Register loading — **🟢 Referencia de patrón local**
-- Logout modal enter — **🟢 Mantener**
-- 404 confetti / rain — decorativo; **no tocar en esta pasada**
+| Objetivo | Resultado |
+|----------|-----------|
+| Eliminar pantalla en blanco en arranque | ✅ Boot-shell HTML + shell Angular + placeholders |
+| No spinner global por defecto | ✅ Router spinner off; HTTP con delay 300 ms |
+| App shell progresivo | ✅ HomeLayout / ConfigLayout antes del guard |
+| Skeleton contextual | ✅ Tabla deportistas + outlet dashboard/tabla |
+| Bundle inicial producción | ✅ **843 KB** raw / **~197 KB** gzip (antes **1.04 MB** / ~232 KB) |
+| Budget `angular.json` 1 MB | ✅ Pasa (warning 500 KB warning persiste) |
 
 ---
 
-## TABLA DE RECOMENDACIONES (propuesta — pendiente implementación)
+## Arquitectura final de loading
 
-| Escenario | Estado actual | Problema | Patrón recomendado | Clasificación | Riesgo |
-|-----------|---------------|----------|---------------------|---------------|--------|
-| Navegación entre módulos (dashboard ↔ sportsman) | Spinner global vía router | Espera innecesaria en lazy rápido | **Sin overlay**; vista anterior visible hasta swap | 🔴 Eliminar router spinner | Bajo |
-| Lazy chunk lento (>500 ms) | Spinner global | Bloquea toda la UI | Delay 300 ms → overlay **solo si sigue cargando** | 🔵 Mejorar | Medio |
-| HTTP listado/tabla | Spinner global | No representa estructura | **Skeleton** acorde a `dinamic-table` + filtros | 🟡 Reemplazar | Medio |
-| HTTP <300 ms | Spinner + min 1500 ms | Flicker / lentitud artificial | **No mostrar**; delay show 300 ms | 🔴 Eliminar feedback | Bajo |
-| HTTP >500 ms (lectura) | Spinner global | Bloqueo total | Skeleton o spinner **localizado** en zona de datos | 🟡 Reemplazar | Medio |
-| Guardar / crear / eliminar | Spinner global (HTTP) | Bloquea pantalla entera | **Loading en botón** + disabled form | 🟡 Reemplazar | Bajo |
-| Register submit | Local ✅ + HTTP interceptor | Doble señal (interceptor invisible aquí) | Mantener local; **excluir** POST register del interceptor global | 🔵 Mejorar | Bajo |
-| Login submit | Sin feedback | Usuario no sabe si envió | Mismo patrón que register (inline en card) | 🔵 Mejorar | Bajo |
-| Filtros / paginación | Spinner global | Parpadeo en cada filtro | **Inline** en tabla o fila skeleton; sin overlay | 🟡 Reemplazar | Medio |
-| Logout | Spinner global | Aceptable pero pesado | Loading en botón modal "Cerrando sesión…" | 🔵 Mejorar | Bajo |
-| Bootstrap `/auth/me` | Interceptor sin UI | Contador fantasma | Excluir URL o no contar pre-layout | 🔵 Mejorar | Bajo |
-| Dashboard | Sin HTTP en init | — | **Sin feedback** (contenido inmediato) | 🟢 Mantener | — |
+| Mecanismo | Archivo | Comportamiento |
+|-----------|---------|----------------|
+| Boot-shell pre-JS | `src/index.html` | `boot-app` / `boot-auth` / `boot-config` según URL |
+| Auth bootstrap | `auth.ts` + `app.config.ts` | `startBootstrap()` **no bloqueante**; guards esperan |
+| Shell home | `layout/home/*` | Nav + sidenav + outlet; guard solo en hijos |
+| Placeholder outlet | `outlet-placeholder/*` | Delay **300 ms**; variantes `dashboard` \| `table` |
+| Listados tabulares | `list-route-patterns.ts` | `/sportsman`, `/entrenador`, `/ejercicios` → skeleton tabla |
+| Shell configuración | `layout/config/*` | Cabecera + outlet + placeholder drawer |
+| Spinner global | `spinner.service.ts` | Delay show 300 ms, min visible 350 ms |
+| HTTP interceptor | `loading.interceptor.ts` | Skip auth, mutaciones, `SKIP_LOADING` |
+| Router spinner | `provide-router-spinner.ts` | **Desactivado** (no registrar) |
+| Skeleton tabla | `table-skeleton/*` | Piloto sportsman; filtros fijos + skeleton filas |
+| Prefetch idle | `route-prefetch.ts` | sportsman + complements tras dashboard paint |
+| Fuentes | `styles/_fonts.scss` + `public/fonts/` | Self-hosted; sin Google Fonts en runtime |
+| SweetAlert2 | `alert_Toast.ts` | **Import dinámico** — chunk lazy `sweetalert2-all` |
 
 ---
 
-## MAPA DE EXPERIENCIA (actual vs objetivo)
-
-### Actual — dashboard → sportsman
+## Timeline de arranque (estado final)
 
 ```text
-Click sidebar
-  → NavigationStart → spinner.show()
-  → Lazy chunk (50–200 ms típico)
-  → NavigationEnd → spinner.hide() [espera min 1500 ms]
-  → Component ngOnInit → HTTP → spinner.show() otra vez
-  → Respuesta → hide() [otros 1500 ms]
-  → Usuario percibe ~1.5–3 s de overlay aunque la red fue rápida
-```
-
-### Objetivo
-
-```text
-Click sidebar
-  → Vista anterior permanece (sin overlay)
-  → Chunk + datos en paralelo
-  → Si >300 ms sin contenido → skeleton en zona tabla (no overlay)
-  → Contenido reemplaza skeleton
+0 ms       index.html boot-shell (app | auth | config)
+           │
+100–400ms  JS initial (~844 KB prod / ~197 KB transfer)
+           │
+           ├─ Angular bootstrap (auth /auth/me en paralelo)
+           │
+           ├─ /login        → Login eager
+           ├─ /registers    → boot-auth → lazy Register (~78 KB)
+           ├─ /             → HomeLayout → placeholder (≥300 ms) → dashboard eager
+           └─ /configuration → ConfigLayout → placeholder → settings eager
 ```
 
 ---
 
-## REGLA DE ORO MICOVI
+## Rutas (post-refactor)
 
-1. **Overlay global** → solo operaciones que **realmente bloquean** toda la app (ej. sesión crítica).
-2. **Skeleton** → listados/tablas donde el layout ya es conocido.
+```text
+/login, /registers          → auth pública (login eager; register lazy + boot-auth)
+/                           → HomeLayout (sin guard)
+  └─ '' + JwtGuard
+       ├─ /dashboard        → eager
+       └─ /sportsman        → lazy → listado + skeleton
+/configuration              → ConfigLayout (sin guard en padre)
+  └─ '' + JwtGuard → SETTINGS_ROUTES (eager)
+```
+
+---
+
+## Mapa de experiencia (objetivo alcanzado)
+
+### Primera carga autenticada (`/dashboard`)
+
+```text
+Boot-shell → Shell Angular → [≥300 ms] placeholder dashboard → contenido
+```
+
+### Navegación dashboard → sportsman
+
+```text
+Shell estable → [≥300 ms] placeholder tabla → chunk (prefetch idle) → skeleton HTTP → datos
+```
+
+### Sin sesión
+
+```text
+Boot-shell → auth/me → redirect /login (boot-auth si F5 en /registers)
+```
+
+---
+
+## Regla de oro Micovi (vigente)
+
+1. **Overlay global** → solo GET lentos sin feedback local (>300 ms).
+2. **Skeleton** → listados/tablas (`TableSkeletonComponent`).
 3. **Button loading** → mutaciones (POST/PUT/DELETE).
-4. **Nada** → navegación rápida, dashboard estático, respuestas <300 ms.
-5. **Motion MASTER 3/10** — sin animaciones de ruta decorativas; sin View Transitions API salvo beneficio medido.
+4. **Nada** → navegación <300 ms, dashboard estático, auth bootstrap.
+5. **Motion 3/10** — sin View Transitions API.
 
 ---
 
-# PROMPT DE IMPLEMENTACIÓN (copiar desde aquí)
+## Fase 5a — Análisis de bundle y quick wins
+
+### Medición producción (`ng build --configuration=production`)
+
+| Métrica | Antes quick wins | Después quick wins | Δ |
+|---------|------------------|-------------------|---|
+| Initial raw | **1.04 MB** ❌ (error budget 1 MB) | **843.75 KB** ✅ | **−~196 KB** |
+| Initial transfer (est.) | ~232 KB | **~197 KB** | **−~35 KB** |
+| Lazy register | (en main) | **78 KB** / ~16 KB transfer | Fuera del initial |
+| Lazy sweetalert2 | (en main) | **78 KB** / ~18 KB transfer | Fuera del initial |
+
+### Desglose initial (aprox.)
+
+| Chunk / área | Raw | Notas |
+|--------------|-----|-------|
+| Vendor Angular + Material | ~456 KB + ~169 KB + ~79 KB | Framework; difícil recortar sin cambio mayor |
+| `main.js` | ~228 KB → **~120 KB** tras quick wins | App + login + dashboard + layout |
+| Polyfills + styles | ~45 KB | Normal |
+
+### Lazy chunks relevantes
+
+| Chunk | Raw | Cuándo carga |
+|-------|-----|--------------|
+| `create-sportsman-component` | **1.54 MB** | ⚠️ Mayor oportunidad futura (formulario pesado) |
+| `sportsman-component` | ~153 KB | Listado deportistas |
+| `register` | ~78 KB | Solo `/registers` |
+| `sweetalert2-all` | ~78 KB | Error login, toasts lazy, newpay |
+
+### Quick wins aplicados ✅
+
+| # | Cambio | Impacto | UX arranque |
+|---|--------|---------|-------------|
+| 1 | **Register lazy** de nuevo | −~150 KB del initial | Boot-auth shell ya cubre pre-JS |
+| 2 | **SweetAlert2 dynamic import** | −~78 KB del initial | Sin cambio visible |
+| 3 | **Eliminar `moment` y `swiper`** | Limpieza deps (no estaban en bundle) | — |
+
+### Quick wins recomendados (no implementados)
+
+| # | Cambio | Impacto estimado | Tradeoff |
+|---|--------|------------------|----------|
+| 1 | Lazy **Login** (mantener boot-auth) | Medio | Login es ruta frecuente sin sesión |
+| 2 | Partir **create-sportsman** (1.5 MB) | Alto | Refactor grande |
+| 3 | Material imports granulares / `@angular/material` subpaths | Medio | Revisión por componente |
+| 4 | Subir budget warning 500→800 KB en `angular.json` | Cosmético CI | Documentar baseline real |
+| 5 | `@defer` en bloques pesados futuros | Caso a caso | Solo con beneficio medido |
+
+### Warnings CI actuales
+
+- `initial` > **500 KB** warning (843 KB) — esperable con Material + shell eager.
+- `dinamic-table.component.scss` **11.68 KB** > 10 KB — pre-existente; no bloquea build.
+
+---
+
+## Implementación por fases (histórico)
+
+| Fase | Contenido | Estado |
+|------|-----------|--------|
+| **A** | Spinner delay 300 ms, interceptor opt-out, router spinner off | ✅ |
+| **B** | Login `Entrando…`, button loading, quitar `loading..` | ✅ |
+| **C** | `TableSkeletonComponent` + sportsman `isListLoading` | ✅ |
+| **1** | Auth no bloqueante, shell routing, CSS crítico, dashboard eager | ✅ |
+| **2** | Placeholder outlet delay + variantes, prefetch, register eager* | ✅ |
+| **3** | Config shell, boot-config, fuentes async → self-host F4 | ✅ |
+| **4** | Fuentes `public/fonts/`, `list-route-patterns`, docs rutas | ✅ |
+| **5a** | Análisis bundle + quick wins (register lazy, Swal lazy, deps) | ✅ |
+| **5d** | Este documento actualizado | ✅ |
+
+\*Register volvió a **lazy** en 5a; boot-auth mantiene UX en `/registers`.
+
+---
+
+## Archivos clave (referencia)
 
 ```
-Actúa como Senior/Staff Frontend Engineer + Product Designer en Micovi (Angular 20).
-
-## Objetivo
-Optimizar estados de carga y transiciones SIN llenar la app de spinners.
-Eliminar feedback innecesario; usar el patrón correcto en el momento correcto.
-NO modificar identidad visual (MASTER): colores, tipografía, espaciados, layout.
-
-## Contexto auditado (NO re-auditar desde cero; validar y ajustar)
-- SpinnerService: contador + min visible 1500 ms (`spinner.service.ts`)
-- loadingInterceptor: TODAS las HTTP → spinner (`loading.interceptor.ts`)
-- provideRouterSpinner: TODA navegación → spinner (`provide-router-spinner.ts`)
-- Overlay: solo en `layout/home/layout.html` → `app-spinner`
-- Register: loading local correcto; Login: sin loading
-- Sin skeletons; sin @angular/animations; sin resolvers
-- Legacy `loading..` en sportsman/entrenador/ejercicios templates
-
-## Skills (orden; conflicto → gana MASTER)
-1. `design-system/micovi/MASTER.md` — Motion 3/10, densidad cabina, #0C4CC8
-2. `.cursor/skills/redesign-existing-projects/SKILL.md`
-3. `.cursor/skills/frontend-design/SKILL.md`
-4. `.cursor/skills/ui-ux-pro-max/SKILL.md`
-   - Buscar: `python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "loading delay threshold" --domain ux`
-   - Buscar: `python3 .cursor/skills/ui-ux-pro-max/scripts/search.py "skeleton table loading" --domain ux`
-5. NO stitch-*; NO paletas ajenas (clerk purple, etc.)
-
-## Metodología OBLIGATORIA
-
-### Paso 1 — Propuesta (ANTES de código)
-Entrega tabla por escenario con columnas:
-| Escenario | Actual | Problema UX | Patrón | Archivos | Riesgo | Impacto visual |
-Espera mi ✅ antes de implementar.
-
-### Paso 2 — Implementación por fases (solo tras aprobación)
-
-#### Fase A — Infraestructura loading (prioridad alta)
-Archivos candidatos:
-- `src/app/shared/services/spinner.service.ts`
-- `src/app/core/interceptors/loading.interceptor.ts`
-- `src/app/core/loading/provide-router-spinner.ts`
-
-Cambios propuestos (justificar cada uno):
-1. **Eliminar o desactivar** spinner en `NavigationStart/End` para navegación normal.
-   - Lazy loading rápido no debe mostrar overlay.
-2. Añadir **delay antes de show** (~300 ms): si la operación termina antes, nunca mostrar spinner.
-3. Reducir **min visible** de 1500 ms → ~300–400 ms (o eliminar si hay delay de show).
-4. Header opt-out en interceptor: `X-Skip-Loading: true` para bootstrap, polling, refresh token.
-5. Separar concerns: `LoadingService` con modos `global | local | none` si hace falta — mínimo diff.
-
-#### Fase B — Feedback localizado
-- Login: estado "Entrando…" en botón/card (mismo lenguaje que register loading).
-- Mutaciones: `[disabled]` + texto en botón (`Guardando…`, `Eliminando…`).
-- Eliminar texto `loading..` legacy; reemplazar por estado real o quitar.
-
-#### Fase C — Skeletons (solo donde aporte)
-- Sportsman listado: skeleton que refleje `dinamic-filter` + `dinamic-table` (título, filtros, filas).
-- NO skeleton genérico; NO en dashboard (contenido estático/inmediato).
-- Componente reutilizable opcional: `TableSkeletonComponent` — solo si reduce duplicación.
-
-#### Fase D — NO hacer (salvo justificación medida)
-- View Transitions API
-- Animaciones de ruta (@angular/animations)
-- Spinners en cada navegación
-- Skeletons en formularios simples
-- Cambios visuales MASTER
-
-## Criterios de decisión (responder antes de cada cambio)
-1. ¿El usuario realmente espera?
-2. ¿Cuánto tiempo (<300 / 300–500 / >500 ms)?
-3. ¿Puede ser localizado?
-4. ¿Skeleton informa más que spinner?
-5. ¿Aumenta percepción de velocidad?
-6. ¿prefers-reduced-motion respetado?
-
-## Accesibilidad
-- `aria-busy`, `aria-live="polite"` en zonas que cargan
-- No depender solo de animación
-- Focus no atrapado en overlays breves
-
-## Archivos a revisar
-- `app.config.ts`, guards, `home.routes.ts`, `sportsman.routes.ts`
-- `layout/home/layout.html`, sidenav navigation
-- `features/sportsman/pages/sportsman/*`
-- `shared/components/dinamic-table/*`, `dinamic-filter/*`
-- `view/pages/auth/login/*`, `register/*`
-- `shared/components/spinner/*` (mantener diseño; cambiar CUÁNDO se muestra)
-
-## Entregables
-1. Informe propuesta (tabla + mapa estados)
-2. Tras mi OK: PR pequeño por fase (A → B → C)
-3. Checklist final:
-   - [ ] Navegación rápida sin overlay
-   - [ ] HTTP rápidas sin flicker
-   - [ ] Tablas con skeleton contextual
-   - [ ] Acciones con button loading
-   - [ ] MASTER intacto
-   - [ ] prefers-reduced-motion
-   - [ ] Sin regresiones auth
-
-Empieza con Paso 1 (propuesta detallada). NO escribas código hasta mi aprobación.
+src/index.html                          boot-shell + preload fonts
+src/styles/_fonts.scss                  @font-face self-hosted
+src/app/app.config.ts                   startBootstrap no bloqueante
+src/app/app.routes.ts                   shells + guards en hijos
+src/app/core/loading/
+  loading.context.ts                    SKIP_LOADING
+  list-route-patterns.ts                rutas skeleton tabla
+  route-prefetch.ts                     prefetch idle
+src/app/layout/home/                    shell + outlet-placeholder
+src/app/layout/config/                  shell configuración
+src/app/shared/components/table-skeleton/
+src/app/utils/alert_Toast.ts            Swal dynamic import
+public/fonts/                           woff2 Inria + Material Icons
 ```
 
 ---
 
-## Variante corta
+## Checklist final QA
 
-```
-Audita y propone (sin código) optimización de loading Micovi:
-- Quitar router spinner en nav rápida
-- Interceptor: delay show 300 ms + opt-out header + bajar min visible 1500→300 ms
-- Tablas → skeleton dinamic-table; acciones → button loading; login → como register
-Skills: MASTER + redesign + frontend-design + ui-ux-pro-max
-Tabla escenario→patrón→archivos→riesgo. Espera OK antes de implementar.
-```
-
----
-
-## Orden sugerido de implementación (post-aprobación)
-
-1. **Fase A** — Infraestructura (mayor impacto en percepción de velocidad) — ✅ hecho
-2. **Fase B** — Login + botones + limpiar `loading..` — ✅ hecho
-3. **Fase C** — Skeleton sportsman (piloto reutilizable) — ✅ hecho
-4. **Cierre / medición** — extender skeleton a otros listados cuando las rutas estén activas; QA con `USE_MOCK_SPORTSMAN = false`
-
-### Fase D — Sin implementación (por diseño)
-
-View Transitions API, animaciones de ruta, spinners por navegación, skeletons en forms simples y cambios MASTER **no aplican** salvo justificación medida futura.
-
----
-
-## IMPLEMENTACIÓN (Fases A–C — completadas)
-
-| Fase | Cambios principales |
-|------|---------------------|
-| **A** | `SpinnerService`: delay show 300 ms, min visible 350 ms. Interceptor: skip auth, mutaciones, `SKIP_LOADING`. Router spinner desregistrado en `app.config.ts`. |
-| **B** | Login `Entrando…`, create-sportsman `Guardando…`, logout modal `Cerrando sesión…`, `loading..` quitado en sportsman. |
-| **C** | `TableSkeletonComponent` + `isListLoading` en listado deportistas. |
-
-**Archivos nuevos:** `loading.context.ts`, `shared/components/table-skeleton/*`
-
-**QA skeleton:** poner `USE_MOCK_SPORTSMAN = false` en `sportsman.component.ts` o simular latencia de red.
-
-### Checklist final
-
-- [x] Navegación rápida sin overlay
-- [x] HTTP rápidas sin flicker
-- [x] Tablas con skeleton contextual (piloto sportsman)
+- [x] Navegación rápida sin overlay global
+- [x] HTTP rápidas sin flicker (<300 ms)
+- [x] Tablas con skeleton contextual (sportsman)
 - [x] Acciones con button loading
-- [x] MASTER intacto
-- [x] prefers-reduced-motion (spinner + skeleton)
-- [x] Sin regresiones auth (bootstrap/refresh/login excluidos del interceptor)
+- [x] MASTER intacto (colores, tipografía, layout)
+- [x] `prefers-reduced-motion` (boot-shell, skeleton, sidenav)
+- [x] Auth: bootstrap no bloqueante, refresh `/auth/me` corregido
+- [x] Boot-shell pre-JS (app / auth / config)
+- [x] Fuentes self-hosted
+- [x] Bundle initial < 1 MB producción
+- [ ] Extender skeleton a entrenador/ejercicios **cuando** rutas activas
+- [ ] QA manual Slow 3G en `/`, `/login`, `/registers`, `/configuration`, `/sportsman`
+
+---
+
+## Al activar entrenador / ejercicios
+
+1. Descomentar ruta en `features/home/home.routes.ts`
+2. Verificar segmento en `TABLE_OUTLET_ROUTE_SEGMENTS` (ya incluidos)
+3. Copiar patrón sportsman: `isListLoading` + `TableSkeletonComponent`
+4. Añadir `prefetchEntrenadorRoutes()` en `route-prefetch.ts` apuntando al `.routes.ts` real
+
+---
+
+## Explícitamente descartado
+
+- Spinner global en arranque o navegación
+- View Transitions API
+- Skeleton fullscreen genérico
+- Rediseño visual MASTER
+
+---
+
+## Prompt reutilizable (mantenimiento)
+
+```
+Validar loading/arranque Micovi contra docs/PROMPT-UX-TRANSITIONS-LOADING-AUDIT.md.
+Comprobar: boot-shell, placeholder 300 ms, sin router spinner, skeleton tabular,
+bundle prod < 1 MB. Skills: MASTER + colores-scss. No spinner global por defecto.
+```

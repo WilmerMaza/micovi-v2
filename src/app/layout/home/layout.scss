@@ -54,6 +54,18 @@ $dur: 180ms;
   box-sizing: border-box;
 }
 
+/* Contenedor absoluto del placeholder contextual (outlet-placeholder) */
+.main-content-placeholder {
+  display: block;
+  position: absolute;
+  top: $toolbar-h;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .mobile-backdrop {
   position: fixed;
   top: 0;
@@ -124,4 +136,5 @@ $dur: 180ms;
   .mobile-backdrop {
     opacity: 1;
   }
+
 }

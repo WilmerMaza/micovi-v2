@@ -121,6 +121,29 @@ $dur-fade: 120ms;
   width: 100%;
 }
 
+.nav-skeleton {
+  min-height: 44px;
+  width: 100%;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  animation: nav-skeleton-pulse 1.4s $ease infinite;
+
+  &.collapsed {
+    width: 44px;
+    margin: 0 auto;
+  }
+}
+
+@keyframes nav-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
 .nav-button {
   position: relative;
   background: transparent;
@@ -390,5 +413,10 @@ $dur-fade: 120ms;
 
   .nav-fade {
     animation: none;
+  }
+
+  .nav-skeleton {
+    animation: none;
+    opacity: 0.65;
   }
 }

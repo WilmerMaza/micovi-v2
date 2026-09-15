@@ -1,8 +1,11 @@
 import { Routes } from '@angular/router';
 import { IgnoreLoginGuard } from './core/guard/ignoreLoginGuard';
 import { JwtGuard } from './core/guard/JwtGuard';
+import { HOME_ROUTES } from './features/home/home.routes';
+import { SETTINGS_ROUTES } from './features/settings/settings.routes';
 import { Layout as ConfigLayout } from './layout/config/layout';
 import { Layout as HomeLayout } from './layout/home/layout';
+import { LoginComponent } from './view/pages/auth/login/login.component';
 import { Page404Component } from './view/pages/page404/page404.component';
 import { Page500Component } from './view/pages/page500/page500.component';
 
@@ -21,10 +24,7 @@ export const routes: Routes = [
   {
     path: 'login',
     canActivate: [IgnoreLoginGuard],
-    loadComponent: () =>
-      import('./view/pages/auth/login/login.component').then(
-        (m) => m.LoginComponent
-      ),
+    component: LoginComponent,
   },
   {
     path: 'registers',
@@ -33,28 +33,30 @@ export const routes: Routes = [
       import('./view/pages/auth/register/view/register').then((m) => m.Register),
   },
 
-  // Shell protegido, sólo cuando está logueado
+  // Shell home: layout visible de inmediato; guard solo en contenido hijo
   {
     path: '',
-    canActivate: [JwtGuard],
+    component: HomeLayout,
+    data: { title: 'Home', showMenuToggle: true },
     children: [
       {
         path: '',
-        component: HomeLayout,
-        data: { title: 'Home', showMenuToggle: true },
-        loadChildren: () =>
-          import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
+        canActivate: [JwtGuard],
+        children: HOME_ROUTES,
       },
+    ],
+  },
+
+  {
+    path: 'configuration',
+    component: ConfigLayout,
+    data: { title: 'Configuración', showMenuToggle: false },
+    children: [
       {
-        path: 'configuration',
-        component: ConfigLayout,
-        data: { title: 'Configuración', showMenuToggle: false },
-        loadChildren: () =>
-          import('./features/settings/settings.routes').then(
-            (m) => m.SETTINGS_ROUTES
-          ),
+        path: '',
+        canActivate: [JwtGuard],
+        children: SETTINGS_ROUTES,
       },
-      // podrías agregar otras rutas bajo Shell aquí
     ],
   },
 

@@ -12,7 +12,16 @@
     </div>
 
     <div class="main-content">
-        <router-outlet></router-outlet>
+        <router-outlet #primaryOutlet="outlet"></router-outlet>
+        @if (
+          showOutletPlaceholder() &&
+          (!primaryOutlet.isActivated || outletPendingRaw())
+        ) {
+        <app-outlet-placeholder
+          class="main-content-placeholder"
+          [variant]="placeholderVariant()"
+        />
+        }
     </div>
 </div>
 <!-- Spinner global (una sola vez) -->

@@ -6,13 +6,21 @@
  * Este servicio mantiene en memoria el perfil del usuario para la UI y guards.
  *
  * Bootstrap: al arrancar la app, GET /api/auth/me restaura la sesión si las
- * cookies siguen válidas (ver app.config.ts → provideAppInitializer).
+ * cookies siguen válidas. Se dispara en paralelo al bootstrap (no bloqueante)
+ * vía `startBootstrap()` en app.config.ts; guards esperan si aún no terminó.
  *
  * Nunca usar localStorage/sessionStorage para tokens.
  */
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, of, tap } from 'rxjs';
+import {
+  catchError,
+  finalize,
+  Observable,
+  of,
+  shareReplay,
+  tap,
+} from 'rxjs';
 import { MeResponse } from '../models/login-response.model';
 import { MicoviApi } from './micovi.api';
 
@@ -27,6 +35,12 @@ export interface AuthUserState {
 export class AuthService {
   private readonly user = signal<AuthUserState | null>(null);
   private readonly initialized = signal(false);
+  private bootstrapStarted = false;
+  private bootstrapInFlight: Observable<AuthUserState | null> | null = null;
+
+  /** true mientras GET /auth/me está en curso (primera carga). */
+  readonly bootstrapping = signal(false);
+  readonly initializedSignal = this.initialized.asReadonly();
 
   constructor(
     private readonly micoviapi: MicoviApi,
@@ -75,7 +89,30 @@ export class AuthService {
     if (this.initialized()) {
       return of(this.user());
     }
-    return this.loadSession();
+    if (!this.bootstrapInFlight) {
+      this.bootstrapInFlight = this.loadSession().pipe(
+        shareReplay({ bufferSize: 1, refCount: true }),
+        finalize(() => {
+          this.bootstrapInFlight = null;
+        }),
+      );
+    }
+    return this.bootstrapInFlight;
+  }
+
+  /**
+   * Arranca la restauración de sesión sin bloquear el bootstrap de Angular.
+   * Idempotente: guards pueden llamar a `bootstrapSession()` si aún no terminó.
+   */
+  startBootstrap(): void {
+    if (this.initialized() || this.bootstrapStarted) {
+      return;
+    }
+    this.bootstrapStarted = true;
+    this.bootstrapping.set(true);
+    this.bootstrapSession()
+      .pipe(finalize(() => this.bootstrapping.set(false)))
+      .subscribe();
   }
 
   logout(): Observable<{ ok: true }> {

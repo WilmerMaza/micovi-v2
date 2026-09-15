@@ -14,7 +14,7 @@ import { Observable, tap } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth';
 import { MeResponse } from '../../../../core/models/login-response.model';
 import { MicoviApi } from '../../../../core/services/micovi.api';
-import { Toast } from '../../../../utils/alert_Toast';
+import { fireErrorToast } from '../../../../utils/alert_Toast';
 
 @Injectable({
   providedIn: 'root',
@@ -42,10 +42,7 @@ export class Session {
       }),
       tap({
         error: () => {
-          Toast.fire({
-            icon: 'error',
-            title: 'Usuario o contraseña incorrecta',
-          });
+          void fireErrorToast('Usuario o contraseña incorrecta');
         },
       }),
     );

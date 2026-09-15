@@ -1,0 +1,21 @@
+<div
+  class="outlet-placeholder"
+  role="status"
+  aria-live="polite"
+  aria-label="Cargando contenido"
+>
+  @if (variant() === 'table') {
+  <app-table-skeleton [showFilters]="true" [showCheckbox]="true" [columns]="6" />
+  } @else {
+  <div class="outlet-placeholder__dash" aria-hidden="true">
+    <div class="outlet-placeholder__title"></div>
+    <div class="outlet-placeholder__sub"></div>
+    <div class="outlet-placeholder__banner"></div>
+    <div class="outlet-placeholder__kpis">
+      <div class="outlet-placeholder__kpi"></div>
+      <div class="outlet-placeholder__kpi"></div>
+      <div class="outlet-placeholder__kpi"></div>
+    </div>
+  </div>
+  }
+</div>

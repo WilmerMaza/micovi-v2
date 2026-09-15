@@ -41,7 +41,7 @@ import {
 import { ImageLoader } from '../../../../utils/readerBlodImg';
 import { calcularEdad } from '../../../../utils/UtilFunctions';
 
-import { Toast } from '../../../../utils/alert_Toast';
+import { fireToast } from '../../../../utils/alert_Toast';
 
 import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
 import { CommonModule } from '@angular/common';
@@ -407,7 +407,7 @@ export class CreateSportsmanComponent implements OnInit {
             this.uploadImg(formData);
           } else {
             this.isSaving = false;
-            await Toast.fire({
+            await fireToast({
               icon: 'success',
               title: `${res.Message}`,
             });
@@ -417,7 +417,7 @@ export class CreateSportsmanComponent implements OnInit {
         error: (respError): void => {
           this.isSaving = false;
           const { error } = respError;
-          Toast.fire({
+          void fireToast({
             icon: 'error',
             title: error,
           });
@@ -432,7 +432,7 @@ export class CreateSportsmanComponent implements OnInit {
     this.imagenFuntionsService$.subirImg(formData).subscribe({
       next: (respuesta: responseUploadMode) => {
         this.isSaving = false;
-        Toast.fire({
+        void fireToast({
           icon: 'success',
           title: respuesta.msg,
         });
@@ -443,7 +443,7 @@ export class CreateSportsmanComponent implements OnInit {
         const {
           error: { error },
         } = respError;
-        Toast.fire({
+        void fireToast({
           icon: 'error',
           title: error,
         });

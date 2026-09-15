@@ -20,7 +20,12 @@
   </div>
 
   <!-- Navegación densa — mesa del entrenador -->
-  <nav class="navigation-section" [class.collapsed]="collapsed()" aria-label="Navegación principal">
+  <nav
+    class="navigation-section"
+    [class.collapsed]="collapsed()"
+    aria-label="Navegación principal"
+    [attr.aria-busy]="navPending()"
+  >
     @if (!collapsed() && showText()) {
     <span class="nav-zone-label nav-fade">Menú</span>
     }
@@ -46,31 +51,43 @@
       </button>
     </div>
 
-    @for (item of Menu; track item.url) {
-    <div class="nav-button-container">
-      <button
-        type="button"
-        class="nav-button"
-        [class.collapsed]="collapsed()"
-        [class.active]="isActive(item.url)"
-        (click)="navigateTo(item.url)"
-        [attr.aria-current]="isActive(item.url) ? 'page' : null"
-        [attr.aria-label]="collapsed() ? item.name : null"
-        [matTooltip]="item.name"
-        matTooltipPosition="right"
-        [matTooltipDisabled]="!collapsed()"
-        matTooltipShowDelay="200"
-      >
-        <mat-icon aria-hidden="true">{{ item.iconComponent.name }}</mat-icon>
-        @if (!collapsed() && showText()) {
-        <span class="nav-fade">{{ item.name }}</span>
-        @if (item.badge) {
-        <span class="badge nav-fade" [class]="'badge-' + item.badge.color">{{
-          item.badge.text
-        }}</span>
-        } }
-      </button>
-    </div>
+    @if (navPending()) {
+      @for (slot of navPlaceholderSlots; track slot) {
+      <div class="nav-button-container">
+        <div
+          class="nav-skeleton"
+          [class.collapsed]="collapsed()"
+          aria-hidden="true"
+        ></div>
+      </div>
+      }
+    } @else {
+      @for (item of Menu; track item.url) {
+      <div class="nav-button-container">
+        <button
+          type="button"
+          class="nav-button"
+          [class.collapsed]="collapsed()"
+          [class.active]="isActive(item.url)"
+          (click)="navigateTo(item.url)"
+          [attr.aria-current]="isActive(item.url) ? 'page' : null"
+          [attr.aria-label]="collapsed() ? item.name : null"
+          [matTooltip]="item.name"
+          matTooltipPosition="right"
+          [matTooltipDisabled]="!collapsed()"
+          matTooltipShowDelay="200"
+        >
+          <mat-icon aria-hidden="true">{{ item.iconComponent.name }}</mat-icon>
+          @if (!collapsed() && showText()) {
+          <span class="nav-fade">{{ item.name }}</span>
+          @if (item.badge) {
+          <span class="badge nav-fade" [class]="'badge-' + item.badge.color">{{
+            item.badge.text
+          }}</span>
+          } }
+        </button>
+      </div>
+      }
     }
   </nav>
 

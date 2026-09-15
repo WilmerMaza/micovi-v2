@@ -7,10 +7,9 @@ export const JwtGuard: CanActivateFn = async () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  if (auth.isAuthenticated()) {
-    return true;
+  if (!auth.isInitialized()) {
+    await firstValueFrom(auth.bootstrapSession());
   }
 
-  await firstValueFrom(auth.bootstrapSession());
   return auth.isAuthenticated() ? true : router.createUrlTree(['/login']);
 };

@@ -1,15 +1,7 @@
 <div id="sportsman">
   <!-- aqui inicia la visualizacion individual -->
   <div class="conten-table">
-    @if (isListLoading() && dataSportman.length === 0) {
-      <app-table-skeleton
-        class="sportsman-list-skeleton"
-        [showCheckbox]="isCheck"
-        [columns]="data.length"
-      />
-    } @else {
     <div class="containerFilter">
-      <!--  aca inicia el uso del filtro  -->
       <app-dinamic-filter
         [isDownload]="isDownload"
         [nameAdd]="nameAdd"
@@ -19,6 +11,14 @@
       />
     </div>
 
+    @if (isListLoading() && dataSportman.length === 0) {
+      <app-table-skeleton
+        class="sportsman-list-skeleton"
+        [showFilters]="false"
+        [showCheckbox]="isCheck"
+        [columns]="data.length"
+      />
+    } @else {
     <div class="conten-table1">
       <div class="conten-table2">
         <div class="container-mat-card contentInfo" *ngIf="showSportsman">
