@@ -1,18 +1,26 @@
 #sportsman {
+  /* Llena el canvas: toolbar 56px + padding main (top+bottom ~40px) */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  padding: 15px;
+  min-height: calc(100dvh - 96px);
+  height: calc(100dvh - 96px);
+  padding: 4px 0 0;
   overflow: hidden;
+
   .container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
     width: 100%;
-    height: auto;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
     min-width: 0;
+    min-height: 0;
   }
 
   .containerFilter {
-    padding: 0px 10px 10px 10px;
+    flex-shrink: 0;
+    padding: 0 8px 12px;
   }
 
   .container-view {
@@ -24,6 +32,7 @@
   .full-height {
     padding: 0;
   }
+
   .content-card {
     background: linear-gradient(
       265.16deg,
@@ -39,6 +48,7 @@
     size: 13px;
     margin-left: 0px;
   }
+
   .row-data {
     color: #ffffff;
     font-weight: bold;
@@ -47,6 +57,7 @@
 
   .center-content {
     position: relative;
+
     .contenImg {
       position: absolute;
       top: 0;
@@ -54,16 +65,18 @@
       width: 100%;
       height: 100%;
       cursor: pointer;
+
       img {
         max-width: 100%;
         max-height: 100%;
         width: 100%;
         height: 100%;
-        min-width: 50px; /* Tamaño mínimo para la imagen */
+        min-width: 50px;
         min-height: 50px;
       }
     }
   }
+
   .close-button {
     color: #ffffff;
     position: absolute;
@@ -79,6 +92,7 @@
   .close-button:focus {
     outline: none;
   }
+
   ::ng-deep .contentInfo {
     margin: 1%;
     display: flex;
@@ -98,7 +112,7 @@
 
   #name {
     color: #fff;
-    font-family: "Inria Sans";
+    font-family: 'Inria Sans';
     font-size: 18px;
     font-style: normal;
     font-weight: 700;
@@ -113,9 +127,10 @@
     height: 17px;
     color: #0c4cc8;
     font-size: 10.2px;
-    font-family: "Inria Sans";
+    font-family: 'Inria Sans';
     font-weight: bold;
   }
+
   .botones {
     display: flex;
     flex-direction: row;
@@ -123,37 +138,60 @@
     width: 150px;
     justify-content: space-between;
   }
+
   .conten-table {
     display: flex;
-    justify-content: center;
+    flex: 1 1 auto;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: stretch;
+    min-height: 0;
   }
 
   .conten-table1 {
     display: flex;
-    justify-content: center;
+    flex: 1 1 auto;
     flex-direction: row;
+    justify-content: flex-start;
     align-items: stretch;
+    min-height: 0;
   }
 
   .conten-table2 {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: stretch;
     width: 100%;
+    min-height: 0;
   }
+
+  /* Tabla: ocupa el alto libre bajo el filtro */
+  .conten-table2 > .container {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .conten-table2 > .container app-dinamic-table,
+  .conten-table2 > .container .dinamic-table-host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+  }
+
   .content-timeline {
     background-color: #ffffff;
     padding-bottom: 20px;
     width: 285px;
+    flex-shrink: 0;
     border-radius: 15px;
     padding-top: 20px;
-    margin: 10px 10px 0px 0px;
+    margin: 10px 10px 0 0;
   }
 
-  //linea de tiempo
   .timeline {
     position: relative;
     display: flex;
@@ -161,12 +199,14 @@
     height: 100%;
     transform: translateX(50%);
   }
+
   .tittle-timeline {
     color: #0c4cc8;
     font-size: 22px;
     text-align: center;
     font-weight: bold;
   }
+
   .timeline-line {
     position: absolute;
     width: 8px;
@@ -206,17 +246,17 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: -25px; /* Ajusta la distancia vertical de la categoría */
+    top: -25px;
     text-align: center;
-    width: 120px; /* Ajusta el ancho de la caja de categoría */
+    width: 120px;
   }
 
   .event-details-left {
-    right: 150%; /* Posiciona las categorías a la izquierda */
+    right: 150%;
   }
 
   .event-details-right {
-    left: 50%; /* Posiciona las categorías a la derecha */
+    left: 50%;
   }
 
   .event-date {

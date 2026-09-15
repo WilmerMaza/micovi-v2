@@ -1,13 +1,15 @@
 /**
- * Pantalla de registro de colegios (wizard de 3 pasos).
+ * Pantalla de registro de instituciones (wizard de 4 pasos).
  *
- * Orquesta el stepper de Material: datos personales → contacto → contraseña.
+ * Orquesta el stepper de Material: institución → contacto → representante → acceso.
  * El estado de los formularios vive en RegisterService; cada paso es un
  * componente hijo que solo enlaza su FormGroup correspondiente.
+ *
+ * Los estados loading/success/error son solo UI de feedback del submit.
  */
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -47,7 +49,7 @@ import { RegisterService } from '../services/register.service';
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-export class Register {
+export class Register implements OnDestroy {
   private router = inject(Router);
   isSubmitting = false;
   submitState: 'idle' | 'loading' | 'success' | 'error' = 'idle';
@@ -68,21 +70,28 @@ export class Register {
     'sports_esports',
   ];
 
+  private ballInterval: ReturnType<typeof setInterval> | null = null;
+
   constructor(public service: RegisterService) {
     this.startBallRotation();
   }
 
-  private ballInterval: number | null = null;
+  ngOnDestroy(): void {
+    this.stopBallRotation();
+  }
 
+  /** Rota el icono deportivo solo en loading; ritmo calmado (Motion 3). */
   private startBallRotation(): void {
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
     this.ballInterval = setInterval(() => {
       if (this.submitState === 'loading') {
         this.currentBallIndex = (this.currentBallIndex + 1) % this.sportBalls.length;
       }
-    }, 700);
+    }, 1200);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private stopBallRotation(): void {
     if (this.ballInterval) {
       clearInterval(this.ballInterval);

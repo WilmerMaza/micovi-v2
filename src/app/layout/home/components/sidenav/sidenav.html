@@ -1,61 +1,87 @@
-<!-- sidenav.html -->
+<!--
+  Rail de navegación del shell Micovi.
+  Marca: /images/logo_micovi_mark.png (derivado de logo_register, sin fondo negro).
+  Collapsed: tooltips + aria-label; abierto: label de zona «Menú».
+-->
 <div class="sidebar-container">
-  <!-- Sección superior con avatar y usuario -->
-  <div class="user-section" [class.collapsed]="collapsed()">
-    <div class="avatar-container">
-      <img [src]="avatar" class="user-avatar" alt="avatar" />
-    </div>
-
+  <!-- Marca oficial sobre tinta pizarra -->
+  <div class="brand-section" [class.collapsed]="collapsed()">
+    <img
+      src="/images/logo_micovi_mark.png"
+      alt="Micovi"
+      class="micovi-logo"
+      width="48"
+      height="48"
+      decoding="async"
+    />
     @if (!collapsed() && showText()) {
-    <div class="user-name">{{ username }}</div>
+    <span class="brand-name nav-fade">Micovi</span>
     }
   </div>
 
-  <!-- Sección de navegación unificada -->
-  <div class="navigation-section" [class.collapsed]="collapsed()">
-    <!-- Botón Inicio -->
+  <!-- Navegación densa — mesa del entrenador -->
+  <nav class="navigation-section" [class.collapsed]="collapsed()" aria-label="Navegación principal">
+    @if (!collapsed() && showText()) {
+    <span class="nav-zone-label nav-fade">Menú</span>
+    }
+
     <div class="nav-button-container">
       <button
+        type="button"
         class="nav-button"
         [class.collapsed]="collapsed()"
         [class.active]="isActive('/dashboard')"
         (click)="navigateTo('/dashboard')"
+        [attr.aria-current]="isActive('/dashboard') ? 'page' : null"
+        [attr.aria-label]="collapsed() ? 'Inicio' : null"
+        matTooltip="Inicio"
+        matTooltipPosition="right"
+        [matTooltipDisabled]="!collapsed()"
+        matTooltipShowDelay="200"
       >
-        <mat-icon>home</mat-icon>
+        <mat-icon aria-hidden="true">home</mat-icon>
         @if (!collapsed() && showText()) {
-        <span>Inicio</span>
+        <span class="nav-fade">Inicio</span>
         }
       </button>
     </div>
 
-    <!-- Botones de navegación -->
-    @for (item of Menu; track $index) {
+    @for (item of Menu; track item.url) {
     <div class="nav-button-container">
       <button
+        type="button"
         class="nav-button"
         [class.collapsed]="collapsed()"
         [class.active]="isActive(item.url)"
         (click)="navigateTo(item.url)"
+        [attr.aria-current]="isActive(item.url) ? 'page' : null"
+        [attr.aria-label]="collapsed() ? item.name : null"
+        [matTooltip]="item.name"
+        matTooltipPosition="right"
+        [matTooltipDisabled]="!collapsed()"
+        matTooltipShowDelay="200"
       >
-        <mat-icon>{{ item.iconComponent.name }}</mat-icon>
+        <mat-icon aria-hidden="true">{{ item.iconComponent.name }}</mat-icon>
         @if (!collapsed() && showText()) {
-        <span>{{ item.name }}</span>
+        <span class="nav-fade">{{ item.name }}</span>
         @if (item.badge) {
-        <span class="badge" [class]="'badge-' + item.badge.color"
-          >{{ item.badge.text }}</span
-        >
+        <span class="badge nav-fade" [class]="'badge-' + item.badge.color">{{
+          item.badge.text
+        }}</span>
         } }
       </button>
     </div>
     }
-  </div>
+  </nav>
 
-  <!-- Logo MICOVI en la parte inferior -->
-  <div class="logo-section" [class.collapsed]="collapsed()">
-    <img
-      src=" {{collapsed()  ? 'micovi.ico' :  '/images/dashboard.png'}}"
-      alt="MICOVI"
-      class="micovi-logo"
-    />
+  <!-- Usuario compacto (squircle 8px) -->
+  <div class="user-section" [class.collapsed]="collapsed()">
+    <img [src]="avatar" class="user-avatar" alt="" width="40" height="40" />
+    @if (!collapsed() && showText()) {
+    <div class="user-meta nav-fade">
+      <span class="user-name">{{ username }}</span>
+      <span class="user-role">Entrenador</span>
+    </div>
+    }
   </div>
 </div>

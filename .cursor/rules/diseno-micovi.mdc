@@ -1,0 +1,39 @@
+---
+description: Rediseño/estilo UI Micovi — MASTER.md + skills de diseño, Angular Material + SCSS, sin tocar lógica
+alwaysApply: true
+---
+
+# Diseño UI Micovi
+
+Al crear, rediseñar o estilizar interfaz de producto, seguir este protocolo.
+
+## Obligatorio al empezar
+
+1. **Leer** `design-system/micovi/MASTER.md` y aplicarlo como fuente de verdad visual.
+2. **Leer y seguir** estos skills (en este orden de prioridad ante conflictos):
+   - `.cursor/skills/redesign-existing-projects/SKILL.md`
+   - `.cursor/skills/frontend-design/SKILL.md`
+   - `.cursor/skills/ui-ux-pro-max/SKILL.md`
+3. Si un skill genérico choca con MASTER (tipografía, paleta, densidad, cards, motion), **gana MASTER**.
+
+## Stack
+
+- Angular Material + SCSS
+- Sin Tailwind, sin React, sin shadcn
+- Tipografía de continuidad: Inria Sans
+- Acento único: Azul Micovi `#0C4CC8`
+
+## Límites
+
+- **No** cambiar lógica de negocio, servicios, repositorios ni contratos de API.
+- Solo plantillas, estilos, tokens visuales y markup de presentación.
+- Idioma de UI y comentarios de estilo: **español**.
+
+## Checklist rápido (MASTER)
+
+- Densidad de cabina (tablas/métricas), no landing airy
+- Números primero; `tabular-nums` / mono en kg, %, series
+- Un acento de marca; neutros fríos slate (sin purple AI, sin cream/terracotta)
+- Cards solo si envuelven interacción; preferir tablas/formularios densos
+- Motion 150–250 ms solo como feedback de acción
+- Cumplimiento OK/bajo/sobre: color **y** etiqueta (nunca solo color)

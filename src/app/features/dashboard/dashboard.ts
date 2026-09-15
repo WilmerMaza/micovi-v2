@@ -1,73 +1,51 @@
+/**
+ * Home / dashboard de entrada al producto Micovi.
+ *
+ * Cabina densa: saludo, empty state con CTA a deportistas, KPI de cumplimiento
+ * (placeholders) en franja única y atajos a rutas reales del menú.
+ * Conserva el flujo newpay + Swal/confeti sin cambios.
+ *
+ * Ruteado por features/home/home.routes (no el legacy view/dashboard).
+ */
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../core/services/auth';
 import { customOptions } from '../../utils/alert_Toast';
 import { Validators } from '../../utils/Validators';
+
+interface DashShortcut {
+  label: string;
+  hint: string;
+  url: string;
+  icon: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <div class="welcome-container">
-  <div class="welcome-content">
-    <h1 class="welcome-title">¡Bienvenido!</h1>
-
-    <div class="imgDash">
-      <img src="./images/dashboard.png" alt="" />
-    </div>
-    <!-- <p class="welcome-subtitle">Sistema de gestión deportiva y entrenamiento</p> -->
-  </div>
-</div>
-
-  `,
-  styles: `
-.welcome-container {
-  height: 100%;
-  padding: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #F9FAFB;
-}
-
-.welcome-content {
-  text-align: center;
-  max-width: 800px;
-  width: 100%;
-}
-
-.welcome-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #3886F6;
-  margin-bottom: 1rem;
-  font-family: 'Inria Sans', sans-serif;
-}
-
-.welcome-subtitle {
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 3rem;
-  font-weight: 300;
-}
-
-@media (max-width: 768px) {
-  .welcome-container {
-    padding: 1rem;
-  }
-
-  .welcome-title {
-    font-size: 2.5rem;
-  }
-}
-
-  `,
+  imports: [CommonModule, RouterModule, MatIconModule],
+  templateUrl: './dashboard.html',
+  styleUrl: './dashboard.scss',
 })
 export class Dashboard implements OnInit {
-  constructor(private route$: ActivatedRoute) { }
+  greetingLine = 'Hola';
+  todayLabel = '';
+  todayIso = '';
+  shortcuts: DashShortcut[] = [];
+
+  constructor(
+    private route$: ActivatedRoute,
+    private auth: AuthService,
+  ) {}
 
   public ngOnInit(): void {
+    this.buildGreeting();
+    this.buildDate();
+    this.buildShortcuts();
+
     const {
       snapshot: {
         queryParams: { newpay },
@@ -76,6 +54,50 @@ export class Dashboard implements OnInit {
     if (!Validators.isNullOrUndefined(newpay)) {
       this.newPayCompleted();
     }
+  }
+
+  private buildGreeting(): void {
+    const user = this.auth.getUser();
+    if (user?.email) {
+      const local = user.email.split('@')[0]?.trim();
+      this.greetingLine = local ? `Hola, ${local}` : 'Hola';
+      return;
+    }
+    this.greetingLine = 'Hola';
+  }
+
+  private buildDate(): void {
+    const now = new Date();
+    this.todayIso = now.toISOString().slice(0, 10);
+    this.todayLabel = new Intl.DateTimeFormat('es', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+    }).format(now);
+  }
+
+  private buildShortcuts(): void {
+    // Rutas reales del menú / home.routes (no hay /resultados ni /sesion aún).
+    this.shortcuts = [
+      {
+        label: 'Deportistas',
+        hint: 'Entra al listado para planificar y dosificar',
+        url: '/sportsman',
+        icon: 'directions_run',
+      },
+      {
+        label: 'Sesión de hoy',
+        hint: 'Sin sesión cargada — elige un deportista',
+        url: '/sportsman',
+        icon: 'today',
+      },
+      {
+        label: 'Resultados',
+        hint: 'Sin datos aún — registra ejecución desde el deportista',
+        url: '/sportsman',
+        icon: 'insights',
+      },
+    ];
   }
 
   private newPayCompleted(): void {

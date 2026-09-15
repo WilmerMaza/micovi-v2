@@ -1,308 +1,464 @@
+/**
+ * Alta / edición de deportista — uso de espacio denso Micovi (MASTER).
+ *
+ * Full-bleed del content pane; Identificación = campos + foto fija;
+ * Física/personales en 3 columnas desktop. Sin max-width centrado.
+ */
 
-.registration-header h2,
-.registration-header p,
-.card-header h3 {
-margin: 0;
-}
+@use '@angular/material' as mat;
 
-.card-header h3{
-margin: 0;
-display: inline-block;
-position: relative;
-padding-bottom: 8px;
-}
+$micovi-canvas: #f9fafb;
+$micovi-surface: #ffffff;
+$micovi-ink: #0f172a;
+$micovi-muted: #64748b;
+$micovi-border: #e2e8f0;
+$micovi-border-strong: #cbd5e1;
+$micovi-accent: #0c4cc8;
+$micovi-accent-soft: #e8f0fc;
+$micovi-accent-press: #0a3fa8;
+$micovi-over: #dc2626;
+$micovi-over-soft: #fee2e2;
+$micovi-elev-1: 0 1px 2px rgba(15, 23, 42, 0.06);
+$ease: cubic-bezier(0.2, 0, 0, 1);
+$dur: 180ms;
+$photo-width: 220px;
+$radius-panel: 12px;
+$radius-control: 6px;
 
-.card-header h3::after{
-content: "";
-position: absolute;
-bottom: 0;
-left: 0;
-width: 75%;
-height: 2px;
-background-color:#4d7ce0;
-border-radius: 2px;
-will-change: transform;
-transform: translateZ(0);
+:host {
+  display: block;
+  width: 100%;
+  font-family: 'Inria Sans', sans-serif;
+  color: $micovi-ink;
+  box-sizing: border-box;
+
+  /* Densidad -1 solo en este formulario; no altera el tema global. */
+  @include mat.form-field-density(-1);
+  @include mat.button-density(-1);
 }
 
 .registration-container {
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 2rem 1rem;
-gap: 1rem;
-width: 100%;
-max-width: 900px;  /* Define el ancho máximo deseado */
-margin: 0 auto;    /* Centra todo el bloque cuando se maximiza */
-box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* space-5: entre header y formulario */
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 12px 0 20px; /* space-3 / space-5 — sin padding horizontal (shell) */
+  box-sizing: border-box;
 }
 
-.registration-header { 
-display: flex;
-flex-direction: column;
-justify-content: start;
-position: relative;
-padding: 1.5rem 2rem;
-width: 100%;
-gap: 0.30rem;
-box-sizing: border-box;
-overflow: hidden;
-background: white;
-border-radius: 12px;
-box-shadow: 0 4px 12px rgba(0,0,0,.08);
+/*
+ * Header = cromo de página, NO card.
+ * MASTER: cards solo si envuelven interacción.
+ * Se separa del canvas con riel de acento + divisor, no con otra caja blanca.
+ */
+.registration-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 8px 0 20px; /* space-2 arriba / space-5 abajo antes del divisor */
+  margin: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $micovi-border;
+  border-radius: 0;
+  box-sizing: border-box;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 20px;
+    width: 3px;
+    border-radius: 2px;
+    background: $micovi-accent;
+  }
 }
 
 .header-text {
-display: flex;
-flex-direction: column;
-gap: 0.30rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding-left: 14px;
 }
 
-.registration-header img {
-position: absolute;
-right: 0.5rem;
-top: 50%;
-transform: translateY(-50%);
-max-height: 89px;
-width: auto;
-filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15));
+.registration-title {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: $micovi-ink;
+}
+
+.registration-lead {
+  margin: 0;
+  max-width: 52ch;
+  font-size: 0.9375rem;
+  color: $micovi-muted;
+  line-height: 1.45;
+}
+
+.registration-mark {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  padding: 6px;
+  object-fit: contain;
+  background: $micovi-surface;
+  border: 1px solid $micovi-border;
+  border-radius: $radius-panel;
+  box-shadow: $micovi-elev-1;
+  box-sizing: border-box;
 }
 
 .registration-form {
-display: flex;
-flex-direction: column;
-gap: 0.9rem;
-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* space-5: entre bloques de sección */
+  width: 100%;
 }
 
-
+/* Paneles de sección: superficie elevada sobre canvas (no stack de cajas idénticas al header) */
 .registration-card {
-width: 100%;
-min-height: 150px;
-background: white;
-border-radius: 12px;
-box-shadow: 0 4px 12px rgba(0,0,0,.08);
-overflow: hidden;
+  width: 100%;
+  background: $micovi-surface;
+  border: 1px solid $micovi-border-strong;
+  border-radius: $radius-panel;
+  box-shadow: $micovi-elev-1;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .card-header {
-display: flex;
-align-items: center;
-gap: 16px;
-padding: 1rem 0.5rem 0.5rem 1.5rem;
-padding-bottom: 1%;
-}
+  display: flex;
+  align-items: center;
+  gap: 12px; /* space-3 */
+  padding: 16px 16px 0; /* space-4 */
+  border-bottom: none;
+  background: transparent;
 
-.card-header mat-icon {
-width: 35px;
-height: 35px;
-padding: 5px;
-color: #0f4dd1;
-background: #EEF4FF;
-border-radius: 50%;
-box-sizing: border-box;
+  mat-icon {
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    font-size: 18px;
+    color: $micovi-accent;
+    background: $micovi-accent-soft;
+    border-radius: $radius-control;
+    box-sizing: border-box;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $micovi-ink;
+    letter-spacing: -0.01em;
+  }
 }
 
 .card-content {
-padding: 1rem;
+  padding: 12px 16px 16px; /* space-3 → space-4: aire título→campos + padding de panel */
 }
 
-footer {
-display: flex;
-justify-content: space-between;
-}
-
-footer button {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-padding: 10px 16px;
-font-size: 15px;
-font-weight: 600;
-cursor: pointer;
-border-radius: 12px;
-transition: all 0.2 ease;
-}
-
-.btn-back:hover {
-background-color: aliceblue;
-transform: translateY(-3px);
-}
-
-.btn-save:hover {
-background-color: #0440c2;
-transform: translateY(-3px)
-}
-
-.btn-back {
-min-width: 130px;
-border:1px solid #BFD5FF; /* Cambia el borde negro por un azul muy suave */
-background-color: transparent;
-border-width: 1px;
-color:#2563EB;
-box-shadow: 0 2px 8px rgba(0,0,0,.05);
-transition: border-color .15s ease;
-transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.btn-save {
-min-width: 220px;
-border: none;
-background-color:  #2563EB;
-color: white;
-transition: border-color .15s ease;
-box-shadow: 0 6px 16px rgba(37,99,235,.18);
-transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
-}
-
+/* Identificación: campos fluidos + foto de ancho fijo */
 .identification-layout {
-display: flex;
-gap: 2rem;
-width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) $photo-width;
+  gap: 16px; /* space-4 */
+  width: 100%;
+  align-items: start;
 }
 
 .identification-form {
-flex: 2;
-display: flex;
-flex-direction: column;
-gap: 1.5rem;
-border-radius: 12px;
-min-height: 250px;
-padding: 1rem 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px; /* space-2 filas / space-4 columnas */
+  min-width: 0;
 }
 
-.photo-upload h4 {
-color: #0242cc;
+.field--full {
+  grid-column: 1 / -1;
+}
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 16px; /* space-2 / space-4 — densos, no pegados */
+}
+
+.field--span-2 {
+  grid-column: span 2;
+}
+
+.field {
+  width: 100%;
+  font-family: inherit;
+}
+
+.field--metric {
+  input {
+    font-variant-numeric: tabular-nums;
+    font-family: 'JetBrains Mono', 'Inria Sans', ui-monospace, monospace;
+    text-align: right;
+  }
 }
 
 .photo-upload {
-position: relative;
-flex: 1;
-display: flex;
-flex-direction: column;
-min-height: 260px;
-border: 2px dashed #D6DDEA;
-min-height: 250px;
-align-items: center;
-justify-content: center;
-border-radius: 12px;
-background: #f1f1f5;
-cursor: pointer;
-transition: .2s;
+  position: relative;
+  width: 100%;
+  max-width: $photo-width;
+  aspect-ratio: 3 / 4;
+  max-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px;
+  border: 1px dashed $micovi-border-strong;
+  border-radius: $radius-panel;
+  background: $micovi-canvas;
+  cursor: pointer;
+  transition: background $dur $ease, border-color $dur $ease;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &:hover,
+  &:focus-visible {
+    border-color: $micovi-accent;
+    background: $micovi-accent-soft;
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+  }
+
+  > mat-icon {
+    color: $micovi-accent;
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.photo-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: $micovi-accent;
+}
+
+.photo-hint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: $micovi-muted;
+  line-height: 1.3;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: $radius-panel;
+  position: absolute;
+  inset: 0;
 }
 
 .remove-image {
-position: absolute;
-top: 10px;
-right: 10px;
-z-index: 10;
-width: 30px;
-height: 30px;
-padding: 0;
-display: flex;
-justify-content: center;
-align-items: center;
-border: none;
-background-color: #e2dada; /* Fondo rojo para destacar la acción de eliminar */
-color: white;
-border-radius: 50%;
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-cursor: pointer;
-transition: background-color 0.2s ease, transform 0.2s ease;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $micovi-border;
+  background: $micovi-over-soft;
+  color: $micovi-over;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background $dur $ease, transform $dur $ease;
+
+  &:hover {
+    background: #fecaca;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
 }
 
-.remove-image:hover {
-background-color: #D6DDEA;
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 4px;
+  padding: 20px 0 8px; /* space-5 sobre el divisor de acciones */
+  border-top: 1px solid $micovi-border;
 }
 
-.remove-image mat-icon {
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 18px;
-width: 16px !important;
-height: 16px !important;
-line-height: 1 !important;
-margin: 0 !important;
-transform: translateX(1px);
+.btn-back,
+.btn-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  border-radius: $radius-control;
+  cursor: pointer;
+  transition: background $dur $ease, color $dur $ease, border-color $dur $ease,
+    transform $dur $ease;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+  }
 }
 
-.photo-upload:hover {
-border-color: #2563EB;
-background:#EEF4FF;
+.btn-back {
+  min-width: 120px;
+  border: 1px solid $micovi-border-strong;
+  background: transparent;
+  color: $micovi-accent;
+
+  &:hover {
+    background: $micovi-accent-soft;
+    border-color: $micovi-accent;
+  }
 }
 
-.photo-upload mat-icon {
-color: #0f4dd1;
-font-size:40px;
-width:42px;
-height:42px;
-margin-bottom:1px;
+.btn-save {
+  min-width: 180px;
+  border: none;
+  background: $micovi-accent;
+  color: #fff;
+
+  &:hover {
+    background: $micovi-accent-press;
+  }
 }
 
-.btn-back mat-icon,
-.btn-save mat-icon {
-font-size: 20px;
-width: 20px;
-height: 20px;
-flex-shrink: 0;
+/* Tokens Material outline (sin alterar lógica de validación) */
+:host ::ng-deep {
+  .mat-mdc-form-field {
+    --mdc-outlined-text-field-container-shape: #{$radius-control};
+    --mdc-outlined-text-field-outline-color: #{$micovi-border};
+    --mdc-outlined-text-field-hover-outline-color: #{$micovi-border-strong};
+    --mdc-outlined-text-field-focus-outline-color: #{$micovi-accent};
+    --mdc-outlined-text-field-label-text-color: #{$micovi-muted};
+    --mdc-outlined-text-field-focus-label-text-color: #{$micovi-accent};
+    --mdc-outlined-text-field-input-text-color: #{$micovi-ink};
+    font-family: 'Inria Sans', sans-serif;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-bottom: 2px;
+  }
 }
 
-.preview-image{
-width: 100%;
-height: 100%;
-object-fit: cover;
-border-radius: 12px;
+/* Tablet ≤1023: 2 cols; Identificación mantiene foto lateral si cabe */
+@media (max-width: 1023px) {
+  .fields-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .field--span-2 {
+    grid-column: span 2;
+  }
 }
 
-.form-group {
-position: relative;
-display: flex;
-flex-direction: column;
-margin-top: 0.5rem; /* Da un poco de espacio arriba para la etiqueta flotante */
+/* Móvil ≤767: 1 col; foto full-width debajo */
+@media (max-width: 767px) {
+  .registration-container {
+    padding: 8px 0 16px;
+    gap: 20px;
+  }
+
+  .registration-form {
+    gap: 16px; /* space-4 en móvil: un poco más compacto */
+  }
+
+  .identification-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .identification-form {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-upload {
+    max-width: none;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 200px;
+  }
+
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field--span-2,
+  .field--full {
+    grid-column: 1 / -1;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+
+    .btn-back,
+    .btn-save {
+      width: 100%;
+    }
+  }
 }
 
-.form-group label {
-font-size: 0.85rem;
-font-weight: 600;
-color: #1E3A8A;
+@media (prefers-reduced-motion: reduce) {
+  .btn-back,
+  .btn-save,
+  .photo-upload,
+  .remove-image {
+    transition: none;
+  }
 }
-
-.form-group span {
-color: #EF4444;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-border-color: #2563EB;
-}
-
-.form-group input,
-.form-group select {
-width: 100%;
-height: 48px;
-padding: 0 1rem;
-border: 1px solid #D6DDEA;
-border-radius: 10px;
-font-size: 0.95rem;
-outline: none;
-background: #fff;
-box-sizing: border-box;
-}
-
-/* 3. Posicionamos la etiqueta ABSOLUTAMENTE sobre el borde superior */
-.form-group label {
-position: absolute;
-left: 12px;                /* La mueve un poco a la derecha del inicio del borde */
-top: 0;                    /* La sitúa exactamente cruzando la línea horizontal del input */
-transform: translateY(-50%); /* Ajuste matemático perfecto para centrarla sobre la línea */
-background: #fff;          /* Fondo blanco para 'tapar' la línea gris del input detrás del texto */
-padding: 0 4px;            /* Espaciado interno horizontal para que el texto no toque las líneas rotas */
-font-size: 0.75rem;        /* Tamaño de letra un poco más reducido y elegante */
-font-weight: 600;
-color: #1E3A8A;
-pointer-events: none;      /* Permite que si hacen clic sobre la etiqueta, el input se active de todos modos */
-transition: all 0.15s ease;
-}
-

@@ -1,36 +1,43 @@
-<!-- Backdrop del modal -->
-<div class="modal-backdrop" (click)="onCancel()">
-  <!-- Modal container -->
-  <div class="modal-container" (click)="$event.stopPropagation()">
-    <!-- Icono de advertencia -->
-    <div class="modal-icon">
+<div
+  class="logout-modal-backdrop"
+  (click)="onCancel()"
+  role="presentation"
+>
+  <div
+    class="logout-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="logout-modal-title"
+    aria-describedby="logout-modal-desc"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="logout-modal__icon" aria-hidden="true">
       <mat-icon>logout</mat-icon>
     </div>
-    
-    <!-- Título -->
-    <h2 class="modal-title">Cerrar Sesión</h2>
-    
-    <!-- Mensaje -->
-    <p class="modal-message">
-      ¿Estás seguro que deseas cerrar tu sesión?
+
+    <h2 id="logout-modal-title" class="logout-modal__title">Cerrar sesión</h2>
+
+    <p id="logout-modal-desc" class="logout-modal__message">
+      ¿Seguro que quieres cerrar la sesión?
     </p>
-    
-    <!-- Botones de acción -->
-    <div class="modal-actions">
-      <button 
-        mat-button 
-        class="cancel-btn"
+
+    <div class="logout-modal__actions">
+      <button
+        mat-stroked-button
+        type="button"
+        class="logout-modal__cancel"
         (click)="onCancel()"
-        type="button">
+      >
         Cancelar
       </button>
-      
-      <button 
-        mat-raised-button 
-        class="confirm-btn"
+
+      <button
+        mat-flat-button
+        type="button"
+        class="logout-modal__confirm"
         (click)="onConfirm()"
-        type="button">
-        Cerrar Sesión
+      >
+        Cerrar sesión
       </button>
     </div>
   </div>

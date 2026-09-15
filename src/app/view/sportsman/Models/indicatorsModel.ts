@@ -116,14 +116,18 @@ export const columnsIndValue = [
     displayname: 'acción',
     estado: true,
     type: 'action',
-    menu: [{
-      action: 'Menu',
-      text: 'Ver',
-      menu: [
-        { action: 'ver indicador', text: 'Indicadores' },
-        { action: 'ver rubrica', text: 'Rubrica' },
-      ]
-    }]
+    menu: [
+      {
+        action: 'ver indicador',
+        text: 'Indicadores',
+        enableWhen: 'HasIndicators',
+      },
+      {
+        action: 'ver rubrica',
+        text: 'Rúbrica',
+        enableWhen: 'HasIndicators',
+      },
+    ],
   },
 ];
 

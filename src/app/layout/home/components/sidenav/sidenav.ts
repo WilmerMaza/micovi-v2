@@ -1,3 +1,12 @@
+/**
+ * Rail lateral del shell de producto Micovi.
+ *
+ * Renderiza marca, ítems de NavigationService e identidad de usuario.
+ * Solo presentación: tooltips/aria en collapsed; no altera rutas, badges
+ * ni la lógica collapsed/mobile del layout.
+ *
+ * Usado por layout/home; navega vía Router y cierra drawer móvil al clic.
+ */
 import {
   Component,
   effect,
@@ -10,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { Router } from '@angular/router';
 import {
@@ -19,7 +29,13 @@ import {
 
 @Component({
   selector: 'app-sidenav',
-  imports: [MatSidenavModule, MatListModule, MatIconModule, MatButtonModule],
+  imports: [
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+  ],
   standalone: true,
   templateUrl: './sidenav.html',
   styleUrl: './sidenav.scss',

@@ -37,6 +37,17 @@ yarn-error.log
 testem.log
 /typings
 
+# Agent skills (Python cache from ui-ux-pro-max scripts)
+.cursor/skills/**/__pycache__/
+.cursor/skills/**/*.pyc
+
+# MCP secrets (nunca committear API keys)
+.cursor/mcp.json
+.env
+.env.*
+!.env.example
+!.cursor/mcp.json.example
+
 # System files
 .DS_Store
 Thumbs.db

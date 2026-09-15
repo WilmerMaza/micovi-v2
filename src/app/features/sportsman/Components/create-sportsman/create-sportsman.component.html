@@ -1,140 +1,325 @@
-<main class="registration-container">
-
+<!--
+  Alta / edición de deportista: secciones densas + foto, reactive form existente.
+-->
+<main class="registration-container" *ngIf="showViewSportsman">
   <header class="registration-header">
     <div class="header-text">
-      <h2>Agregar deportista</h2>
-      <P>Completa la información para registrar un nuevo deportista</P>
+      <h1 class="registration-title">
+        {{ isEdit ? 'Editar deportista' : 'Agregar deportista' }}
+      </h1>
+      <p class="registration-lead">
+        {{
+          isEdit
+            ? 'Actualiza la información del deportista seleccionado'
+            : 'Completa la información para registrar un nuevo deportista'
+        }}
+      </p>
     </div>
-    <img src="/micovi.ico" alt="Logo-micovi">
+    <img
+      class="registration-mark"
+      src="/images/logo_micovi_mark.png"
+      alt=""
+      width="48"
+      height="48"
+      decoding="async"
+    />
   </header>
 
-    <form class="registration-form">
+  <form
+    class="registration-form"
+    [formGroup]="sportsmansForm"
+    (ngSubmit)="createSportsman()"
+  >
+    <!-- 1. Identificación -->
+    <section class="registration-card" aria-labelledby="sec-identificacion">
+      <div class="card-header">
+        <mat-icon aria-hidden="true">person</mat-icon>
+        <h2 id="sec-identificacion">Identificación</h2>
+      </div>
 
-    
-      <section class="registration-card">
-        <div class="card-header">
-          <mat-icon>
-            person
-          </mat-icon>
-          <h3>Identificación</h3>
-        </div>
+      <div class="card-content">
+        <div class="identification-layout">
+          <div class="identification-form">
+            <mat-form-field appearance="outline" class="field field--full" subscriptSizing="dynamic">
+              <mat-label>Nombre completo</mat-label>
+              <input
+                matInput
+                formControlName="name"
+                placeholder="Ej. Juan Martín González"
+                autocomplete="name"
+              />
+              @if (sportsmansForm.get('name')?.hasError('required')) {
+                <mat-error>Campo requerido</mat-error>
+              }
+            </mat-form-field>
 
-        <div class="card-content">
-          
-          <div class="identification-layout">
-            
-            <div class="identification-form">
-              <!-- Campo: Nombre Completo -->
-              <div class="form-group">
-                <!-- El input va primero con un placeholder vacío o un espacio " " -->
-                <input type="text" id="nombre-completo" placeholder="Ej. Juan Martín González">
-                <label for="nombre-completo">Nombre completo <span>*</span></label>
-              </div>
+            <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+              <mat-label>Tipo de documento</mat-label>
+              <mat-select formControlName="typeIdentification" placeholder="Seleccione">
+                @for (identification of typeIdentification; track identification.code) {
+                  <mat-option [value]="identification.code">
+                    {{ identification.code }} — {{ identification.value }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (sportsmansForm.get('typeIdentification')?.hasError('required')) {
+                <mat-error>Campo requerido</mat-error>
+              }
+            </mat-form-field>
 
-              <!-- Campo: Tipo de Documento -->
-              <div class="form-group">
-                <mat-form-field appearance="outline">
-
-                  <mat-label>
-                    Tipo de documento
-                  </mat-label>
-                  <mat-select>
-                    <mat-option value="cc">
-                      Cédula
-                    </mat-option>
-
-                    <mat-option value="ti">
-                      Tarjeta de identidad
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <label for="tipo-documento">Seleccionar tipo de documento <span>*</span></label>
-              </div>
-
-              <!-- Campo: Número de Documento -->
-              <div class="form-group">
-                <input type="text" id="numero-documento" placeholder="Ej. 12345678">
-                <label for="numero-documento">Número de documento <span>*</span></label>
-              </div>
-
-            </div>
-
-            <div class="photo-upload" (click)="fileInput.click()">
-              
-              <button 
-              *ngIf="imageSelected"
-              class="remove-image"
-              type="button"
-              (click)="removeImage($event)"><mat-icon>close</mat-icon>
-              </button>
-              
-              <ng-container *ngIf="!imageSelected">
-                <mat-icon>upload</mat-icon>
-                <h4>Añadir foto</h4>
-                <p>Formatos: JPG o PNG</p>
-                <p>Máx. 2MB</p>
-              </ng-container>
-
-              <ng-container *ngIf="imageSelected">
-                <img [src]="selectedImageURL"
-                alt="Vista previa"
-                class="preview-image">
-
-              </ng-container>
-              <input type="file" hidden #fileInput accept="image/png, image/jpeg" (change)="onFilesSelected($event)"  >
-            
-            </div>
-
+            <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+              <mat-label>Número de documento</mat-label>
+              <input
+                matInput
+                formControlName="identification"
+                placeholder="Ej. 12345678"
+                autocomplete="off"
+              />
+              @if (sportsmansForm.get('identification')?.hasError('required')) {
+                <mat-error>Campo requerido</mat-error>
+              }
+            </mat-form-field>
           </div>
 
+          <div
+            class="photo-upload"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="imageSelected ? 'Cambiar foto del deportista' : 'Añadir foto del deportista'"
+            (click)="fileInput.click()"
+            (keydown.enter)="fileInput.click()"
+            (keydown.space)="$event.preventDefault(); fileInput.click()"
+          >
+            @if (imageSelected) {
+              <button
+                class="remove-image"
+                type="button"
+                aria-label="Quitar foto"
+                (click)="removeImage($event)"
+              >
+                <mat-icon aria-hidden="true">close</mat-icon>
+              </button>
+              <img
+                [src]="selectedImageURL"
+                alt="Vista previa de la foto"
+                class="preview-image"
+              />
+            } @else {
+              <mat-icon aria-hidden="true">upload</mat-icon>
+              <h3 class="photo-title">Añadir foto</h3>
+              <p class="photo-hint">Formatos: JPG o PNG</p>
+              <p class="photo-hint">Máx. 2MB</p>
+            }
+            <input
+              type="file"
+              hidden
+              #fileInput
+              accept="image/png,image/jpeg"
+              (change)="onFilesSelected($event)"
+            />
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-    
-      <section class="registration-card">
-        <div class="card-header">
-          <mat-icon>
-            straighten
-          </mat-icon>
-          <h3>Información fisica</h3>
-        </div>
+    <!-- 2. Información física -->
+    <section class="registration-card" aria-labelledby="sec-fisica">
+      <div class="card-header">
+        <mat-icon aria-hidden="true">straighten</mat-icon>
+        <h2 id="sec-fisica">Información física</h2>
+      </div>
 
-        <div class="card-content">
+      <div class="card-content fields-grid">
+        <mat-form-field appearance="outline" class="field field--metric" subscriptSizing="dynamic">
+          <mat-label>Peso (kg)</mat-label>
+          <input matInput formControlName="weight" inputmode="decimal" />
+          @if (sportsmansForm.get('weight')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+          @if (sportsmansForm.get('weight')?.hasError('pattern')) {
+            <mat-error>Valor inválido</mat-error>
+          }
+        </mat-form-field>
 
-        </div>
-      </section>
+        <mat-form-field appearance="outline" class="field field--metric" subscriptSizing="dynamic">
+          <mat-label>Estatura (m)</mat-label>
+          <input matInput formControlName="height" inputmode="decimal" />
+          @if (sportsmansForm.get('height')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+          @if (sportsmansForm.get('height')?.hasError('pattern')) {
+            <mat-error>Valor inválido</mat-error>
+          }
+        </mat-form-field>
 
-    
-      <section class="registration-card">
-        <div class="card-header">
-          <mat-icon>
-            calendar_today
-          </mat-icon>
-          <h3>Datos personales</h3>
-        </div>
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-label>Género</mat-label>
+          <mat-select formControlName="gender" placeholder="Seleccione">
+            @for (genero of generos; track genero.code) {
+              <mat-option [value]="genero.code">{{ genero.value }}</mat-option>
+            }
+          </mat-select>
+          @if (sportsmansForm.get('gender')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
 
-        <div class="card-content">
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="category" placeholder="Seleccione">
+            @for (categoria of categorias; track categoria.code) {
+              <mat-option [value]="categoria">{{ categoria.name }}</mat-option>
+            }
+          </mat-select>
+          @if (sportsmansForm.get('category')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
 
-        </div> 
-      </section>
-  
-      <footer class="form-actions">
-      
-      <button class="btn-back">
-        <mat-icon>arrow_back</mat-icon>
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput [matDatepicker]="dpNac" formControlName="birtDate" placeholder="DD/MM/AAAA" />
+          <mat-datepicker-toggle matSuffix [for]="dpNac"></mat-datepicker-toggle>
+          <mat-datepicker #dpNac></mat-datepicker>
+          @if (sportsmansForm.get('birtDate')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-label>Disciplina deportiva</mat-label>
+          <mat-select formControlName="DiciplinaID" placeholder="Seleccione">
+            @for (diciplina of diciplinasList; track diciplina.ID) {
+              <mat-option [value]="diciplina.ID">{{ diciplina.name }}</mat-option>
+            }
+          </mat-select>
+          @if (sportsmansForm.get('DiciplinaID')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </section>
+
+    <!-- 3. Datos personales -->
+    <section class="registration-card" aria-labelledby="sec-personales">
+      <div class="card-header">
+        <mat-icon aria-hidden="true">calendar_today</mat-icon>
+        <h2 id="sec-personales">Datos personales</h2>
+      </div>
+
+      <div class="card-content fields-grid">
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-label>País de nacimiento</mat-label>
+          <mat-select
+            formControlName="nationality"
+            placeholder="Seleccione"
+            (selectionChange)="universalEstadoApis($event)"
+          >
+            @for (opcion of listPaises; track opcion.country_name) {
+              <mat-option [value]="opcion.country_name">{{ opcion.country_name }}</mat-option>
+            }
+          </mat-select>
+          @if (sportsmansForm.get('nationality')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="field"
+          subscriptSizing="dynamic"
+          matTooltip="Selecciona un país"
+          [matTooltipDisabled]="activeDepto"
+        >
+          <mat-label>Departamento</mat-label>
+          <mat-select
+            formControlName="department"
+            placeholder="Seleccione"
+            (selectionChange)="universalCiudadesApis($event)"
+          >
+            @for (opcion of listEstados; track opcion.state_name) {
+              <mat-option [value]="opcion.state_name">{{ opcion.state_name }}</mat-option>
+            }
+          </mat-select>
+          @if (sportsmansForm.get('department')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="field"
+          subscriptSizing="dynamic"
+          matTooltip="Selecciona un departamento"
+          [matTooltipDisabled]="activeCity"
+        >
+          <mat-label>Ciudad</mat-label>
+          <mat-select formControlName="city" placeholder="Seleccione">
+            @for (opcion of listCiudades; track opcion.city_name) {
+              <mat-option [value]="opcion.city_name">{{ opcion.city_name }}</mat-option>
+            }
+          </mat-select>
+          @if (sportsmansForm.get('city')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-label>Máximo nivel de estudio</mat-label>
+          <input matInput formControlName="studyLevelMax" />
+          @if (sportsmansForm.get('studyLevelMax')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field field--span-2" subscriptSizing="dynamic">
+          <mat-label>Institución donde estudió</mat-label>
+          <input matInput formControlName="institutionNameStudy" autocomplete="organization" />
+          @if (sportsmansForm.get('institutionNameStudy')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="email" />
+          @if (sportsmansForm.get('email')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+          @if (sportsmansForm.get('email')?.hasError('pattern')) {
+            <mat-error>Correo inválido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field" subscriptSizing="dynamic">
+          <mat-label>Teléfono</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="phone"
+            [placeholder]="placeHolderPhone"
+            autocomplete="tel"
+          />
+          @if (sportsmansForm.get('phone')?.hasError('required')) {
+            <mat-error>Campo requerido</mat-error>
+          }
+          @if (hasErrorRegexp('phone') && sportsmansForm.get('phone')?.touched) {
+            <mat-error>El formato del teléfono no es válido</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </section>
+
+    <footer class="form-actions">
+      <button type="button" class="btn-back" (click)="closeCard()">
+        <mat-icon aria-hidden="true">arrow_back</mat-icon>
         <span>Atrás</span>
       </button>
 
-      <button class="btn-save">
-        <span>Guardar deportista</span>
-        <mat-icon>arrow_forward</mat-icon>
+      <button type="submit" class="btn-save">
+        <span>{{ isEdit ? 'Guardar cambios' : 'Guardar deportista' }}</span>
+        <mat-icon aria-hidden="true">arrow_forward</mat-icon>
       </button>
-    
-      </footer>
-
-    </form>
-
-
-
-
+    </footer>
+  </form>
 </main>

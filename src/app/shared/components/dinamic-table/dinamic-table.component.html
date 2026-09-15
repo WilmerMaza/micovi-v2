@@ -1,14 +1,14 @@
-<div id="dinamic-table">
+<div id="dinamic-table" class="dinamic-table">
   <div class="content-table">
     <table
       mat-table
       [dataSource]="dataSource"
-      class="mat-elevation-z0"
+      class="mat-elevation-z0 dinamic-table__grid"
       multiTemplateDataRows
     >
       @if (isCheckBox) {
       <ng-container matColumnDef="select">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef class="dinamic-table__th dinamic-table__th--select">
           <mat-checkbox
             (change)="$event ? toggleAllRows() : null"
             [checked]="selection.hasValue() && isAllSelected()"
@@ -17,7 +17,7 @@
           >
           </mat-checkbox>
         </th>
-        <td mat-cell *matCellDef="let row">
+        <td mat-cell *matCellDef="let row" class="dinamic-table__td dinamic-table__td--select">
           <mat-checkbox
             (click)="$event.stopPropagation()"
             (change)="
@@ -27,129 +27,137 @@
             [aria-label]="checkboxLabel(row)"
           >
           </mat-checkbox>
-        </td> </ng-container
-      >} @for (item of displayedColumns; track $index) {
+        </td>
+      </ng-container>
+      }
+
+      @for (item of displayedColumns; track $index) {
       <ng-container [matColumnDef]="item.displayname">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef class="dinamic-table__th">
           @if (item.displayname == 'noName' || item?.module == 'complements') {
-
-          <span></span>
-          <!--  contenido cuando se cumple la condición  -->
-
+          <span class="dinamic-table__th-spacer" aria-hidden="true"></span>
           } @else {
-
-          {{ item.displayname | uppercase }}
-          <!--  encabezado normal  -->
-
+          <span class="dinamic-table__th-label">{{ item.displayname }}</span>
           }
         </th>
+
         @if (item.displayname === 'acción') {
         <ng-container>
-          <td mat-cell *matCellDef="let element" class="option_Accion">
+          <td mat-cell *matCellDef="let element" class="dinamic-table__td dinamic-table__td--action">
             @if (editComplement) {
-
-            <!-- ① Icono de editar -->
-            <div class="editComplementClass">
-              <span
-                class="iconEdit-complement"
-                (click)="dataAction('edit', element)"
-              >
-                <mat-icon>edit</mat-icon>
-              </span>
-            </div>
-
+            <button
+              type="button"
+              mat-icon-button
+              class="dinamic-table__icon-btn"
+              (click)="dataAction('edit', element)"
+              aria-label="Editar complemento"
+            >
+              <mat-icon aria-hidden="true">edit</mat-icon>
+            </button>
             } @else {
+            <button
+              type="button"
+              mat-icon-button
+              class="dinamic-table__icon-btn"
+              [matMenuTriggerFor]="menuAction"
+              aria-label="Abrir acciones de fila"
+            >
+              <mat-icon aria-hidden="true">more_vert</mat-icon>
+            </button>
 
-            <!-- ② Botón de puntos que abre el menú principal -->
-            <div class="container_pointer" [matMenuTriggerFor]="menuAction">
-              <div class="point"></div>
-              <div class="point"></div>
-              <div class="point"></div>
-            </div>
-
-            <!-- ③ Menú principal -->
-            <mat-menu #menuAction="matMenu">
-              @for (m of item.menu; track $index) {
-              <button
-                mat-menu-item
-                class="style_matmenu"
-                (mouseover)="m.action === 'Menu' ? mouseOver($index) : null"
-                (click)="m.action !== 'Menu' ? dataAction(m, element) : null"
-                [matMenuTriggerFor]="m.action === 'Menu' ? SubMenu : null"
-              >
-                <span>{{ m.text }}</span>
-              </button>
-              }
-            </mat-menu>
-
-            <!-- ④ Sub-menú -->
-            <mat-menu #SubMenu="matMenu">
-              @for (sub of item.menu[indexSubMenu].menu; track $index) {
-              <button
-                mat-menu-item
-                class="style_matmenu"
-                (click)="dataAction(sub, element)"
-                [disabled]="
-                  ['verEjercicios', 'ver indicador', 'ver rubrica'].includes(
-                    sub.action
-                  ) && !element.HasIndicators
-                "
-              >
-                <span>{{ sub.text }}</span>
-              </button>
-              }
-            </mat-menu>
-
-            }
-          </td> </ng-container
-        >} @if (item.displayname !== 'acción') {
-        <ng-container>
-          <td mat-cell *matCellDef="let element">
-            @if (item.type !== 'date' && item.type.type !== 'buttons') {
-            <div>
-              {{ element[item.name] }}
-            </div>
-            } @if(item.type === 'date'){
-            <div>
-              {{ element[item.name] | date : item.attr }}
-            </div>
-            } @if (item.type === 'buttons') {
-            <div class="content_buttons_indicators">
-              <button
-                [ngClass]="{
-                  buttonVer: element.HasIndicators,
-                  disabledButtonVer: !element.HasIndicators
-                }"
-                (click)="
-                  element.HasIndicators
-                    ? dataAction('ver indicador', element)
-                    : null
-                "
-              >
-                Ver
-              </button>
-            </div>
-            } @if (item.type === 'button indicador') {
-            <div>
-              <button
-                class="view-indicator"
-                (click)="dataAction('ver indicador', element)"
-              >
-                Ver indicador
-              </button>
-            </div>
-            } @if (item.type === 'buttonX') {
-            <div>
-              <div class="content-x-close">
-                <mat-icon
-                  class="closeButtonModal"
-                  (click)="dataAction('eliminar', element)"
-                  >close</mat-icon
+            <mat-menu
+              #menuAction="matMenu"
+              xPosition="before"
+              panelClass="dinamic-table-menu-panel"
+            >
+              @let flatItems = flattenMenu(item.menu);
+              @for (m of flatItems; track $index) {
+                @if (m.kind === 'label') {
+                <div class="dinamic-table__menu-label" role="presentation">
+                  {{ m.text }}
+                </div>
+                } @else {
+                @if (showMenuDividerBefore(flatItems, $index)) {
+                <div
+                  class="dinamic-table__menu-divider"
+                  role="separator"
+                  aria-hidden="true"
+                ></div>
+                }
+                <button
+                  type="button"
+                  mat-menu-item
+                  class="dinamic-table__menu-item"
+                  (click)="dataAction(m, element)"
+                  [disabled]="isMenuItemDisabled(m, element)"
                 >
-              </div>
+                  <span>{{ m.text }}</span>
+                </button>
+                }
+              }
+            </mat-menu>
+            }
+          </td>
+        </ng-container>
+        }
+
+        @if (item.displayname !== 'acción') {
+        <ng-container>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="dinamic-table__td"
+            [class.dinamic-table__td--metric]="isMetricColumn(item)"
+          >
+            @if (isPlainDataColumn(item) && item.type !== 'date') {
+            <div
+              class="dinamic-table__cell"
+              [class.dinamic-table__cell--metric]="isMetricColumn(item)"
+            >
+              {{ element[item.name!] }}
             </div>
-            } @if (item.type === 'check') {
-            <div>
+            }
+            @if (item.type === 'date') {
+            <div class="dinamic-table__cell dinamic-table__cell--meta">
+              {{ element[item.name!] | date : item.attr }}
+            </div>
+            }
+            @if (isButtonColumn(item)) {
+              @let btn = getCellButton(item);
+              <div
+                class="dinamic-table__cell-actions"
+                [class.dinamic-table__cell-actions--end]="btn.variant === 'icon-close'"
+              >
+                @if (btn.variant === 'icon-close') {
+                <button
+                  type="button"
+                  mat-icon-button
+                  class="dinamic-table__icon-btn"
+                  (click)="onCellButtonClick(btn, element)"
+                  [disabled]="isCellButtonDisabled(btn, element)"
+                  [attr.aria-disabled]="isCellButtonDisabled(btn, element)"
+                  [attr.aria-label]="btn.ariaLabel ?? 'Eliminar fila'"
+                >
+                  <mat-icon aria-hidden="true">close</mat-icon>
+                </button>
+                } @else {
+                <button
+                  type="button"
+                  class="dinamic-table__btn"
+                  [class.dinamic-table__btn--outline]="btn.variant === 'outline'"
+                  [class.dinamic-table__btn--link]="btn.variant === 'link'"
+                  [class.dinamic-table__btn--disabled]="isCellButtonDisabled(btn, element)"
+                  [attr.aria-disabled]="isCellButtonDisabled(btn, element)"
+                  [disabled]="isCellButtonDisabled(btn, element)"
+                  (click)="onCellButtonClick(btn, element)"
+                >
+                  {{ btn.label }}
+                </button>
+                }
+              </div>
+            }
+            @if (item.type === 'check') {
+            <div class="dinamic-table__cell">
               <mat-checkbox
                 (click)="$event.stopPropagation()"
                 (change)="
@@ -162,36 +170,32 @@
               >
               </mat-checkbox>
             </div>
-            } @if (item.type === 'button Ver') {
-            <div>
-              <button
-                class="view-indicator"
-                (click)="dataAction('ver ejercicio', element)"
-              >
-                Ver
-              </button>
-            </div>
             }
-          </td> </ng-container
-        >} </ng-container
-      >}
+          </td>
+        </ng-container>
+        }
+      </ng-container>
+      }
 
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay" class="dinamic-table__header-row"></tr>
       <tr
         mat-row
         *matRowDef="let row; columns: columnsToDisplay"
-        [ngClass]="{ 'row-checked': isCheckBox && selection.isSelected(row) }"
+        class="dinamic-table__row"
+        [ngClass]="{ 'dinamic-table__row--checked': isCheckBox && selection.isSelected(row) }"
       ></tr>
     </table>
+
     @if (dataSource.data.length === 0) {
-    <div class="none-data">
+    <div class="dinamic-table__empty" role="status">
       {{ noneData }}
     </div>
     }
   </div>
+
   @if (isPaginador) {
   <mat-paginator
-    class="style-paginator"
+    class="dinamic-table__paginator"
     (page)="handlePageEvent($event)"
     [length]="length"
     [pageSize]="pageSize"
@@ -201,6 +205,6 @@
     [hidePageSize]="hidePageSize"
     [pageIndex]="pageIndex"
   >
-  </mat-paginator
-  >}
+  </mat-paginator>
+  }
 </div>

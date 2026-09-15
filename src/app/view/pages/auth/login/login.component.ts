@@ -5,18 +5,22 @@
  * autenticación a Session. Gestiona la opción "recordarme" en localStorage
  * (solo username y flag; la contraseña se guarda cifrada con CryptoService).
  *
+ * UI alineada a DESIGN.md (patrón Register: canvas frío + card con cabecera
+ * azul) y MASTER. Logo: logo_register.png a color.
+ *
  * Los tokens de sesión no se manejan aquí — el backend los establece en
  * cookies HttpOnly tras POST /auth/login (ver Session y AuthService).
  */
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
-import { NormaliceLowerValidators } from '../../../../utils/Validators';
 import { CryptoService } from '../../../../utils/crypto.service';
 import { LoginFormModel } from '../models/login-form';
 import { Session } from '../services/session';
@@ -29,6 +33,8 @@ import { Session } from '../services/session';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
+    MatButtonModule,
+    MatCardModule,
     MatIconModule,
     CommonModule,
     RouterLink,

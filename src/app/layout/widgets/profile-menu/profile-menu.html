@@ -1,56 +1,67 @@
-<div class="menu-container-profile">
-  <button mat-icon-button [matMenuTriggerFor]="mainMenu" class="profile-btn" aria-label="Abrir menú de perfil">
-    <mat-icon>account_circle</mat-icon>
+<div class="profile-menu">
+  <!-- Chip de identidad: presencia clara en topbar (no icon-button diminuto) -->
+  <button
+    type="button"
+    class="profile-trigger"
+    [matMenuTriggerFor]="mainMenu"
+    aria-label="Abrir menú de perfil"
+    aria-haspopup="menu"
+  >
+    <span class="profile-trigger__avatar" aria-hidden="true">{{ initials() }}</span>
+    <span class="profile-trigger__text">
+      <span class="profile-trigger__name">{{ displayName() }}</span>
+      <span class="profile-trigger__role">{{ roleLabel() }}</span>
+    </span>
+    <mat-icon class="profile-trigger__caret" aria-hidden="true">expand_more</mat-icon>
   </button>
-  <!-- Menú principal -->
 
-  <mat-menu #mainMenu="matMenu" [overlapTrigger]="false" panelClass="fb-panel" xPosition="before" yPosition="below">
-    <!-- Header con avatar y nombre -->
-    <div class="fb-header">
-      <img [src]="user.avatar" alt="avatar" class="avatar" />
-      <div class="name">{{ user.name }}</div>
+  <mat-menu
+    #mainMenu="matMenu"
+    [overlapTrigger]="false"
+    panelClass="micovi-menu-panel"
+    xPosition="before"
+    yPosition="below"
+  >
+    <div class="micovi-menu-header" role="presentation" (click)="$event.stopPropagation()">
+      <span class="micovi-menu-header__avatar" aria-hidden="true">{{ initials() }}</span>
+      <div class="micovi-menu-header__text">
+        <div class="micovi-menu-header__name">{{ displayName() }}</div>
+        @if (emailLabel()) {
+          <div class="micovi-menu-header__email">{{ emailLabel() }}</div>
+        }
+        <div class="micovi-menu-header__meta">{{ roleLabel() }}</div>
+      </div>
     </div>
 
     <mat-divider></mat-divider>
 
-    <!-- Pantalla y accesibilidad (submenu) -->
-    <button mat-menu-item [matMenuTriggerFor]="displayMenu" class="dark_mode_item">
-      <mat-icon class="lead">dark_mode</mat-icon>
-      <span>Pantalla y accesibilidad</span>
-      <mat-icon class="trail">chevron_lefth</mat-icon>
-    </button>
+    <div class="micovi-menu-actions" role="group" aria-label="Acciones de cuenta">
+      <button mat-menu-item class="micovi-menu-item" (click)="configuracion()">
+        <mat-icon aria-hidden="true">settings</mat-icon>
+        <span class="micovi-menu-item__label">
+          <span class="micovi-menu-item__title">Configuración</span>
+          <span class="micovi-menu-item__hint">Preferencias de la cuenta</span>
+        </span>
+      </button>
 
-    <button mat-menu-item color="warn" (click)="configuracion()">
-      <mat-icon>settings</mat-icon>
-      <span>Configuración</span>
-    </button>
-
-    <mat-divider></mat-divider>
-
-    <button mat-menu-item class="fb-item danger" (click)="showLogoutConfirmation()">
-      <mat-icon class="lead">logout</mat-icon>
-      <span>Cerrar sesión</span>
-    </button>
-    <!-- Footer opcional -->
-    <div class="fb-footer text-center">
-      <span>Micovi © 2025</span>
+      <button
+        mat-menu-item
+        class="micovi-menu-item micovi-menu-item--danger"
+        (click)="showLogoutConfirmation()"
+      >
+        <mat-icon aria-hidden="true">logout</mat-icon>
+        <span class="micovi-menu-item__label">
+          <span class="micovi-menu-item__title">Cerrar sesión</span>
+          <span class="micovi-menu-item__hint">Salir de Micovi</span>
+        </span>
+      </button>
     </div>
-  </mat-menu>
-
-  <!-- Submenús -->
-
-  <mat-menu #displayMenu="matMenu" panelClass="fb-subpanel">
-    <button mat-menu-item>
-      <mat-icon>brightness_6</mat-icon><span>Tema</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>text_fields</mat-icon><span>Tamaño de fuente</span>
-    </button>
   </mat-menu>
 </div>
 
-<!-- Modal de confirmación de logout -->
 @if (showLogoutModal()) {
-<app-logout-modal (confirmLogout)="confirmLogout()" (cancelLogout)="cancelLogout()">
-</app-logout-modal>
+  <app-logout-modal
+    (confirmLogout)="confirmLogout()"
+    (cancelLogout)="cancelLogout()"
+  ></app-logout-modal>
 }

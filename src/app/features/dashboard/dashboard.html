@@ -1,0 +1,58 @@
+<!--
+  Cabina de entrada del dashboard: saludo, empty state, KPI densos, atajos.
+-->
+<div class="dash">
+  <header class="dash-header">
+    <div class="dash-greeting">
+      <h1 class="dash-title">{{ greetingLine }}</h1>
+      <p class="dash-lead">Retoma el trabajo de entrenamiento</p>
+    </div>
+    <time class="dash-date" [attr.datetime]="todayIso">{{ todayLabel }}</time>
+  </header>
+
+  <aside class="empty-banner" aria-label="Estado del ciclo">
+    <div class="empty-banner-text">
+      <p class="empty-banner-title">Sin microciclo activo</p>
+      <p class="empty-banner-hint">
+        Elige un deportista para abrir plan, sesión y cumplimiento.
+      </p>
+    </div>
+    <a class="empty-banner-cta" routerLink="/sportsman">Ir a deportistas</a>
+  </aside>
+
+  <section class="kpi-strip" aria-label="Cumplimiento planificado vs ejecutado">
+    <div class="kpi kpi--ok" role="group" aria-label="Cumple">
+      <span class="kpi-label">Cumple</span>
+      <span class="kpi-value" aria-hidden="true">—</span>
+      <span class="kpi-hint">Sin datos</span>
+    </div>
+    <div class="kpi kpi--under" role="group" aria-label="Bajo">
+      <span class="kpi-label">Bajo</span>
+      <span class="kpi-value" aria-hidden="true">—</span>
+      <span class="kpi-hint">Sin datos</span>
+    </div>
+    <div class="kpi kpi--over" role="group" aria-label="Sobre">
+      <span class="kpi-label">Sobre</span>
+      <span class="kpi-value" aria-hidden="true">—</span>
+      <span class="kpi-hint">Sin datos</span>
+    </div>
+  </section>
+
+  <section class="shortcuts" aria-label="Atajos de trabajo">
+    <h2 class="shortcuts-title">Atajos</h2>
+    <ul class="shortcut-list">
+      @for (item of shortcuts; track item.url + item.label) {
+      <li>
+        <a class="shortcut-row" [routerLink]="item.url">
+          <mat-icon class="shortcut-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+          <span class="shortcut-text">
+            <span class="shortcut-label">{{ item.label }}</span>
+            <span class="shortcut-hint">{{ item.hint }}</span>
+          </span>
+          <mat-icon class="shortcut-chevron" aria-hidden="true">chevron_right</mat-icon>
+        </a>
+      </li>
+      }
+    </ul>
+  </section>
+</div>

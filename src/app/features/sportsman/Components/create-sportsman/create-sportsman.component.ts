@@ -1,3 +1,12 @@
+/**
+ * Pantalla de alta / edición de deportista.
+ *
+ * Orquesta el reactive form (`sportsmanFormModel`), foto y cascada
+ * país → departamento → ciudad. La UI es secciones densas Micovi;
+ * create/update e upload de imagen no cambian de contrato.
+ *
+ * Usado por ruta `/sportsman/create|edit/:id` y overlay en listado.
+ */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormGroup,
@@ -5,6 +14,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { SportsmanService } from '../../services/sportsman.service';
 
@@ -34,7 +44,6 @@ import { calcularEdad } from '../../../../utils/UtilFunctions';
 import { Toast } from '../../../../utils/alert_Toast';
 
 import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
-import { MatCard, MatCardContent } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { visible } from '../../../../view/models/HistorialCategoryModel';
 import {
@@ -48,6 +57,8 @@ import { gender } from '../../../../view/entrenador/Model/constantesEntrenador';
 import { categoryModel } from '../../../../view/models/categoryModel';
 import { eventsPaises } from '../../../../view/entrenador/Model/entrenadorModel';
 import { SuccessResponse } from '../../../../view/models/SuccessResponse';
+import { Sportsman } from '../../../../view/models/DataSportsman';
+import { MOCK_SPORTSMEN } from '../../mocks/sportsman.mock';
 
 @Component({
   selector: 'app-create-sportsman',
@@ -57,14 +68,13 @@ import { SuccessResponse } from '../../../../view/models/SuccessResponse';
   imports: [
     CommonModule,
     ...MATERIAL_IMPORTS,
-    MatCard,
-    MatCardContent,
     FormsModule,
     ReactiveFormsModule,
   ],
 })
 export class CreateSportsmanComponent implements OnInit {
   @Input('viewActive') set setView(value: visible) {
+    this.bootstrappedFromInput = true;
     this.showViewSportsman = value.isVisible;
     this.getcategorys(value);
   }
@@ -80,6 +90,8 @@ export class CreateSportsmanComponent implements OnInit {
   public generos: listInfo[] | undefined;
   public typeIdentification: listInfo[] | undefined;
   public isEdit: boolean = false;
+  /** true cuando la pantalla se abrió por ruta (/create o /edit/:id). */
+  public isRoutePage = false;
   public listEstados: Estado[] | undefined = [];
   public dataID: string = '';
   public activeDepto: boolean = false;
@@ -94,40 +106,81 @@ export class CreateSportsmanComponent implements OnInit {
   public maskPhone: string = '00 0000 0000';
   public placeHolderPhone: string = '+57 Colombia';
   private validateRegex: RegExp | undefined;
+  private bootstrappedFromInput = false;
 
   constructor(
     private sporsmanService$: SportsmanService,
     private imagenFuntionsService$: Imgs,
-    private complementos$: ComplementosService
+    private complementos$: ComplementosService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
+
   async ngOnInit(): Promise<void> {
     this.categorias =
-      this.dataCreateSportsman.find(
+      this.dataCreateSportsman?.find(
         (item: SportsmanData) => item.property === 'category'
       )?.control || [];
     this.generos = gender;
     this.typeIdentification = typeIdentification;
     this.getDiciplinas();
     this.generarExpresionRegular(this.maskPhone);
+
+    if (!this.bootstrappedFromInput) {
+      this.bootstrapFromRoute();
+    }
   }
+
+  /** Carga create/edit cuando el componente es página de ruta (no overlay). */
+  private bootstrapFromRoute(): void {
+    const editId = this.route.snapshot.paramMap.get('id');
+    const path = this.route.snapshot.routeConfig?.path ?? '';
+    this.isRoutePage = path === 'create' || path.startsWith('edit');
+
+    if (!this.isRoutePage) {
+      return;
+    }
+
+    this.showViewSportsman = true;
+    const [fromService] = this.sporsmanService$.getSportmanInfoRedirect();
+    let data = fromService as Sportsman | undefined;
+
+    if (editId && !data) {
+      data = MOCK_SPORTSMEN.find((row) => row.ID === editId);
+    }
+
+    this.getcategorys({
+      isVisible: true,
+      data: editId ? data : undefined,
+    });
+  }
+
   closeCard(): void {
+    if (this.isRoutePage) {
+      this.router.navigate(['/sportsman']);
+      return;
+    }
     this.showViewSportsman = false;
     this.defaulCarrusel();
   }
 
   getcategorys(value: visible): void {
-    this.sporsmanService$.getAllCategory().subscribe((res: categoryModel[]) => {
-      this.categorias = res.map((categorias: categoryModel) => {
-        const { ID, name } = categorias;
-        const item = {
-          name: name,
-          value: name,
-          code: ID,
-        };
-        return item;
-      });
-
-      this.dataIni(value);
+    this.sporsmanService$.getAllCategory().subscribe({
+      next: (res: categoryModel[]) => {
+        this.categorias = res.map((categorias: categoryModel) => {
+          const { ID, name } = categorias;
+          return {
+            name: name,
+            value: name,
+            code: ID,
+          };
+        });
+        this.dataIni(value);
+      },
+      error: () => {
+        // Sin back (p. ej. mock): igual hidrata el formulario de edición.
+        this.dataIni(value);
+      },
     });
   }
 
@@ -143,6 +196,10 @@ export class CreateSportsmanComponent implements OnInit {
     this.sportsmansForm.get('department')?.disable();
     this.activeDepto = false;
     this.activeCity = false;
+    if (this.isRoutePage) {
+      this.router.navigate(['/sportsman']);
+      return;
+    }
     this.CreateSportsman.emit(true);
   }
 
@@ -278,6 +335,7 @@ export class CreateSportsmanComponent implements OnInit {
       const imageLoader = new ImageLoader(this.imagenFuntionsService$);
       imageLoader.loadImage(nameImg, false, (imageUrl) => {
         this.selectedImageURL = imageUrl;
+        this.imageSelected = true;
       });
     }
   }
@@ -401,11 +459,11 @@ export class CreateSportsmanComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-    removeImage(event: MouseEvent): void {
-      event.stopPropagation();
-      this.selectedImageURL = '';
-      this.imageSelected = false;
-      this. selectedFiles = undefined;
-    }
+  removeImage(event: MouseEvent): void {
+    event.stopPropagation();
+    this.selectedImageURL = '';
+    this.imageSelected = false;
+    this.selectedFiles = undefined;
   }
+}
 

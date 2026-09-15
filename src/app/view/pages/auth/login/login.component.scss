@@ -1,225 +1,422 @@
+/**
+ * Estilos del login — patrón Register (DESIGN.md + MASTER).
+ *
+ * Canvas #EEF2FB + círculos suaves, card blanca centrada con cabecera
+ * azul en gradiente y CTA pill. Logo logo_register.png a color.
+ * No altera Session/cookies ni FormGroup.
+ */
 
+$micovi-canvas-auth: #eef2fb;
+$micovi-surface: #ffffff;
+$micovi-ink: #0f172a;
+$micovi-ink-alt: #1d293d;
+$micovi-muted: #64748b;
+$micovi-muted-alt: #62748e;
+$micovi-border: #e2e8f0;
+$micovi-border-strong: #cbd5e1;
+$micovi-accent: #0c4cc8;
+$micovi-accent-bright: #1a6aff;
+$micovi-accent-press: #0a3fa8;
+$micovi-accent-soft: #e8f0fc;
+$micovi-over: #dc2626;
+$micovi-radius-card: 16px;
+$micovi-radius-md: 8px;
+$micovi-radius-pill: 24px;
+$micovi-ease: cubic-bezier(0.2, 0, 0, 1);
+$micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
+  0 20px 25px -5px rgba(226, 232, 240, 0.8);
 
-  /* =========================================
-   FUENTE GLOBAL DEL LOGIN
-========================================= */
-.contenMax,
-.contenMax * {
-  font-family: "Inria Sans", sans-serif !important;
+:host {
+  display: block;
+  font-family: "Inria Sans", sans-serif;
+  color: $micovi-ink;
 }
 
-/* =========================================
-   CONTENEDOR PRINCIPAL
-========================================= */
-.contenMax {
+.login {
+  box-sizing: border-box;
   width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: url("/images/fondoBanner.png") no-repeat center center;
-  background-size: cover;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-/* =========================================
-   TÍTULO EXTERNO (fuera de la card)
-========================================= */
-.titulo-externo {
-  font-size: 32px;
-  font-weight: bold;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-/* =========================================
-   CARD BLANCA (contenedor del login)
-========================================= */
-.group_login {
-  box-sizing: border-box;
-  width: 95vw;
-  max-width: 800px;
-  min-height: 400px;
-  margin: 0 auto;
-  background: #ffffff;
-  border-radius: 3rem;
-  padding: 40px 40px 60px 40px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-  text-align: center;
-
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background: $micovi-canvas-auth;
+  padding: 40px 20px;
+  position: relative;
+  overflow-y: auto;
 }
 
-/* =========================================
-   TEXTO DE REGISTRO
-========================================= */
-.registro {
-  font-size: 14px;
-  color: #333;
-  text-align: center;
-  margin-bottom: 32px;
+.login-bg-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .circle-1 {
+    top: -160px;
+    left: -160px;
+    width: 500px;
+    height: 500px;
+    background: #c7d8f866;
+  }
+
+  .circle-2 {
+    top: 60%;
+    right: -120px;
+    width: 400px;
+    height: 400px;
+    background: #bfd0f54c;
+  }
+
+  .circle-3 {
+    bottom: -100px;
+    left: 40%;
+    width: 360px;
+    height: 360px;
+    background: #d0e0fb66;
+  }
 }
 
-.registro .linkRegistro {
-  color: #0c4cc8;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-/* =========================================
-   LÍNEA DIVISORA
-========================================= */
-.divider {
-  border: none;
-  border-top: 2px solid #bbb;
-  margin: 0 auto 40px auto;
-  width: 90%;
-}
-
-/* =========================================
-   CAMPOS DE FORMULARIO
-========================================= */
-.mat-input-custom {
+.card_login {
+  margin: auto;
+  padding: 0 !important;
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto 25px auto;
+  max-width: 440px;
+  background: $micovi-surface;
+  border-radius: $micovi-radius-card;
+  border: none !important;
+  box-shadow: $micovi-shadow-auth;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
 
-  /* Fondo gris claro */
+.card-header-blue {
+  background: linear-gradient(135deg, $micovi-accent 0%, $micovi-accent-bright 100%);
+  padding: 32px 32px 28px;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.header_login {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+
+  h1 {
+    font-family: "Inria Sans", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 0 0 4px;
+    color: #ffffff;
+    text-wrap: balance;
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .img {
+    display: block;
+    width: 52px;
+    height: auto;
+    max-height: 56px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+}
+
+.card-body {
+  padding: 28px 32px 32px;
+  background: $micovi-surface;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.login__field {
+  width: 100%;
+
   .mat-mdc-text-field-wrapper {
-    background-color: #e9ebf3; /* gris como en la imagen */
-    border-radius: 6px;
+    background-color: $micovi-surface;
   }
 
-  /* Línea inferior oscura */
-  .mat-mdc-form-field-flex {
-    border-bottom: 1px solid #444 !important;
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent;
   }
 
-  /* Error oculto por defecto */
-  .mat-mdc-form-field-error-wrapper {
-    display: none !important;
+  .mat-mdc-form-field-error {
+    color: $micovi-over;
   }
 
-  /* Línea roja en error cuando se envía el formulario */
-  .mdc-text-field--invalid .mat-mdc-form-field-flex,
-  .form-submitted &.ng-invalid.ng-touched .mat-mdc-form-field-flex {
-    border-bottom: 2px solid red !important;
-  }
-
-  /* Texto del input */
   .mat-mdc-input-element {
-    font-size: 15px;
-    padding-left: 5px; /* espacio después del icono */
+    font-family: "Inria Sans", sans-serif;
+    font-size: 0.9375rem;
+    color: $micovi-ink;
+  }
+
+  .mdc-floating-label,
+  .mat-mdc-form-field-label {
+    color: $micovi-muted;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: $micovi-border !important;
+  }
+
+  &.mat-focused {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $micovi-accent !important;
+    }
+  }
+
+  .login__form--submitted &.ng-invalid.ng-touched,
+  &.mat-form-field-invalid {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $micovi-over !important;
+    }
   }
 }
 
-/* =========================================
-   ICONOS INPUT
-========================================= */
-.custom-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  margin-left: 5px;
-  transition: filter 0.3s ease, fill 0.3s ease;
+.login__prefix {
+  display: inline-flex;
+  align-items: center;
 }
-.mat-input-custom .custom-icon {
+
+.login__icon {
   width: 20px;
   height: 20px;
-  margin: 0 8px;
+  margin: 0 8px 0 4px;
+  opacity: 1;
+  filter: brightness(0) saturate(100%) invert(44%) sepia(12%) saturate(741%)
+    hue-rotate(176deg) brightness(93%) contrast(88%);
+}
+
+.login__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $micovi-muted;
   cursor: pointer;
+  border-radius: $micovi-radius-md;
+  transition:
+    color 160ms $micovi-ease,
+    background-color 160ms $micovi-ease;
+
+  &:hover {
+    color: $micovi-ink;
+    background-color: $micovi-accent-soft;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+    color: $micovi-accent;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
-
-/* =========================================
-   CHECKBOX + OLVIDAR CONTRASEÑA
-========================================= */
-.contenFlex {
+.login__meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px auto 0 auto;
-  width: 100%;
-  max-width: 500px;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 4px 0 16px;
+  font-size: 0.8125rem;
+
+  .mat-mdc-checkbox {
+    --mdc-checkbox-selected-checkmark-color: #ffffff;
+    --mdc-checkbox-selected-focus-icon-color: #{$micovi-accent};
+    --mdc-checkbox-selected-hover-icon-color: #{$micovi-accent};
+    --mdc-checkbox-selected-icon-color: #{$micovi-accent};
+    --mdc-checkbox-selected-pressed-icon-color: #{$micovi-accent-press};
+    --mdc-checkbox-unselected-icon-color: #{$micovi-border-strong};
+    --mdc-checkbox-unselected-hover-icon-color: #{$micovi-muted};
+  }
+
+  .mdc-label {
+    color: $micovi-muted;
+    font-size: 0.8125rem;
+    font-family: "Inria Sans", sans-serif;
+  }
 }
 
-.contenFlex,
-.contenFlex .mat-mdc-checkbox,
-.contenFlex .buttonOlvidar {
+.login__forgot {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: "Inria Sans", sans-serif;
+  font-size: 0.8125rem;
+  color: $micovi-accent;
+  cursor: pointer;
+  border-radius: 4px;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+    color: $micovi-accent-press;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+  }
+}
+
+.login__submit {
+  width: 100%;
+  min-height: 44px;
+  border-radius: $micovi-radius-pill !important;
+  background: linear-gradient(
+    90deg,
+    $micovi-accent 0%,
+    $micovi-accent-bright 100%
+  ) !important;
+  color: #ffffff !important;
   font-family: "Inria Sans", sans-serif !important;
-}
-
-.buttonOlvidar {
-  font-size: 12px;
-  color: #0cbdc8;
-  cursor: pointer;
-}
-
-/* =========================================
-   BOTÓN TONAL LIMPIO
-========================================= */
-.button-tonal {
-  background-color: #0c4cc8 !important;
-  color: #fff !important;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 25px;
-  padding: 12px 0;
-  width: 100%;
-  max-width: 500px;
-  margin: 20px auto 0 auto;
-  display: block;
-  cursor: pointer;
-
-  border: none !important;
-  box-shadow: none !important;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0;
   text-transform: none;
-}
+  box-shadow: none !important;
+  transition:
+    filter 160ms $micovi-ease,
+    transform 150ms $micovi-ease;
 
-/* =========================================
-   RESPONSIVE DESIGN
-========================================= */
-@media (max-width: 768px) {
-  .titulo-externo {
-    font-size: 26px;
+  &:hover:not(:disabled) {
+    filter: brightness(0.96);
   }
 
-  .group_login {
-    padding: 30px 20px 40px 20px;
-    border-radius: 2rem;
+  &:active:not(:disabled) {
+    transform: translateY(1px) scale(0.98);
   }
 
-  .mat-input-custom,
-  .contenFlex,
-  .button-tonal {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .titulo-externo {
-    font-size: 22px;
-    margin-bottom: 15px;
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 3px;
   }
 
-  .group_login {
-    padding: 20px 15px 30px 15px;
-    border-radius: 1.5rem;
-  }
-
-  .divider {
-    margin: 0 auto 30px auto;
-  }
-
-  .button-tonal {
-    font-size: 14px;
-    padding: 10px 0;
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 }
 
+.login__register {
+  margin: 24px 0 0;
+  font-size: 0.8125rem;
+  color: $micovi-muted;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.login__link {
+  color: $micovi-accent;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 4px;
+
+  &:hover {
+    text-decoration: underline;
+    color: $micovi-accent-press;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+  }
+}
+
+.login-footer {
+  margin-top: 20px;
+  font-size: 0.75rem;
+  color: $micovi-muted-alt;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .login {
+    padding: 20px 12px;
+  }
+
+  .card_login {
+    border-radius: 12px;
+  }
+
+  .card-header-blue {
+    padding: 24px 20px 20px;
+  }
+
+  .header_login {
+    .img {
+      width: 48px;
+      max-height: 52px;
+    }
+
+    h1 {
+      font-size: 1.375rem;
+    }
+  }
+
+  .card-body {
+    padding: 20px 20px 24px;
+  }
+
+  .login__meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .login__submit {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login__toggle,
+  .login__submit {
+    transition: none;
+  }
+
+  .login__toggle:active,
+  .login__submit:active:not(:disabled) {
+    transform: none;
+  }
+}

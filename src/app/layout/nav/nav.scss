@@ -1,9 +1,29 @@
+/**
+ * Estilos de la topbar del shell Micovi.
+ *
+ * left/right fijos (sin width 100% de mat-toolbar) para seguir el rail
+ * open 250 / collapsed 80.
+ */
+
+$micovi-surface: #ffffff;
+$micovi-ink: #0f172a;
+$micovi-muted: #64748b;
+$micovi-border: #e2e8f0;
+$micovi-accent: #0c4cc8;
+$ease: cubic-bezier(0.2, 0, 0, 1);
+$dur: 180ms;
+
+:host {
+  display: block;
+}
+
 .topbar {
   height: 56px;
-  padding: 0 1rem;
-  background-color: #FFFFFF;
+  min-height: 56px !important;
+  padding: 0 16px;
+  background-color: $micovi-surface;
   border: none;
-  border-bottom: 1px solid #E5E7EB;
+  border-bottom: 1px solid $micovi-border;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -11,38 +31,91 @@
   top: 0;
   left: 250px;
   right: 0;
+  /* Anula width:100% de mat-toolbar para que left/right manden */
+  width: auto !important;
+  max-width: none !important;
   z-index: 1000;
   box-shadow: none;
-  transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1), width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  width: calc(100vw - 250px);
+  transition: left $dur $ease;
+  font-family: 'Inria Sans', sans-serif;
+  box-sizing: border-box;
 
   &.sidebar-collapsed {
     left: 80px;
-    width: calc(100vw - 80px);
   }
 }
 
-/* Navbar responsivo para móvil */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.page-context {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $micovi-ink;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.cycle-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: $micovi-muted;
+  background: #f9fafb;
+  border: 1px solid $micovi-border;
+  border-radius: 6px;
+  white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media (max-width: 767px) {
   .topbar {
     left: 0 !important;
-    width: 100vw !important;
+    right: 0 !important;
+    width: auto !important;
 
     &.sidebar-collapsed {
       left: 0 !important;
-      width: 100vw !important;
     }
+  }
+
+  .cycle-chip {
+    display: none;
   }
 }
 
 .menu-toggle {
-  svg {
-    color: #333;
-    transition: color 0.2s ease;
+  color: $micovi-muted;
+  transition: color $dur $ease;
+
+  mat-icon {
+    color: inherit;
   }
 
-  &:hover svg {
-    color: #000;
+  &:hover {
+    color: $micovi-ink;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
   }
 }
 
@@ -50,21 +123,9 @@
   flex: 1 1 auto;
 }
 
-.logout-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  min-height: 40px;
-
-  svg {
-    color: #333;
-    transition: color 0.2s ease;
-    width: 24px;
-    height: 24px;
-  }
-
-  &:hover svg {
-    color: #000;
+@media (prefers-reduced-motion: reduce) {
+  .topbar,
+  .menu-toggle {
+    transition: none;
   }
 }

@@ -1,152 +1,179 @@
-<div class="contenMax">
-  <div class="conten">
-    <!--  TÍTULO DE BIENVENIDA -->
-    <h2 class="titulo-externo">¡Hola de nuevo!</h2>
+<!--
+  Login Micovi — patrón Register (card centrada + cabecera azul).
+  Logo: /images/logo_register.png (mismo asset que Register; colores Y/B/R).
+  FormGroup / Session sin cambios.
+-->
+<section class="login" id="login" aria-labelledby="login-title">
+  <div class="login-bg-deco" aria-hidden="true">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
 
-    <div class="group_login">
-      <div class="formLogin">
-        <p class="registro">
-          No tienes cuenta?
-          <a class="linkRegistro" routerLink="/registers">Regístrate ahora</a>
-        </p>
-        <hr class="divider" />
-
-        <!-- FORMULARIO -->
-        <form
-          [formGroup]="loginForm"
-          class="example-form"
-          [ngClass]="{ 'form-submitted': submitted }"
-        >
-          <!-- Usuario -->
-          <mat-form-field class="mat-input-custom" appearance="fill">
-            <mat-label>Email</mat-label>
-            <span matPrefix>
-              <img src="./images/account.svg" class="custom-icon" />
-            </span>
-            <input
-              matInput
-              type="text"
-              formControlName="username"
-              placeholder="Ej. JuanPerez"
-              required
-            />
-
-            @if (loginForm.get('username')?.hasError('required') && submitted) {
-            <mat-error> Usuario es <strong>obligatorio</strong> </mat-error>
-            }
-          </mat-form-field>
-
-          <!-- Contraseña -->
-          <mat-form-field class="mat-input-custom" appearance="fill">
-            <mat-label>Contraseña</mat-label>
-            
-            <span matPrefix>
-              <img src="./images/segure.svg" class="custom-icon" />
-            </span>
-
-            <input
-              matInput
-              [type]="hide ? 'password' : 'text'"
-              formControlName="password"
-              placeholder="********"
-              required
-            />
-
-
-            <span
-              matSuffix
-              (click)="togglePasswordVisibility()"
-              style="cursor: pointer"
-            >
-              @if (hide) {
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 512 512"
-                class="custom-icon"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="32"
-                  d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
-                />
-                <circle
-                  cx="256"
-                  cy="256"
-                  r="80"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-miterlimit="10"
-                  stroke-width="32"
-                />
-              </svg>
-              } @else {
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 512 512"
-                class="custom-icon"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="32"
-                  d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
-                />
-                <circle
-                  cx="256"
-                  cy="256"
-                  r="80"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-miterlimit="10"
-                  stroke-width="32"
-                />
-                <line
-                  x1="96"
-                  y1="96"
-                  x2="416"
-                  y2="416"
-                  stroke="currentColor"
-                  stroke-width="32"
-                  stroke-linecap="round"
-                />
-              </svg>
-              }
-            </span>
-
-            @if (loginForm.get('password')?.hasError('required') && submitted) {
-            <mat-error> Contraseña es <strong>obligatoria</strong> </mat-error>
-            }
-          </mat-form-field>
-
-          <!-- Recordar y Olvidar -->
-          <div class="contenFlex">
-            <mat-checkbox formControlName="check" color="primary">Recordar contraseña</mat-checkbox>
-            <a class="buttonOlvidar">¿Olvidaste tu contraseña?</a>
-          </div>
-
-          <!-- Botón -->
-          <div class="content-button">
-            <button
-              mat-button
-              class="button-tonal"
-              type="button"
-              (click)="sessionLogin()"
-            >
-              Iniciar
-            </button>
-          </div>
-        </form>
+  <mat-card class="card_login" appearance="outlined">
+    <div class="card-header-blue">
+      <div class="header_login">
+        <div>
+          <h1 id="login-title">Hola de nuevo</h1>
+          <p class="subtitle">Plataforma deportiva institucional</p>
+        </div>
+        <div>
+          <img
+            src="/images/logo_register.png"
+            class="img"
+            alt="Micovi"
+            width="56"
+            height="56"
+          />
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <div class="card-body">
+      <form
+        [formGroup]="loginForm"
+        class="login__form"
+        [ngClass]="{ 'login__form--submitted': submitted }"
+        (ngSubmit)="sessionLogin()"
+        novalidate
+      >
+        <mat-form-field class="login__field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <span matPrefix class="login__prefix">
+            <img src="/images/account.svg" class="login__icon" alt="" />
+          </span>
+          <input
+            matInput
+            type="email"
+            formControlName="username"
+            placeholder="tu@email.com"
+            autocomplete="username"
+            required
+          />
+          @if (loginForm.get('username')?.hasError('required') && submitted) {
+          <mat-error>El email es obligatorio</mat-error>
+          } @if (loginForm.get('username')?.hasError('pattern') && submitted) {
+          <mat-error>Introduce un email válido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="login__field" appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <span matPrefix class="login__prefix">
+            <img src="/images/segure.svg" class="login__icon" alt="" />
+          </span>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+          />
+          <button
+            matSuffix
+            type="button"
+            class="login__toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="hide ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+            [attr.aria-pressed]="!hide"
+          >
+            @if (hide) {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 512 512"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="32"
+                d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
+              />
+              <circle
+                cx="256"
+                cy="256"
+                r="80"
+                fill="none"
+                stroke="currentColor"
+                stroke-miterlimit="10"
+                stroke-width="32"
+              />
+            </svg>
+            } @else {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 512 512"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="32"
+                d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112"
+              />
+              <circle
+                cx="256"
+                cy="256"
+                r="80"
+                fill="none"
+                stroke="currentColor"
+                stroke-miterlimit="10"
+                stroke-width="32"
+              />
+              <line
+                x1="96"
+                y1="96"
+                x2="416"
+                y2="416"
+                stroke="currentColor"
+                stroke-width="32"
+                stroke-linecap="round"
+              />
+            </svg>
+            }
+          </button>
+          @if (loginForm.get('password')?.hasError('required') && submitted) {
+          <mat-error>La contraseña es obligatoria</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="login__meta">
+          <mat-checkbox formControlName="check" color="primary"
+            >Recordarme</mat-checkbox
+          >
+          <button type="button" class="login__forgot">
+            ¿Olvidaste tu contraseña?
+          </button>
+        </div>
+
+        <button
+          mat-flat-button
+          class="login__submit"
+          type="submit"
+        >
+          Entrar
+        </button>
+      </form>
+
+      <p class="login__register">
+        ¿No tienes cuenta?
+        <a class="login__link" routerLink="/registers">Regístrate</a>
+      </p>
+    </div>
+  </mat-card>
+
+  <footer class="login-footer">
+    &copy; 2026 &mdash; Plataforma Deportiva
+  </footer>
+</section>

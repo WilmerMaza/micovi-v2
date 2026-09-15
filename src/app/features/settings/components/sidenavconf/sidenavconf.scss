@@ -1,10 +1,153 @@
+/**
+ * Layout visual de configuración — tokens MASTER (sin lógica nueva).
+ * Pie legal institucional aquí; no en el menú de perfil.
+ */
 
+$micovi-canvas: #f9fafb;
+$micovi-surface: #ffffff;
+$micovi-ink: #0f172a;
+$micovi-muted: #64748b;
+$micovi-border: #e2e8f0;
+$micovi-accent: #0c4cc8;
+$micovi-accent-soft: #e8f0fc;
+$micovi-easing: cubic-bezier(0.2, 0, 0, 1);
 
-.contenedor {
-  width: auto;
-  height: 100%;
-  margin: 55px 20px 10px 20px;
-  border: 30px solid #ffffff;
-  background: #eee;
+:host {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  font-family: 'Inria Sans', sans-serif;
 }
 
+.settings-shell {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 0px);
+  min-height: 420px;
+}
+
+.settings-shell__container {
+  flex: 1;
+  min-height: 360px;
+  background: $micovi-canvas;
+  border: 1px solid $micovi-border;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.settings-shell__nav {
+  width: 260px;
+  background: $micovi-surface;
+  border-right: 1px solid $micovi-border;
+  padding: 16px 12px;
+  box-sizing: border-box;
+}
+
+.settings-shell__nav-label {
+  margin: 0 8px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $micovi-muted;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+.settings-shell__list {
+  padding: 0;
+}
+
+.settings-shell__item {
+  height: auto !important;
+  min-height: 56px !important;
+  margin-bottom: 4px;
+  border-radius: 8px !important;
+  font-family: 'Inria Sans', sans-serif !important;
+  transition: background-color 150ms $micovi-easing;
+
+  .mdc-list-item__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 12px 14px !important;
+  }
+
+  &:hover {
+    background: $micovi-accent-soft !important;
+  }
+}
+
+.settings-shell__item--active {
+  background: $micovi-accent-soft !important;
+
+  .settings-shell__item-title {
+    color: $micovi-accent;
+  }
+}
+
+.settings-shell__item-title {
+  display: block;
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 700;
+  color: $micovi-ink;
+  line-height: 1.3;
+}
+
+.settings-shell__item-hint {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: $micovi-muted;
+  line-height: 1.3;
+}
+
+.settings-shell__content {
+  padding: 32px 28px;
+  background: $micovi-canvas;
+}
+
+.settings-shell__empty {
+  max-width: 42ch;
+}
+
+.settings-shell__empty-title {
+  margin: 0 0 8px;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 700;
+  color: $micovi-ink;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.settings-shell__empty-body {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: $micovi-muted;
+  line-height: 1.5;
+}
+
+.settings-shell__legal {
+  flex-shrink: 0;
+  padding: 14px 4px 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: $micovi-muted;
+  text-align: center;
+  line-height: 1.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-shell__item {
+    transition: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .settings-shell__nav {
+    width: 200px;
+  }
+
+  .settings-shell__content {
+    padding: 20px 16px;
+  }
+}
