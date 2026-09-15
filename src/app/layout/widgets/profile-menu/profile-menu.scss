@@ -1,102 +1,312 @@
-/* Panel principal */
-.fb-panel .mat-mdc-menu-content {
-  padding: 8px 0;
-  background: var(--color-bg-elev);
-  color: var(--color-text);
-  border-radius: 16px;
-  box-shadow: var(--shadow-default);
-  min-width: 320px;
-}
+/**
+ * Menú de perfil — chip de identidad + panel de cuenta (MASTER).
+ *
+ * ViewEncapsulation.None: panelClass de MatMenu vive en el overlay CDK.
+ * Estilos acotados a .profile-menu / .micovi-menu-* .
+ * Sin © en el menú: el legal vive en configuración.
+ */
 
-/* Subpaneles */
-.fb-subpanel .mat-mdc-menu-content {
-  background: var(--color-bg-elev);
-  color: var(--color-text);
-  border-radius: 14px;
-  box-shadow: var(--shadow-default);
-  min-width: 260px;
-}
+$micovi-canvas: #f9fafb;
+$micovi-surface: #ffffff;
+$micovi-ink: #0f172a;
+$micovi-muted: #64748b;
+$micovi-border: #e2e8f0;
+$micovi-border-strong: #cbd5e1;
+$micovi-accent: #0c4cc8;
+$micovi-accent-soft: #e8f0fc;
+$micovi-over: #dc2626;
+$micovi-over-soft: #fee2e2;
+$micovi-easing: cubic-bezier(0.2, 0, 0, 1);
 
-/* Header con avatar */
-.fb-header {
-  display: flex;
+.profile-menu {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px 8px;
-}
-.fb-header .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.fb-header .name {
-  font-weight: 600;
-  color: var(--color-text);
+  font-family: 'Inria Sans', sans-serif;
+  margin-left: 8px;
 }
 
-/* Items */
-.fb-item {
-  display: grid !important;
-  grid-template-columns: 28px 1fr auto;
+/* —— Chip trigger (presencia en topbar 56px) —— */
+.profile-trigger {
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 14px !important;
-  color: var(--color-text) !important;
-}
-.fb-item .lead {
-  color: var(--color-text);
-}
-.fb-item .trail {
-  margin-left: 8px;
-  color: var(--color-muted);
-}
-.fb-item .kbd {
-  margin-left: auto;
-  font-size: 12px;
-  color: var(--color-muted);
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: #2c2d2e;
-  border: 1px solid #3a3b3c;
-}
-.fb-item:hover {
-  background: var(--color-hover) !important;
-}
+  max-width: 220px;
+  min-height: 44px;
+  padding: 4px 10px 4px 4px;
+  margin: 0;
+  border: 1px solid $micovi-border;
+  border-radius: 10px;
+  background: $micovi-surface;
+  color: $micovi-ink;
+  cursor: pointer;
+  font-family: 'Inria Sans', sans-serif;
+  text-align: left;
+  transition:
+    background-color 150ms $micovi-easing,
+    border-color 150ms $micovi-easing,
+    transform 150ms $micovi-easing;
 
-/* Estados */
-.fb-item.danger .lead,
-.fb-item.danger span {
-  color: var(--color-danger) !important;
-}
-.fb-item.danger:hover {
-  background: rgba(255, 107, 107, 0.12) !important;
-}
+  &:hover {
+    background: $micovi-accent-soft;
+    border-color: #c5d8f7;
+  }
 
-/* Footer */
-.fb-footer {
-  padding: 8px 16px 10px;
-  font-size: 12px;
-  color: var(--color-muted);
-}
-.fb-footer a {
-  color: var(--color-muted);
-  text-decoration: none;
-}
-.fb-footer a:hover {
-  text-decoration: underline;
-}
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+  }
 
-/* Botón del trigger (opcional) */
-.profile-btn {
-  color: var(--color-text);
-}
-
-::ng-deep .dark_mode_item {
-  svg {
-    display: none !important;
+  &:active {
+    transform: scale(0.98);
   }
 }
-.profile-btn {
-  color: #0C4CC8;
+
+.profile-trigger__avatar {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: $micovi-accent;
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  user-select: none;
+}
+
+.profile-trigger__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-trigger__name {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 700;
+  color: $micovi-ink;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-trigger__role {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 400;
+  color: $micovi-muted;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-trigger__caret {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  color: $micovi-muted;
+}
+
+/* —— Panel MatMenu —— */
+.micovi-menu-panel.mat-mdc-menu-panel {
+  min-width: 320px;
+  max-width: 360px;
+  border-radius: 12px;
+  border: 1px solid $micovi-border;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  background: $micovi-surface;
+  overflow: hidden;
+}
+
+.micovi-menu-panel .mat-mdc-menu-content {
+  padding: 0;
+  background: $micovi-surface;
+  color: $micovi-ink;
+  font-family: 'Inria Sans', sans-serif;
+}
+
+.micovi-menu-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 20px 18px;
+  background: $micovi-canvas;
+  border-bottom: 1px solid $micovi-border;
+  cursor: default;
+}
+
+.micovi-menu-header__avatar {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: $micovi-accent;
+  color: #ffffff;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  user-select: none;
+}
+
+.micovi-menu-header__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 2px;
+}
+
+.micovi-menu-header__name {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 700;
+  color: $micovi-ink;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.micovi-menu-header__email {
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 400;
+  color: $micovi-muted;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.micovi-menu-header__meta {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 2px 8px;
+  font-size: 0.75rem; /* 12px */
+  font-weight: 700;
+  color: $micovi-accent;
+  background: $micovi-accent-soft;
+  border-radius: 6px;
+  line-height: 1.4;
+}
+
+.micovi-menu-actions {
+  padding: 8px;
+}
+
+.micovi-menu-panel .mat-mdc-menu-item.micovi-menu-item {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  height: auto;
+  padding: 12px 14px;
+  margin: 0;
+  border-radius: 8px;
+  font-family: 'Inria Sans', sans-serif;
+  color: $micovi-ink;
+  letter-spacing: 0;
+  transition: background-color 150ms $micovi-easing;
+
+  .mat-icon {
+    margin-right: 14px;
+    margin-left: 0;
+    color: $micovi-ink;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .mat-mdc-menu-item-text {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: $micovi-accent-soft;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: -2px;
+  }
+}
+
+.micovi-menu-item__label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  text-align: left;
+}
+
+.micovi-menu-item__title {
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 700;
+  line-height: 1.3;
+  color: inherit;
+}
+
+.micovi-menu-item__hint {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 400;
+  line-height: 1.3;
+  color: $micovi-muted;
+}
+
+.micovi-menu-panel .mat-mdc-menu-item.micovi-menu-item--danger {
+  color: $micovi-over;
+
+  .mat-icon {
+    color: $micovi-over;
+  }
+
+  .micovi-menu-item__hint {
+    color: #b91c1c;
+    opacity: 0.75;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: $micovi-over-soft;
+  }
+}
+
+.micovi-menu-panel .mat-divider {
+  margin: 0;
+  border-top-color: $micovi-border;
+}
+
+@media (max-width: 767px) {
+  .profile-trigger {
+    max-width: none;
+    padding: 4px;
+    gap: 0;
+  }
+
+  .profile-trigger__text,
+  .profile-trigger__caret {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-trigger,
+  .micovi-menu-panel .mat-mdc-menu-item.micovi-menu-item {
+    transition: none;
+  }
+
+  .profile-trigger:active {
+    transform: none;
+  }
 }

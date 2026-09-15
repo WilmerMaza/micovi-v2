@@ -97,21 +97,23 @@
     }
 
     @if (submitState === 'loading') {
-      <div class="loading-section">
-        <div class="ball-bouncer">
+      <div class="loading-section" role="status" aria-live="polite" aria-busy="true">
+        <div class="ball-indicator" aria-hidden="true">
           <mat-icon class="sport-ball">{{ currentBall }}</mat-icon>
         </div>
         <p class="loading-text">Registrando institución...</p>
         <p class="loading-subtext">Por favor espera un momento</p>
-        <div class="loading-bar-container">
+        <div class="loading-bar-container" aria-hidden="true">
           <div class="loading-bar"></div>
         </div>
       </div>
     }
 
     @if (submitState === 'success') {
-      <div class="result-section success">
-        <div class="success-icon-box">✓</div>
+      <div class="result-section success" role="status" aria-live="polite">
+        <div class="success-icon-box" aria-hidden="true">
+          <mat-icon>check</mat-icon>
+        </div>
         <h2>¡Institución registrada!</h2>
         <p>Ya eres parte de la plataforma deportiva.</p>
         <button mat-flat-button class="success-btn" (click)="goToLogin()">Volver al inicio</button>
@@ -119,11 +121,12 @@
     }
 
     @if (submitState === 'error') {
-      <div class="result-section error">
-        <div class="error-icon-box">!</div>
-        <h2>¡Oops! Error al guardar</h2>
-        <p>No pudimos guardar el registro. Verifica tu conexión e intenta de nuevo.</p>
-        <span class="error-code">ERR_293</span>
+      <div class="result-section error" role="alert">
+        <div class="error-icon-box" aria-hidden="true">
+          <mat-icon>close</mat-icon>
+        </div>
+        <h2>No se pudo completar el registro</h2>
+        <p>{{ errorMessage || 'No pudimos guardar el registro. Verifica tu conexión e intenta de nuevo.' }}</p>
         <div class="error-actions">
           <button mat-flat-button class="retry-btn" (click)="retrySubmit()">Intentar de nuevo</button>
           <button mat-stroked-button class="cancel-btn" (click)="goToLogin()">Cancelar</button>

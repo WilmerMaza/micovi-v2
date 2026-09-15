@@ -1,4 +1,7 @@
-<!-- App bar (siempre la misma) -->
+<!--
+  Shell home Micovi: topbar + rail + outlet.
+  Lógica collapsed/mobile en layout.ts; aquí solo estructura.
+-->
 <app-nav (menuToggle)="toggle()" [mostrarToggleMenu]="showMenuToggle()" [collapsed]="collapsed()"></app-nav>
 @if (isMobile() && !collapsed()) {
 <div class="mobile-backdrop" (click)="onBackdropClick()"></div>

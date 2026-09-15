@@ -1,119 +1,222 @@
-/* sidenav.scss - Nuevo diseño azul degradado */
-$width-open: 250px;
-$width-collapsed: 80px;
+/**
+ * Estilos del rail lateral Micovi — dirección A (Tinta Pizarra + acento).
+ *
+ * Pieza memorable: activo con fill suave + barra 3px (no pastilla full-bleed).
+ * Hover «mesa fría»; press scale/translate; tooltips solo en collapsed.
+ * Ancho lo manda el .sidebar-wrapper del layout (250 / 80); :host llena ese wrapper.
+ */
+
+$micovi-ink: #0f172a;
+$micovi-accent: #0c4cc8;
+$micovi-accent-soft: rgba(12, 76, 200, 0.26);
+$micovi-accent-soft-hover: rgba(12, 76, 200, 0.34);
+$micovi-on-dark: #ffffff;
+$micovi-muted-on-dark: rgba(255, 255, 255, 0.7);
+$micovi-meta-on-dark: rgba(255, 255, 255, 0.45);
+$micovi-hover: rgba(255, 255, 255, 0.07);
+$micovi-border-on-dark: rgba(226, 232, 240, 0.12);
+$ease: cubic-bezier(0.2, 0, 0, 1);
+$dur: 180ms;
+$dur-press: 150ms;
+$dur-fade: 120ms;
 
 :host {
   display: block;
+  width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
-/* Container principal del sidebar */
 .sidebar-container {
-  height: 100vh;
-  background: linear-gradient(180deg, #3886F6 0%, #1BA3FA 50%, #03BCFE 100%);
+  height: 100%;
+  width: 100%;
+  background: $micovi-ink;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  border-right: 1px solid $micovi-border-on-dark;
+  font-family: 'Inria Sans', sans-serif;
 }
 
-/* Sección del usuario en la parte superior */
-.user-section {
-  padding: 4rem 1rem 1rem; /* Aumentar espacio superior para bajar la foto */
+/* Fade de texto al expandir (opacity; no width/height) */
+.nav-fade {
+  animation: nav-text-fade $dur-fade $ease forwards;
+}
+
+@keyframes nav-text-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Marca superior */
+.brand-section {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid $micovi-border-on-dark;
+  min-height: 64px;
+  height: 64px;
+  box-sizing: border-box;
+  flex-shrink: 0;
 
   &.collapsed {
-    padding: 3rem 0.5rem 0.5rem;
+    justify-content: center;
+    padding: 12px 0;
+    width: 100%;
+
+    .micovi-logo {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .micovi-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    object-position: center;
+    flex-shrink: 0;
+    display: block;
+    background: transparent;
+  }
+
+  .brand-name {
+    color: $micovi-on-dark;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
   }
 }
 
-/* Avatar container */
-.avatar-container {
-  margin-bottom: 1rem;
-
-  .user-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    object-fit: cover;
-  }
-}
-
-/* Nombre del usuario */
-.user-name {
-  color: white;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 1rem; /* Reducir margen */
-}
-
-/* Sección de navegación unificada */
+/* Navegación */
 .navigation-section {
   flex: 1;
-  padding: 0 1rem;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; /* Espaciado consistente entre botones */
+  gap: 4px;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   &.collapsed {
-    padding: 0 0.5rem;
+    padding: 12px 8px;
+    align-items: center;
   }
 }
 
-/* Container para cada botón de navegación */
+/* Label de zona — meta 12px; solo abierto */
+.nav-zone-label {
+  display: block;
+  padding: 0 12px 6px;
+  font-size: 0.75rem; /* 12px meta */
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: $micovi-meta-on-dark;
+  line-height: 1.2;
+  user-select: none;
+}
+
 .nav-button-container {
   width: 100%;
 }
 
-/* Estilo unificado para todos los botones de navegación */
 .nav-button {
+  position: relative;
   background: transparent;
-  color: white;
+  color: $micovi-muted-on-dark;
   border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  padding: 10px 12px 10px 14px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.5rem;
+  gap: 10px;
   width: 100%;
-  font-size: 0.9rem;
-  font-weight: 500;
+  min-height: 44px;
+  font-family: inherit;
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 400;
   cursor: pointer;
-  transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    background $dur $ease,
+    color $dur $ease,
+    transform $dur-press $ease,
+    opacity $dur $ease;
   text-align: left;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
+  /* Barra de activo — fade ≤180ms */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: transparent;
+    opacity: 0;
+    transition:
+      background $dur $ease,
+      opacity $dur $ease;
   }
 
+  /* Hover mesa fría — solo inactivos */
+  &:hover:not(.active) {
+    background: $micovi-hover;
+    color: $micovi-on-dark;
+  }
+
+  /* Press físico */
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+  }
+
+  /* Activo: fill suave + barra blanca (no pastilla full-bleed) */
   &.active {
-    background: white;
-    color: #3886F6;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: $micovi-accent-soft;
+    color: $micovi-on-dark;
+    font-weight: 700;
+
+    &::before {
+      background: $micovi-on-dark;
+      opacity: 1;
+    }
+
+    &:hover {
+      background: $micovi-accent-soft-hover;
+      color: $micovi-on-dark;
+    }
 
     mat-icon {
-      color: #3886F6;
+      color: $micovi-on-dark;
     }
 
     .badge {
-      background-color: #3886F6;
-      color: white;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: $micovi-on-dark;
     }
   }
 
   mat-icon {
-    color: white;
+    color: inherit;
     font-size: 20px;
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color $dur $ease;
   }
 
   span {
@@ -121,113 +224,178 @@ $width-collapsed: 80px;
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .badge {
-    background-color: #3886F6;
-    color: white;
-    font-size: 0.7rem;
+    background-color: $micovi-accent-soft;
+    color: $micovi-on-dark;
+    font-size: 0.6875rem;
     padding: 2px 6px;
-    border-radius: 10px;
+    border-radius: 4px;
     margin-left: auto;
     font-weight: 500;
     flex-shrink: 0;
-    white-space: nowrap;
-    overflow: hidden;
+    flex: 0 0 auto;
 
     &.badge-info {
-      background-color: #17a2b8;
+      background-color: rgba(12, 76, 200, 0.45);
     }
 
     &.badge-warning {
-      background-color: #ffc107;
-      color: #212529;
+      background-color: #b45309;
+      color: #ffffff;
     }
 
     &.badge-success {
-      background-color: #28a745;
+      background-color: #059669;
+      color: #ffffff;
     }
   }
 
   &.collapsed {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
     padding: 0;
     justify-content: center;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-    span {
+    &::before {
       display: none;
     }
 
+    span,
     .badge {
       display: none;
     }
   }
 }
 
-/* Logo MICOVI en la parte inferior */
-.logo-section {
-  padding: 1.5rem;
+/* Usuario inferior compacto */
+.user-section {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-top: auto; /* Empuja el logo hacia abajo */
-  background: transparent;
+  gap: 10px;
+  padding: 12px 14px 16px;
+  border-top: 1px solid $micovi-border-on-dark;
+  flex-shrink: 0;
+  min-height: 64px;
 
   &.collapsed {
-    padding: 1rem;
+    justify-content: center;
+    padding: 12px 8px 16px;
   }
 
-  .micovi-logo {
-    height: 60px;
-    width: auto;
-    object-fit: contain;
-    opacity: 1;
-    background: transparent;
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px; /* squircle */
+    object-fit: cover;
+    border: 1px solid $micovi-border-on-dark;
+    flex-shrink: 0;
+  }
+
+  .user-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .user-name {
+    color: $micovi-on-dark;
+    font-size: 0.8125rem; /* 13px label */
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .user-role {
+    color: $micovi-meta-on-dark;
+    font-size: 0.75rem; /* 12px meta */
+    font-weight: 400;
+    line-height: 1.3;
   }
 }
 
-/* Drawer width handled by host sidenav */
-:host {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+:host-context(.sidebar-collapsed) {
+  .brand-section {
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+    width: 100%;
 
-/* Cuando está colapsado - usar la nueva estructura */
-:host-context(.sidebar-collapsed) .sidebar-container {
-  .user-section {
-    padding: 3rem 0.5rem 0.5rem;
-
-    .user-name {
+    .brand-name {
       display: none;
+    }
+
+    .micovi-logo {
+      width: 32px;
+      height: 32px;
+      margin: 0 auto;
     }
   }
 
   .navigation-section {
-    padding: 0 0.5rem;
+    padding: 12px 0;
+    align-items: center;
+  }
+
+  .nav-zone-label {
+    display: none;
+  }
+
+  .nav-button-container {
+    display: flex;
+    justify-content: center;
   }
 
   .nav-button {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
     padding: 0;
     justify-content: center;
 
-    span {
+    &::before {
       display: none;
     }
 
+    span,
     .badge {
       display: none;
     }
   }
 
-  .logo-section {
-    .micovi-logo {
-      height: 40px;
+  .user-section {
+    justify-content: center;
+    padding: 12px 0 16px;
+
+    .user-meta {
+      display: none;
     }
+
+    .user-avatar {
+      margin: 0 auto;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-button,
+  .nav-button mat-icon,
+  .nav-button::before {
+    transition: none;
+  }
+
+  .nav-button:active {
+    transform: none;
+  }
+
+  .nav-fade {
+    animation: none;
   }
 }

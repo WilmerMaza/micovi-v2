@@ -1,12 +1,25 @@
-<!-- nav.html -->
+<!--
+  Topbar del shell: toggle + contexto de página + profile.
+-->
 <mat-toolbar class="topbar" [class.sidebar-collapsed]="collapsed()">
-  <!-- Botón hamburguesa -->
-  <button mat-icon-button aria-label="toggle sidenav" (click)="toggleMenu()" class="menu-toggle">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-        d="M3 6h18M3 12h18M3 18h18" />
-    </svg>
-  </button>
+  <div class="topbar-left">
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="Abrir o cerrar menú lateral"
+      (click)="toggleMenu()"
+      class="menu-toggle"
+    >
+      <mat-icon aria-hidden="true">menu</mat-icon>
+    </button>
+
+    <div class="page-context" aria-live="polite">
+      <h1 class="page-title">{{ pageTitle() }}</h1>
+      <span class="cycle-chip" title="Contexto de ciclo (placeholder)">
+        Sin ciclo activo
+      </span>
+    </div>
+  </div>
 
   <span class="spacer"></span>
   <app-profile-menu></app-profile-menu>

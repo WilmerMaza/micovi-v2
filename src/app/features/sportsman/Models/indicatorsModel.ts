@@ -117,12 +117,14 @@ export const columnsIndValue = [
     type: 'action',
     menu: [
       {
-        action: 'Menu',
-        text: 'Ver',
-        menu: [
-          { action: 'ver indicador', text: 'Indicadores' },
-          { action: 'ver rubrica', text: 'Rubrica' },
-        ],
+        action: 'ver indicador',
+        text: 'Indicadores',
+        enableWhen: 'HasIndicators',
+      },
+      {
+        action: 'ver rubrica',
+        text: 'Rúbrica',
+        enableWhen: 'HasIndicators',
       },
     ],
   },

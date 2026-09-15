@@ -1,0 +1,56 @@
+Skills: taste-design, frontend-design, ui-ux-pro-max
+Stack: Angular Material + SCSS (sin Tailwind, sin React, sin shadcn)
+Idioma UI y doc: español
+
+Genera DESIGN.md para Micovi y guárdalo en:
+design-system/micovi/MASTER.md
+
+Producto:
+Micovi es un SaaS para que el entrenador planifique el entrenamiento de un
+deportista, defina la carga de cada ejercicio, ejecute la sesión, registre
+resultados y obtenga indicadores automáticos de cumplimiento
+(planificado vs ejecutado).
+
+Jerarquía de dominio (la UI debe respetar esta profundidad):
+Institución → Entrenador → Deportista → Plan anual → Macrociclo → Microciclo
+→ Sesión → Ejercicios → Dosificación → Ejecución → Evaluación → Resultados/Gráficas
+
+Audiencia: entrenadores y coordinadores deportivos en instituciones (colegios/clubes).
+Uso: diario, en escritorio y tablet; móvil para consulta/registro rápido.
+
+Atmósfera:
+- Profesional deportivo, no “startup purple”
+- Densidad 7/10 (datos y números visibles; no airy landing)
+- Motion 3/10 (solo feedback de acción; sin scroll-theater)
+- Variance 4/10 (layout predecible de producto; asimetría leve en auth/landing)
+
+Dirección visual:
+- Un acento (energía / cumplimiento), neutros fríos o cálidos consistentes
+- Números de carga/kg/%/series en monoespaciada o tabular-nums
+- Semántica clara: planificado / ejecutado / desviación (ok / bajo / sobre)
+- Breadcrumbs o chip de contexto del ciclo (deportista + microciclo + sesión)
+- Tablas y formularios densos > grids de cards iguales
+
+Tipografía:
+- Preferir continuidad con Inria Sans si ya está en auth; si propones otra,
+  justificar y limitar a 1–2 familias (sans + mono para métricas)
+- Prohibido: Inter como default genérico, serif en dashboard, ALL-CAPS eyebrows
+
+Anti-patrones (NUNCA):
+- Gradientes púrpura/neon “AI”
+- Hero genérico con 3 feature cards
+- Decoración que no ayude a leer planificado vs ejecutado
+- Emojis como iconos
+
+El DESIGN.md debe incluir:
+1) Atmósfera y principios
+2) Paleta con hex + roles (incl. planificado/ejecutado/desviación)
+3) Tipografía y escala
+4) Spacing / radius / elevación
+5) Componentes: botón, input, tabla, chip de ciclo, KPI de cumplimiento, gráfica
+6) Patrones de navegación en la jerarquía de dominio
+7) Motion y accesibilidad
+8) Lista explícita de anti-patrones
+9) Mapa de pantallas prioritarias (auth, deportista, sesión, dosificación, resultados)
+
+Antes del archivo: Design read en UNA línea.

@@ -1,126 +1,148 @@
-/* Backdrop del modal */
-.modal-backdrop {
+/**
+ * Modal de confirmación de cierre de sesión — tokens Micovi (MASTER).
+ *
+ * Diálogo institucional sobrio: scrim slate, superficie blanca, destructivo
+ * sólido sin gradiente ni glow. Solo feedback de acción (180–200 ms).
+ */
+
+$micovi-surface: #ffffff;
+$micovi-ink: #0f172a;
+$micovi-muted: #64748b;
+$micovi-border: #e2e8f0;
+$micovi-border-strong: #cbd5e1;
+$micovi-accent: #0c4cc8;
+$micovi-over: #dc2626;
+$micovi-over-soft: #fee2e2;
+$micovi-scrim: rgba(15, 23, 42, 0.45);
+$micovi-easing: cubic-bezier(0.2, 0, 0, 1);
+
+.logout-modal-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  inset: 0;
   z-index: 2000;
-  backdrop-filter: blur(2px);
-  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Container del modal */
-.modal-container {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  animation: slideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-}
-
-/* Icono del modal */
-.modal-icon {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  background-color: $micovi-scrim;
+  font-family: 'Inria Sans', sans-serif;
+  animation: logout-modal-fade 180ms $micovi-easing forwards;
+}
+
+.logout-modal {
+  width: 90%;
+  max-width: 400px;
+  padding: 24px;
+  text-align: center;
+  background: $micovi-surface;
+  border: 1px solid $micovi-border;
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+  font-family: 'Inria Sans', sans-serif;
+  color: $micovi-ink;
+  animation: logout-modal-enter 200ms $micovi-easing forwards;
+}
+
+.logout-modal__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.25);
-  
+  background: $micovi-over-soft;
+
   mat-icon {
-    color: white;
+    color: $micovi-over;
     font-size: 28px;
     width: 28px;
     height: 28px;
   }
 }
 
-/* Título */
-.modal-title {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #111827;
-  letter-spacing: -0.025em;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+.logout-modal__title {
+  margin: 0 0 8px;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: $micovi-ink;
+  line-height: 1.3;
 }
 
-/* Mensaje */
-.modal-message {
-  margin: 0 0 2rem 0;
-  font-size: 0.95rem;
-  color: #6b7280;
-  line-height: 1.6;
+.logout-modal__message {
+  margin: 0 0 24px;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.9375rem;
   font-weight: 400;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: $micovi-muted;
+  line-height: 1.45;
 }
 
-/* Contenedor de botones */
-.modal-actions {
+.logout-modal__actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 12px;
   justify-content: center;
   align-items: center;
 }
 
-/* Botón cancelar */
-.cancel-btn {
-  color: #6b7280 !important;
-  font-weight: 500 !important;
+.logout-modal__cancel {
+  font-family: 'Inria Sans', sans-serif !important;
+  font-weight: 400 !important;
+  color: $micovi-muted !important;
+  border-color: $micovi-border-strong !important;
   border-radius: 8px !important;
-  padding: 0 1.5rem !important;
-  height: 40px !important;
-  font-size: 0.9rem !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  
+  min-height: 40px;
+  padding: 0 16px !important;
+  transition:
+    color 150ms $micovi-easing,
+    background-color 150ms $micovi-easing,
+    border-color 150ms $micovi-easing,
+    transform 150ms $micovi-easing !important;
+
   &:hover {
+    color: $micovi-ink !important;
     background-color: #f9fafb !important;
-    color: #374151 !important;
   }
-}
 
-/* Botón confirmar */
-.confirm-btn {
-  background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
-  color: white !important;
-  font-weight: 500 !important;
-  border-radius: 8px !important;
-  padding: 0 1.5rem !important;
-  height: 40px !important;
-  font-size: 0.9rem !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25) !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  border: none !important;
-  
-  &:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.3) !important;
-    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
   }
-  
+
   &:active {
-    transform: translateY(0) !important;
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25) !important;
+    transform: scale(0.98);
   }
 }
 
-/* Animaciones */
-@keyframes fadeIn {
+.logout-modal__confirm {
+  font-family: 'Inria Sans', sans-serif !important;
+  font-weight: 700 !important;
+  background-color: $micovi-over !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  min-height: 40px;
+  padding: 0 16px !important;
+  box-shadow: none !important;
+  transition:
+    background-color 150ms $micovi-easing,
+    transform 150ms $micovi-easing !important;
+
+  &:hover {
+    background-color: #b91c1c !important;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $micovi-accent;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@keyframes logout-modal-fade {
   from {
     opacity: 0;
   }
@@ -129,52 +151,47 @@
   }
 }
 
-@keyframes slideIn {
+@keyframes logout-modal-enter {
   from {
     opacity: 0;
-    transform: translateY(-20px) scale(0.95);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-/* Responsividad móvil */
+@media (prefers-reduced-motion: reduce) {
+  .logout-modal-backdrop,
+  .logout-modal {
+    animation: none;
+  }
+
+  .logout-modal__cancel,
+  .logout-modal__confirm {
+    transition: none !important;
+  }
+
+  .logout-modal__cancel:active,
+  .logout-modal__confirm:active {
+    transform: none;
+  }
+}
+
 @media (max-width: 768px) {
-  .modal-container {
-    padding: 1.5rem;
-    margin: 1rem;
-    
-    .modal-icon {
-      width: 56px;
-      height: 56px;
-      margin-bottom: 1rem;
-      
-      mat-icon {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
-      }
-    }
-    
-    .modal-title {
-      font-size: 1.25rem;
-    }
-    
-    .modal-message {
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .modal-actions {
-      flex-direction: column;
-      gap: 0.5rem;
-      
-      .cancel-btn,
-      .confirm-btn {
-        width: 100% !important;
-      }
+  .logout-modal {
+    padding: 20px;
+    margin: 16px;
+  }
+
+  .logout-modal__actions {
+    flex-direction: column;
+    gap: 8px;
+
+    .logout-modal__cancel,
+    .logout-modal__confirm {
+      width: 100%;
     }
   }
 }

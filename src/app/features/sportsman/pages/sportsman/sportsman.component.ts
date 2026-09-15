@@ -29,6 +29,13 @@ import {
 } from '../../../../view/models/dataFilterSportsman';
 import { gender } from '../../../../view/entrenador/Model/constantesEntrenador';
 import { categoryModel } from '../../../../view/models/categoryModel';
+import { MOCK_SPORTSMEN } from '../../mocks/sportsman.mock';
+
+/**
+ * true  → lista con MOCK_SPORTSMEN (UI / paginación sin back).
+ * false → vuelve a SportsmanService.getSportsman() / getSFilterSportsman().
+ */
+const USE_MOCK_SPORTSMAN = true;
 
 @Component({
   selector: 'app-sportsman',
@@ -103,14 +110,24 @@ export class SportsmanComponent implements OnInit {
   }
 
   getSportsman(): void {
+    if (USE_MOCK_SPORTSMAN) {
+      this.applySportsmanList(structuredClone(MOCK_SPORTSMEN));
+      return;
+    }
+
     this.sporsmanService$.getSportsman().subscribe((res: Sportsman[]) => {
-      res.forEach((item: Sportsman) => {
-        item.name = NormaliceUpperUnicosValidators.normaliceData(item.name);
-        item.gender = NormaliceUpperUnicosValidators.normaliceData(item.gender);
-        item.typeIdentification = item.typeIdentification.toLocaleUpperCase();
-      });
-      this.transformGenre(res);
+      this.applySportsmanList(res);
     });
+  }
+
+  /** Normaliza y asigna filas a la tabla (mock o back). */
+  private applySportsmanList(res: Sportsman[]): void {
+    res.forEach((item: Sportsman) => {
+      item.name = NormaliceUpperUnicosValidators.normaliceData(item.name);
+      item.gender = NormaliceUpperUnicosValidators.normaliceData(item.gender);
+      item.typeIdentification = item.typeIdentification.toLocaleUpperCase();
+    });
+    this.transformGenre(res);
   }
 
   viewImage(nameImg: string | undefined): void {
@@ -144,19 +161,14 @@ export class SportsmanComponent implements OnInit {
       this.historyCategorico(data);
     }
 
-    if (event.action === 'add') {
-       this.router.navigate(['sportsman/create'], {
-        queryParams: { id: data.ID },
-      });
+    if (event.action === 'add' || event.action === 'add deportista') {
+      this.router.navigate(['/sportsman/create']);
+      return;
     }
 
     if (action === 'Editar') {
-      this.transformGenreInversa(data);
-      this.showSportsman = false;
-      this.showViewCreateSportsman = {
-        isVisible: true,
-        data: this.dataSingleAux,
-      };
+      this.openSportsmanEdit(data);
+      return;
     }
 
     if (action === 'verEjercicios') {
@@ -164,6 +176,17 @@ export class SportsmanComponent implements OnInit {
         queryParams: { id: data.ID },
       });
     }
+  }
+
+  /** Navega a la ruta hija de edición (misma pantalla que create). */
+  private openSportsmanEdit(data: Sportsman): void {
+    const row = { ...data };
+    this.transformGenreInversa(row);
+    if (this.dataSingleAux) {
+      this.sporsmanService$.setSportmanInfoRedirect(this.dataSingleAux);
+    }
+    this.showSportsman = false;
+    this.router.navigate(['/sportsman', 'edit', data.ID]);
   }
 
   transformGenre(data: Sportsman[]): void {
@@ -242,12 +265,50 @@ export class SportsmanComponent implements OnInit {
         event.filterData[item.property] = [];
       }
     });
+
+    if (USE_MOCK_SPORTSMAN) {
+      // Filtro local mínimo sobre mock hasta reconectar back.
+      const nameQ = String(event.filterData?.['Name'] ?? '')
+        .trim()
+        .toLowerCase();
+      const categories = (event.filterData?.['category'] as string[]) ?? [];
+      const genders = (event.filterData?.['gender'] as string[]) ?? [];
+      const types = (event.filterData?.['typeIdentification'] as string[]) ?? [];
+      const idQ = String(
+        event.filterData?.['identificacion'] ?? ''
+      )
+        .trim()
+        .toLowerCase();
+
+      const filtered = MOCK_SPORTSMEN.filter((row) => {
+        const matchName = !nameQ || row.name.toLowerCase().includes(nameQ);
+        const matchCat =
+          !categories.length ||
+          categories.some(
+            (c) => c.toLowerCase() === row.category.toLowerCase()
+          );
+        const matchGender =
+          !genders.length || genders.includes(row.gender);
+        const matchType =
+          !types.length ||
+          types.some(
+            (t) =>
+              t.toLowerCase() === row.typeIdentification.toLowerCase()
+          );
+        const matchId =
+          !idQ || row.identification.toLowerCase().includes(idQ);
+        return matchName && matchCat && matchGender && matchType && matchId;
+      });
+      this.applySportsmanList(structuredClone(filtered));
+      return;
+    }
+
     this.sporsmanService$.getSFilterSportsman(event.filterData).subscribe(
       (res: Sportsman[]) => {
-        this.transformGenre(res); // Asignar el resultado a dataSportman
+        this.transformGenre(res);
       },
-      (error: Error) => {
-        this.dataSportman = []; // Asignar un vector vacío si no se encontraron deportistas
+      (_error: Error) => {
+        this.dataSportman = [];
       }
     );
   }

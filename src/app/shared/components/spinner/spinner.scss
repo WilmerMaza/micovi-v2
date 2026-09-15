@@ -1,79 +1,121 @@
+/**
+ * Estilos del overlay global: mesa del entrenador esperando datos.
+ * Tokens MASTER; personalidad visual del loading del register, Motion 3/10.
+ */
+
+$micovi-surface: #ffffff;
+$micovi-muted: #64748b;
+$micovi-border: #e2e8f0;
+$micovi-track: #e2e8f0;
+$micovi-accent: #0c4cc8;
+$micovi-accent-bright: #1a6aff;
+$micovi-scrim: rgba(15, 23, 42, 0.45);
+$micovi-elev-3: 0 16px 40px rgba(15, 23, 42, 0.18);
+$micovi-ease: cubic-bezier(0.2, 0, 0, 1);
+
 .overlay {
   position: fixed;
   inset: 0;
+  z-index: 2000;
   display: grid;
   place-items: center;
-  background: rgb(255 255 255);
-  z-index: 2000;
+  padding: 16px;
+  background: $micovi-scrim;
 }
 
 .panel {
   display: grid;
-  gap: 1rem;
+  gap: 16px;
   place-items: center;
-  padding: 1.25rem 1.5rem;
-  // background: white;
-  border-radius: 14px;
-  // box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
   min-width: 200px;
+  max-width: min(280px, 100%);
+  padding: 28px 32px 24px;
+  background: $micovi-surface;
+  border: 1px solid $micovi-border;
+  border-radius: 16px;
+  box-shadow: $micovi-elev-3;
 }
 
-.sports-spinner {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  animation: spin 3s linear infinite;
+.mark {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: mark-pulse 1.4s $micovi-ease infinite;
 }
 
-.sport {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* tamaño uniforme */
-  width: 50px;
-  height: 50px;
-  font-size: 22px;
-
-  /* tono uniforme */
-  background-color: #1976d2; /* azul material */
-  color: #fff; /* emoji en blanco para que se vea homogéneo */
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+.track {
+  width: 160px;
+  max-width: 100%;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: $micovi-track;
 }
 
-/* Ubicaciones (4 puntos cardinales) */
-.sport:nth-child(1) {
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.sport:nth-child(2) {
-  top: 50%;
-  right: 0;
-  transform: translate(50%, -50%);
-}
-.sport:nth-child(3) {
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 50%);
-}
-.sport:nth-child(4) {
-  top: 50%;
-  left: 0;
-  transform: translate(-50%, -50%);
+.fill {
+  width: 36%;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, $micovi-accent 0%, $micovi-accent-bright 100%);
+  will-change: transform;
+  animation: bar-slide 1.4s $micovi-ease infinite;
 }
 
 .label {
-  font: 500 14px/1.2 system-ui, Roboto, Arial, sans-serif;
+  margin: 0;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.9375rem; /* 15px — body MASTER */
+  font-weight: 400;
+  line-height: 1.45;
+  color: $micovi-muted;
+  text-align: center;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+@keyframes mark-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: scale(1.03);
+    opacity: 0.92;
+  }
+}
+
+@keyframes bar-slide {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(340%);
+  }
+}
+
+@keyframes bar-opacity {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .fill {
+    width: 100%;
+    transform: none;
+    animation: bar-opacity 1.6s ease-in-out infinite;
   }
 }

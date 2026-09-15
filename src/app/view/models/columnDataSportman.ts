@@ -40,15 +40,20 @@ export const columnsValue = [
     estado: true,
     type: 'action',
     menu: [
+      { action: 'verDeportista', text: 'Ver detalle' },
       {
-        action: 'Menu',
-        text: 'Ver',
-        menu: [
-          { action: 'verDeportista', text: 'Deportista' },
-          { action: 'verEjercicios', text: 'Ejercicios' },
-        ],
+        action: 'verEjercicios',
+        text: 'Ejercicios asociados',
+        enableWhen: 'HasIndicators',
       },
-      { action: 'Editar', text: 'Editar' },
+      { action: 'Editar', text: 'Editar', dividerBefore: true },
     ],
-  }
+  },
 ];
+
+/**
+ * Nota de navegación (deportistas):
+ * - Menú plano (schema): Ver detalle / Ejercicios asociados · Editar.
+ * - enableWhen en el schema; la tabla no conoce HasIndicators por nombre de action.
+ * - «Editar» → `/sportsman/edit/:id`. Alta → `/sportsman/create`.
+ */

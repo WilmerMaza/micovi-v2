@@ -1,4 +1,9 @@
-/* src/app/layout/layout.component.scss */
+/**
+ * Espaciado y superficies del shell home Micovi.
+ *
+ * Rail + canvas en flex (sin margin-left sobre 100vw): al colapsar, el
+ * dashboard ocupa el ancho liberado. Móvil: drawer overlay (lógica intacta).
+ */
 
 :host {
   display: block;
@@ -9,49 +14,56 @@
 $toolbar-h: 56px;
 $sidebar-width-open: 250px;
 $sidebar-width-collapsed: 80px;
+$micovi-canvas: #f9fafb;
+$micovi-scrim: rgba(15, 23, 42, 0.45);
+$ease: cubic-bezier(0.2, 0, 0, 1);
+$dur: 180ms;
 
 .layout-container {
   display: flex;
+  flex-direction: row;
+  align-items: stretch;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
   overflow: hidden;
-  background-color: #F9FAFB;
+  background-color: $micovi-canvas;
 }
 
+/* Rail en flujo flex — el canvas crece/encoge con él */
 .sidebar-wrapper {
+  flex: 0 0 $sidebar-width-open;
   width: $sidebar-width-open;
+  max-width: $sidebar-width-open;
   height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   z-index: 999;
-  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  transition: flex-basis $dur $ease, width $dur $ease, max-width $dur $ease;
 }
 
 .main-content {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   height: 100vh;
-  margin-left: $sidebar-width-open;
   padding: #{$toolbar-h} 20px 20px 20px;
   overflow: auto;
-  background-color: #F9FAFB;
-  transition: margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1), padding-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: $micovi-canvas;
   position: relative;
   z-index: 1;
-  min-width: 0;
+  box-sizing: border-box;
 }
 
-/* Backdrop para móvil */
 .mobile-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: $micovi-scrim;
   z-index: 998;
   opacity: 0;
-  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeIn $dur $ease forwards;
 }
 
 @keyframes fadeIn {
@@ -60,45 +72,56 @@ $sidebar-width-collapsed: 80px;
   }
 }
 
-/* Estilos responsivos móviles */
-@media (max-width: 767px) {
-  .layout-container.mobile-mode {
+/* Desktop colapsado: rail 80px → main ocupa el resto */
+@media (min-width: 768px) {
+  .layout-container.sidebar-collapsed {
     .sidebar-wrapper {
-      position: fixed;
-      left: -$sidebar-width-open; /* Inicialmente oculto fuera de pantalla */
-      top: 0;
-      height: 100vh;
-      z-index: 999;
-      width: $sidebar-width-open;
-      transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-
-      &.mobile-drawer {
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-      }
-    }
-
-    .main-content {
-      margin-left: 0; /* Sin margen en móvil */
-      padding-left: 20px;
-    }
-
-    /* Sidebar visible en móvil */
-    &:not(.sidebar-collapsed) .sidebar-wrapper {
-      left: 0; /* Slide in desde la izquierda */
+      flex-basis: $sidebar-width-collapsed;
+      width: $sidebar-width-collapsed;
+      max-width: $sidebar-width-collapsed;
     }
   }
 }
 
-/* Cuando el layout está colapsado (solo desktop) */
-@media (min-width: 768px) {
-  .layout-container.sidebar-collapsed {
+/* Móvil: rail fuera de flujo (drawer) */
+@media (max-width: 767px) {
+  .layout-container.mobile-mode {
     .sidebar-wrapper {
-      width: $sidebar-width-collapsed;
+      position: fixed;
+      left: -$sidebar-width-open;
+      top: 0;
+      height: 100vh;
+      z-index: 999;
+      flex: none;
+      width: $sidebar-width-open;
+      max-width: $sidebar-width-open;
+      transition: left $dur $ease;
+
+      &.mobile-drawer {
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+      }
     }
 
     .main-content {
-      margin-left: $sidebar-width-collapsed;
-      padding-left: 40px; /* Más padding para separación del sidebar colapsado */
+      flex: 1 1 auto;
+      width: 100%;
+      padding: #{$toolbar-h} 16px 16px 16px;
     }
+
+    &:not(.sidebar-collapsed) .sidebar-wrapper {
+      left: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-wrapper,
+  .mobile-backdrop {
+    transition: none;
+    animation: none;
+  }
+
+  .mobile-backdrop {
+    opacity: 1;
   }
 }

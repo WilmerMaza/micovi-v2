@@ -30,9 +30,11 @@ export const columnsEjerciciosValue = [
         type: "text"
     },
     {
-      displayname:'noName',
-      estado:true,
-      type: 'button Ver',
-      menu:[]
-    }
-]
+      displayname: 'noName',
+      estado: true,
+      type: 'button',
+      action: 'ver ejercicio',
+      label: 'Ver',
+      variant: 'outline' as const,
+    },
+];
