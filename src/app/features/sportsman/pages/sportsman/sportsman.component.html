@@ -1,16 +1,6 @@
 <div id="sportsman">
   <!-- aqui inicia la visualizacion individual -->
   <div class="conten-table">
-    <div>
-      <app-create-sportsman
-        [viewActive]="showViewCreateSportsman"
-        [dataCategory]="dataCreateSportsman"
-        *ngIf="showViewCreateSportsman"
-        (CreateSportsman)="reloadData()"
-      >
-      </app-create-sportsman>
-    </div>
-
     <div class="containerFilter">
       <!--  aca inicia el uso del filtro  -->
       <app-dinamic-filter
