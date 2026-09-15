@@ -15,6 +15,11 @@
   --dt-accent-pressed: #0a3fa8;
   --dt-accent-soft: #e8f0fc;
   --dt-mist: #e8ecf1;
+  --dt-header-bg: #e8f0fc;
+  --dt-header-border: #cbd5e1;
+  --dt-scrollbar-track: #e2e8f0;
+  --dt-scrollbar-thumb: #94a3b8;
+  --dt-scrollbar-thumb-hover: #64748b;
   --dt-radius: 8px;
   --dt-space-2: 8px;
   --dt-space-3: 12px;
@@ -70,29 +75,90 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  min-height: var(--dt-body-min-height);
-  height: auto;
-  max-height: none;
-  overflow-x: auto;
-  overflow-y: auto;
+  min-height: 0;
+  overflow: hidden;
+
+  > .dinamic-table__grid {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
 }
 
+/*
+ * Scroll solo en tbody: grid en <table> (no flex — rompe mdc-data-table__content).
+ * thead ancho completo; barra vertical solo en el cuerpo cuando hace falta.
+ */
 .dinamic-table-host .dinamic-table__grid {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
   width: 100%;
   min-width: 100%;
   background: var(--dt-surface);
   font-family: var(--dt-font);
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-/* —— Cabecera densa (pieza memorable) —— */
+.dinamic-table-host .dinamic-table__grid thead {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.dinamic-table-host .dinamic-table__grid tbody,
+.dinamic-table-host .dinamic-table__grid tbody.mdc-data-table__content {
+  display: block;
+  min-height: 0;
+  width: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+
+  -ms-overflow-style: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dt-scrollbar-thumb) var(--dt-scrollbar-track);
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--dt-scrollbar-thumb);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 999px;
+    transition: background-color var(--dt-motion) var(--dt-ease);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--dt-scrollbar-thumb-hover);
+  }
+}
+
+.dinamic-table-host .dinamic-table__grid tbody tr.mat-mdc-row,
+.dinamic-table-host .dinamic-table__grid tbody tr {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* —— Cabecera densa (Azul Suave MASTER; fuera del scroll) —— */
+.dinamic-table-host .dinamic-table__header-row {
+  background: var(--dt-header-bg);
+}
+
 .dinamic-table-host .dinamic-table__th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
   padding: var(--dt-space-3) var(--dt-space-4) !important;
-  border-bottom: 1px solid var(--dt-border) !important;
-  background: var(--dt-canvas);
-  color: var(--dt-ink);
+  border-bottom: 2px solid var(--dt-header-border) !important;
+  background: var(--dt-header-bg);
+  color: var(--dt-muted);
   font-family: var(--dt-font);
   font-size: 0.8125rem;
   font-weight: 700;
@@ -283,22 +349,29 @@
   pointer-events: none;
 }
 
-/* —— Empty: ocupa el alto fijo restante bajo el thead —— */
-.dinamic-table-host .dinamic-table__empty {
-  flex: 1 1 auto;
+/* —— Empty: centrado en el cuerpo de la tabla (matNoDataRow) —— */
+.dinamic-table-host .dinamic-table__grid tbody:has(.dinamic-table__row--empty) {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 0;
-  padding: var(--dt-space-4);
+}
+
+.dinamic-table-host .dinamic-table__row--empty {
+  display: table;
+  width: 100%;
+  background: var(--dt-surface) !important;
+}
+
+.dinamic-table-host .dinamic-table__empty-cell {
+  padding: var(--dt-space-4) !important;
   text-align: center;
+  vertical-align: middle;
   color: var(--dt-muted);
   font-family: var(--dt-font);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 400;
-  line-height: 1.4;
-  background: var(--dt-surface);
-  border-top: 1px solid var(--dt-border);
+  line-height: 1.45;
+  border-bottom: none !important;
 }
 
 /* —— Paginator —— */

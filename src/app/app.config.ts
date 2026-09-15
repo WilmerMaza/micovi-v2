@@ -13,8 +13,6 @@ import { AuthService } from './core/services/auth';
 import { csrfInterceptor } from './core/interceptors/csrf.interceptor';
 import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 import { refreshInterceptor } from './core/interceptors/refresh.interceptor';
-import { provideRouterSpinner } from './core/loading/provide-router-spinner';
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -27,6 +25,5 @@ export const appConfig: ApplicationConfig = {
       const auth = inject(AuthService);
       return firstValueFrom(auth.bootstrapSession());
     }),
-    provideRouterSpinner(),
   ],
 };

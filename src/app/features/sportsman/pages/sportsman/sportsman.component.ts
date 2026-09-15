@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { SportsmanService } from '../../services/sportsman.service';
 import { listInfo } from '../../../../models/interface';
@@ -14,6 +15,7 @@ import { DinamicFilterComponent } from '../../../../shared/components/dinamic-fi
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
 import { DinamicTableComponent } from '../../../../shared/components/dinamic-table/dinamic-table.component';
+import { TableSkeletonComponent } from '../../../../shared/components/table-skeleton/table-skeleton';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Sportsman } from '../../../../view/models/DataSportsman';
@@ -28,7 +30,7 @@ import { MOCK_SPORTSMEN } from '../../mocks/sportsman.mock';
  * true  → lista con MOCK_SPORTSMEN (UI / paginación sin back).
  * false → vuelve a SportsmanService.getSportsman() / getSFilterSportsman().
  */
-const USE_MOCK_SPORTSMAN = true;
+const USE_MOCK_SPORTSMAN = false;
 
 @Component({
   selector: 'app-sportsman',
@@ -41,6 +43,7 @@ const USE_MOCK_SPORTSMAN = true;
     ...MATERIAL_IMPORTS,
     MatCardContent,
     DinamicTableComponent,
+    TableSkeletonComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -60,6 +63,7 @@ export class SportsmanComponent implements OnInit {
   public selectedImageURL: string = '';
   public isDownload: boolean = false;
   public nameAdd: string = 'deportista';
+  readonly isListLoading = signal(false);
 
   constructor(
     private sporsmanService$: SportsmanService,
@@ -101,9 +105,13 @@ export class SportsmanComponent implements OnInit {
       return;
     }
 
-    this.sporsmanService$.getSportsman().subscribe((res: Sportsman[]) => {
-      this.applySportsmanList(res);
-    });
+    this.isListLoading.set(true);
+    this.sporsmanService$
+      .getSportsman()
+      .pipe(finalize(() => this.isListLoading.set(false)))
+      .subscribe((res: Sportsman[]) => {
+        this.applySportsmanList(res);
+      });
   }
 
   /** Normaliza y asigna filas a la tabla (mock o back). */
@@ -286,14 +294,18 @@ export class SportsmanComponent implements OnInit {
       return;
     }
 
-    this.sporsmanService$.getSFilterSportsman(event.filterData).subscribe(
-      (res: Sportsman[]) => {
-        this.transformGenre(res);
-      },
-      (_error: Error) => {
-        this.dataSportman = [];
-      }
-    );
+    this.isListLoading.set(true);
+    this.sporsmanService$
+      .getSFilterSportsman(event.filterData)
+      .pipe(finalize(() => this.isListLoading.set(false)))
+      .subscribe({
+        next: (res: Sportsman[]) => {
+          this.transformGenre(res);
+        },
+        error: () => {
+          this.dataSportman = [];
+        },
+      });
   }
 
   actionShowSportmanByIndicator(): void {

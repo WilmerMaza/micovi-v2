@@ -16,6 +16,17 @@
     width: 100%;
     min-width: 0;
     min-height: 0;
+    transition: opacity 180ms cubic-bezier(0.2, 0, 0, 1);
+
+    &--busy {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+  }
+
+  .sportsman-list-skeleton {
+    flex: 1 1 auto;
+    padding: 0 8px;
   }
 
   .containerFilter {

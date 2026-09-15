@@ -61,6 +61,7 @@
 
 @if (showLogoutModal()) {
   <app-logout-modal
+    [isLoading]="isLoggingOut()"
     (confirmLogout)="confirmLogout()"
     (cancelLogout)="cancelLogout()"
   ></app-logout-modal>

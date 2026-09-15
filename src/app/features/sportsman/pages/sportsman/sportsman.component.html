@@ -1,6 +1,13 @@
 <div id="sportsman">
   <!-- aqui inicia la visualizacion individual -->
   <div class="conten-table">
+    @if (isListLoading() && dataSportman.length === 0) {
+      <app-table-skeleton
+        class="sportsman-list-skeleton"
+        [showCheckbox]="isCheck"
+        [columns]="data.length"
+      />
+    } @else {
     <div class="containerFilter">
       <!--  aca inicia el uso del filtro  -->
       <app-dinamic-filter
@@ -9,9 +16,7 @@
         [dataFilter]="jsonFilter"
         (filterResult)="getDataFilter($event)"
         (actionFilter)="getActionEvent($event)"
-      >
-        loading..
-      </app-dinamic-filter>
+      />
     </div>
 
     <div class="conten-table1">
@@ -144,7 +149,11 @@
           </mat-card>
         </div>
 
-        <div class="container">
+        <div
+          class="container"
+          [class.container--busy]="isListLoading() && dataSportman.length > 0"
+          [attr.aria-busy]="isListLoading()"
+        >
           <!--  aca inicia el uso de la tabla -->
           <app-dinamic-table
             [isCheckBox]="isCheck"
@@ -183,5 +192,6 @@
         </div>
       </div>
     </div>
+    }
   </div>
 </div>

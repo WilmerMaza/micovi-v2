@@ -90,6 +90,7 @@ export class CreateSportsmanComponent implements OnInit {
   public generos: listInfo[] | undefined;
   public typeIdentification: listInfo[] | undefined;
   public isEdit: boolean = false;
+  public isSaving = false;
   /** true cuando la pantalla se abrió por ruta (/create o /edit/:id). */
   public isRoutePage = false;
   public listEstados: Estado[] | undefined = [];
@@ -348,7 +349,12 @@ export class CreateSportsmanComponent implements OnInit {
   }
 
   async createSportsman(): Promise<void> {
+    if (this.isSaving) {
+      return;
+    }
+
     if (this.sportsmansForm.valid) {
+      this.isSaving = true;
       const {
         value: { image, department, city, nationality, category, birtDate },
         value,
@@ -395,42 +401,45 @@ export class CreateSportsmanComponent implements OnInit {
       }
       this.sporsmanService$[
         this.isEdit ? 'updateSportsman' : 'createSportsman'
-      ](formSportsman).subscribe(
-        async (res: SuccessResponse) => {
+      ](formSportsman).subscribe({
+        next: async (res: SuccessResponse) => {
           if (!Validar.isNullOrUndefined(this.selectedFiles)) {
             this.uploadImg(formData);
           } else {
+            this.isSaving = false;
             await Toast.fire({
               icon: 'success',
               title: `${res.Message}`,
             });
+            this.defaulCarrusel();
           }
-
-          this.defaulCarrusel();
         },
-        (respError): void => {
+        error: (respError): void => {
+          this.isSaving = false;
           const { error } = respError;
           Toast.fire({
             icon: 'error',
             title: error,
           });
-        }
-      );
+        },
+      });
     } else {
       this.sportsmansForm.markAllAsTouched();
     }
   }
 
   uploadImg(formData: FormData): void {
-    this.imagenFuntionsService$.subirImg(formData).subscribe(
-      (respuesta: responseUploadMode) => {
+    this.imagenFuntionsService$.subirImg(formData).subscribe({
+      next: (respuesta: responseUploadMode) => {
+        this.isSaving = false;
         Toast.fire({
           icon: 'success',
           title: respuesta.msg,
         });
         this.defaulCarrusel();
       },
-      (respError): void => {
+      error: (respError): void => {
+        this.isSaving = false;
         const {
           error: { error },
         } = respError;
@@ -438,8 +447,8 @@ export class CreateSportsmanComponent implements OnInit {
           icon: 'error',
           title: error,
         });
-      }
-    );
+      },
+    });
   }
 
   onFilesSelected(event: any): void {

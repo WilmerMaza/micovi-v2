@@ -45,6 +45,7 @@ import { Session } from '../services/session';
 export class LoginComponent implements OnInit {
   hide = true;
   submitted = false;
+  submitState: 'idle' | 'loading' = 'idle';
 
   public loginForm: FormGroup = new LoginFormModel().formLogin();
 
@@ -80,13 +81,23 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    if (this.submitState === 'loading') {
+      return;
+    }
+
     const email = String(this.loginForm.get('username')?.value ?? '')
       .trim()
       .toLowerCase();
     const password = String(this.loginForm.get('password')?.value ?? '');
 
     this.handleRememberCredentials();
-    this.loginSession$.sessionLogin({ email, password });
+    this.submitState = 'loading';
+
+    this.loginSession$.sessionLogin({ email, password }).subscribe({
+      error: () => {
+        this.submitState = 'idle';
+      },
+    });
   }
 
   /** Persiste o borra credenciales locales según el checkbox "recordarme". */

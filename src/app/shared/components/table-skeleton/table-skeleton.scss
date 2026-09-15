@@ -1,0 +1,130 @@
+/**
+ * Placeholders de listado tabular — neutros MASTER, Motion 3/10.
+ * Cabecera estática (sin pulse); filas animadas en el cuerpo.
+ */
+
+$micovi-surface: #ffffff;
+$micovi-canvas: #f9fafb;
+$micovi-border: #e2e8f0;
+$micovi-mist: #e8ecf1;
+$micovi-track: #e2e8f0;
+$micovi-ease: cubic-bezier(0.2, 0, 0, 1);
+
+.table-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  min-height: 320px;
+}
+
+.table-skeleton__filters {
+  padding: 12px 16px;
+  border-radius: 15px;
+  background: $micovi-surface;
+  border: 1px solid $micovi-border;
+}
+
+.table-skeleton__filter-bar {
+  height: 40px;
+  border-radius: 8px;
+  background: $micovi-mist;
+  animation: skeleton-pulse 1.4s $micovi-ease infinite;
+}
+
+.table-skeleton__filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.table-skeleton__chip {
+  width: 88px;
+  height: 28px;
+  border-radius: 999px;
+  background: $micovi-mist;
+  animation: skeleton-pulse 1.4s $micovi-ease infinite;
+}
+
+.table-skeleton__table {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 280px;
+  border-radius: 8px;
+  background: $micovi-surface;
+  border: 1px solid $micovi-border;
+  overflow: hidden;
+}
+
+.table-skeleton__head,
+.table-skeleton__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+}
+
+.table-skeleton__head {
+  flex-shrink: 0;
+  min-height: 44px;
+  background: $micovi-canvas;
+  border-bottom: 1px solid $micovi-border;
+}
+
+.table-skeleton__body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.table-skeleton__row {
+  min-height: 48px;
+  border-bottom: 1px solid $micovi-border;
+
+  &:nth-child(even) {
+    background: $micovi-canvas;
+  }
+}
+
+.table-skeleton__cell {
+  flex: 1 1 0;
+  height: 12px;
+  border-radius: 4px;
+  background: $micovi-track;
+  animation: skeleton-pulse 1.4s $micovi-ease infinite;
+}
+
+.table-skeleton__cell--head {
+  height: 10px;
+  max-width: 72px;
+  background: $micovi-mist;
+  animation: none;
+  opacity: 1;
+}
+
+.table-skeleton__cell--checkbox {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .table-skeleton__filter-bar,
+  .table-skeleton__chip,
+  .table-skeleton__cell:not(.table-skeleton__cell--head) {
+    animation: none;
+    opacity: 0.72;
+  }
+}
