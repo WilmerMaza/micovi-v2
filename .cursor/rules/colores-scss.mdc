@@ -1,0 +1,66 @@
+---
+description: Colores SCSS — usar variables $color-* de src/styles/_colors.scss; corregir hardcoded al editar estilos
+globs: "**/*.{scss,css}"
+alwaysApply: true
+---
+
+# Colores SCSS — variables obligatorias
+
+## Fuente de verdad
+
+- Archivo: `src/styles/_colors.scss`
+- Import en componentes:
+
+```scss
+@use 'styles/colors' as *;
+```
+
+- Requiere `stylePreprocessorOptions.includePaths: ["./src"]` en `angular.json`.
+- **No** crear `src/styles/colors.scss` (genera import ambiguo con el partial).
+- **No** usar `src/assets/colors.scss` (deprecado).
+
+## Al escribir o editar estilos
+
+1. **Usar variables `$color-*`**, nunca hex/rgb/rgba hardcoded si ya existe token equivalente.
+2. **Al encontrar colores hardcoded** en archivos que toques, **reemplazarlos** por la variable correcta (mismo valor visual).
+3. **No cambiar valores** al refactorizar: la variable debe conservar el hex/rgba original.
+4. **No unificar** colores con el mismo hex pero distinto significado (ej. `$color-primary` ≠ `$color-material-blue`).
+
+## Mapeo habitual
+
+| Uso | Variable |
+|-----|----------|
+| Fondo app | `$color-canvas` |
+| Fondo auth | `$color-canvas-auth` |
+| Superficie / blanco | `$color-surface` |
+| Texto principal | `$color-text-primary` |
+| Texto secundario | `$color-text-secondary` |
+| Texto sobre azul/oscuro | `$color-text-on-dark` |
+| Borde | `$color-border` / `$color-border-strong` |
+| Marca / CTA | `$color-primary` |
+| Pressed | `$color-primary-pressed` |
+| OK / warning / danger | `$color-success`, `$color-warning`, `$color-danger` |
+| Sidebar overlay | `$color-primary-overlay-dark` (≠ `$color-primary-soft`) |
+
+Lista completa: leer `src/styles/_colors.scss`.
+
+## CSS custom properties (componentes)
+
+En `dinamic-table` y similares, mantener `--dt-*` en el host pero **asignar desde SCSS**:
+
+```scss
+--dt-accent: #{$color-primary};
+```
+
+No reemplazar `--mat-sys-*` ni overrides Material que dependen de runtime.
+
+## Nuevo color
+
+- **1 uso, sin rol semántico** → puede quedar hardcoded.
+- **2+ usos o rol semántico** → añadir a `_colors.scss` con prefijo `$color-*` y nombre por propósito (no `azul-1`).
+
+## Excepciones (no convertir sin confirmar)
+
+- Opacidades `rgba` únicas en un solo lugar.
+- Pantallas decorativas aisladas (ej. `page404`).
+- Valores en comentarios o código muerto comentado.

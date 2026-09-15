@@ -3,11 +3,8 @@
  * Cabecera estática (sin pulse); filas animadas en el cuerpo.
  */
 
-$micovi-surface: #ffffff;
-$micovi-canvas: #f9fafb;
-$micovi-border: #e2e8f0;
-$micovi-mist: #e8ecf1;
-$micovi-track: #e2e8f0;
+@use 'styles/colors' as *;
+
 $micovi-ease: cubic-bezier(0.2, 0, 0, 1);
 
 .table-skeleton {
@@ -21,14 +18,14 @@ $micovi-ease: cubic-bezier(0.2, 0, 0, 1);
 .table-skeleton__filters {
   padding: 12px 16px;
   border-radius: 15px;
-  background: $micovi-surface;
-  border: 1px solid $micovi-border;
+  background: $color-surface;
+  border: 1px solid $color-border;
 }
 
 .table-skeleton__filter-bar {
   height: 40px;
   border-radius: 8px;
-  background: $micovi-mist;
+  background: $color-mist;
   animation: skeleton-pulse 1.4s $micovi-ease infinite;
 }
 
@@ -43,7 +40,7 @@ $micovi-ease: cubic-bezier(0.2, 0, 0, 1);
   width: 88px;
   height: 28px;
   border-radius: 999px;
-  background: $micovi-mist;
+  background: $color-mist;
   animation: skeleton-pulse 1.4s $micovi-ease infinite;
 }
 
@@ -53,8 +50,8 @@ $micovi-ease: cubic-bezier(0.2, 0, 0, 1);
   flex: 1 1 auto;
   min-height: 280px;
   border-radius: 8px;
-  background: $micovi-surface;
-  border: 1px solid $micovi-border;
+  background: $color-surface;
+  border: 1px solid $color-border;
   overflow: hidden;
 }
 
@@ -69,8 +66,8 @@ $micovi-ease: cubic-bezier(0.2, 0, 0, 1);
 .table-skeleton__head {
   flex-shrink: 0;
   min-height: 44px;
-  background: $micovi-canvas;
-  border-bottom: 1px solid $micovi-border;
+  background: $color-canvas;
+  border-bottom: 1px solid $color-border;
 }
 
 .table-skeleton__body {
@@ -80,10 +77,10 @@ $micovi-ease: cubic-bezier(0.2, 0, 0, 1);
 
 .table-skeleton__row {
   min-height: 48px;
-  border-bottom: 1px solid $micovi-border;
+  border-bottom: 1px solid $color-border;
 
   &:nth-child(even) {
-    background: $micovi-canvas;
+    background: $color-canvas;
   }
 }
 
@@ -91,14 +88,14 @@ $micovi-ease: cubic-bezier(0.2, 0, 0, 1);
   flex: 1 1 0;
   height: 12px;
   border-radius: 4px;
-  background: $micovi-track;
+  background: $color-track;
   animation: skeleton-pulse 1.4s $micovi-ease infinite;
 }
 
 .table-skeleton__cell--head {
   height: 10px;
   max-width: 72px;
-  background: $micovi-mist;
+  background: $color-mist;
   animation: none;
   opacity: 1;
 }

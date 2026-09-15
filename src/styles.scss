@@ -1,7 +1,8 @@
 /* -------------------------------
    Import Angular Material theming
 -------------------------------- */
-@use "@angular/material" as mat;
+@use 'styles/colors' as *;
+@use '@angular/material' as mat;
 
 /* -------------------------------
    Definición del tema
@@ -26,7 +27,7 @@ html {
 -------------------------------- */
 body {
   color-scheme: light;
-  background-color: #F9FAFB;
+  background-color: $color-canvas;
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
   margin: 0;
@@ -62,11 +63,11 @@ body {
 .mat-drawer-inner-container,
 .mat-sidenav-content,
 .mat-drawer-content {
-  background-color: #F9FAFB !important;
+  background-color: $color-canvas !important;
 }
 
 .mat-sidenav-container {
-  background-color: #F9FAFB !important;
+  background-color: $color-canvas !important;
 }
 
 .text-center {

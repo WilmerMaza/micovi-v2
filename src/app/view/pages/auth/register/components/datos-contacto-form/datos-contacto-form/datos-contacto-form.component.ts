@@ -16,7 +16,7 @@ import { RegisterService } from '../../../services/register.service';
 @Component({
   selector: 'app-datos-contacto-form',
   templateUrl: './datos-contacto-form.component.html',
-  styleUrls: ['./datos-contacto-form.component.css'],
+  styleUrl: './datos-contacto-form.component.scss',
   imports: [
     CommonModule,
     MatInputModule,

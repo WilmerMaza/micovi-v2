@@ -2,8 +2,7 @@
  * Cabecera de la página Configuración — tokens MASTER.
  */
 
-$micovi-ink: #0f172a;
-$micovi-muted: #64748b;
+@use 'styles/colors' as *;
 
 :host {
   display: block;
@@ -29,7 +28,7 @@ $micovi-muted: #64748b;
   margin: 0 0 6px;
   font-size: 1.375rem; /* 22px — h1 MASTER */
   font-weight: 700;
-  color: $micovi-ink;
+  color: $color-text-primary;
   letter-spacing: -0.01em;
   line-height: 1.25;
 }
@@ -38,6 +37,6 @@ $micovi-muted: #64748b;
   margin: 0;
   font-size: 0.9375rem;
   font-weight: 400;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   line-height: 1.45;
 }

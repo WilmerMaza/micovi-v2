@@ -1,3 +1,5 @@
+@use 'styles/colors' as *;
+
 #sportsman {
   /* Llena el canvas: toolbar 56px + padding main (top+bottom ~40px) */
   box-sizing: border-box;
@@ -47,21 +49,21 @@
   .content-card {
     background: linear-gradient(
       265.16deg,
-      #0ddcf9 -0.06%,
-      #3776f2 49.85%,
-      #0c4cc8 92.38%
+      $color-gradient-cyan -0.06%,
+      $color-gradient-blue-mid 49.85%,
+      $color-primary 92.38%
     );
     padding: 20px;
   }
 
   .row {
-    color: #ffffff;
+    color: $color-surface;
     size: 13px;
     margin-left: 0px;
   }
 
   .row-data {
-    color: #ffffff;
+    color: $color-surface;
     font-weight: bold;
     size: 13px;
   }
@@ -89,7 +91,7 @@
   }
 
   .close-button {
-    color: #ffffff;
+    color: $color-surface;
     position: absolute;
     top: 8px;
     right: 8px;
@@ -122,7 +124,7 @@
   }
 
   #name {
-    color: #fff;
+    color: $color-surface;
     font-family: 'Inria Sans';
     font-size: 18px;
     font-style: normal;
@@ -132,11 +134,11 @@
 
   .columns {
     border-radius: 17px;
-    background-color: #ffffff;
+    background-color: $color-surface;
     border: none;
     width: 60px;
     height: 17px;
-    color: #0c4cc8;
+    color: $color-primary;
     font-size: 10.2px;
     font-family: 'Inria Sans';
     font-weight: bold;
@@ -194,7 +196,7 @@
   }
 
   .content-timeline {
-    background-color: #ffffff;
+    background-color: $color-surface;
     padding-bottom: 20px;
     width: 285px;
     flex-shrink: 0;
@@ -212,7 +214,7 @@
   }
 
   .tittle-timeline {
-    color: #0c4cc8;
+    color: $color-primary;
     font-size: 22px;
     text-align: center;
     font-weight: bold;
@@ -224,9 +226,9 @@
     height: 95%;
     background: linear-gradient(
       180deg,
-      #0ddcf9 0%,
-      #0c4cc8 52.08%,
-      #3776f2 100%
+      $color-gradient-cyan 0%,
+      $color-primary 52.08%,
+      $color-gradient-blue-mid 100%
     );
     transform: translateX(-50%);
   }
@@ -248,7 +250,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: #ededed;
+    background-color: $color-timeline-dot;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -273,7 +275,7 @@
   .event-date {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #0c4cc8;
+    color: $color-primary;
   }
 
   .event-category {

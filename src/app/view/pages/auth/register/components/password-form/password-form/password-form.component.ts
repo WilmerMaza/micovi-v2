@@ -16,7 +16,7 @@ import { RegisterService } from '../../../services/register.service';
 @Component({
   selector: 'app-password-form',
   templateUrl: './password-form.component.html',
-  styleUrls: ['./password-form.component.css'],
+  styleUrl: './password-form.component.scss',
   imports: [
     CommonModule,
     MatInputModule,

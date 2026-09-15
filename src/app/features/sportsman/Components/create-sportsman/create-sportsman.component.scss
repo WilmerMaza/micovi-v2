@@ -5,20 +5,10 @@
  * Física/personales en 3 columnas desktop. Sin max-width centrado.
  */
 
+@use 'styles/colors' as *;
+
 @use '@angular/material' as mat;
 
-$micovi-canvas: #f9fafb;
-$micovi-surface: #ffffff;
-$micovi-ink: #0f172a;
-$micovi-muted: #64748b;
-$micovi-border: #e2e8f0;
-$micovi-border-strong: #cbd5e1;
-$micovi-accent: #0c4cc8;
-$micovi-accent-soft: #e8f0fc;
-$micovi-accent-press: #0a3fa8;
-$micovi-over: #dc2626;
-$micovi-over-soft: #fee2e2;
-$micovi-elev-1: 0 1px 2px rgba(15, 23, 42, 0.06);
 $ease: cubic-bezier(0.2, 0, 0, 1);
 $dur: 180ms;
 $photo-width: 220px;
@@ -29,7 +19,7 @@ $radius-control: 6px;
   display: block;
   width: 100%;
   font-family: 'Inria Sans', sans-serif;
-  color: $micovi-ink;
+  color: $color-text-primary;
   box-sizing: border-box;
 
   /* Densidad -1 solo en este formulario; no altera el tema global. */
@@ -63,7 +53,7 @@ $radius-control: 6px;
   margin: 0;
   background: transparent;
   border: none;
-  border-bottom: 1px solid $micovi-border;
+  border-bottom: 1px solid $color-border;
   border-radius: 0;
   box-sizing: border-box;
   position: relative;
@@ -76,7 +66,7 @@ $radius-control: 6px;
     bottom: 20px;
     width: 3px;
     border-radius: 2px;
-    background: $micovi-accent;
+    background: $color-primary;
   }
 }
 
@@ -94,14 +84,14 @@ $radius-control: 6px;
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.25;
-  color: $micovi-ink;
+  color: $color-text-primary;
 }
 
 .registration-lead {
   margin: 0;
   max-width: 52ch;
   font-size: 0.9375rem;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   line-height: 1.45;
 }
 
@@ -111,10 +101,10 @@ $radius-control: 6px;
   height: 44px;
   padding: 6px;
   object-fit: contain;
-  background: $micovi-surface;
-  border: 1px solid $micovi-border;
+  background: $color-surface;
+  border: 1px solid $color-border;
   border-radius: $radius-panel;
-  box-shadow: $micovi-elev-1;
+  box-shadow: $color-shadow-elev-1;
   box-sizing: border-box;
 }
 
@@ -128,10 +118,10 @@ $radius-control: 6px;
 /* Paneles de sección: superficie elevada sobre canvas (no stack de cajas idénticas al header) */
 .registration-card {
   width: 100%;
-  background: $micovi-surface;
-  border: 1px solid $micovi-border-strong;
+  background: $color-surface;
+  border: 1px solid $color-border-strong;
   border-radius: $radius-panel;
-  box-shadow: $micovi-elev-1;
+  box-shadow: $color-shadow-elev-1;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -149,8 +139,8 @@ $radius-control: 6px;
     height: 28px;
     padding: 4px;
     font-size: 18px;
-    color: $micovi-accent;
-    background: $micovi-accent-soft;
+    color: $color-primary;
+    background: $color-primary-soft;
     border-radius: $radius-control;
     box-sizing: border-box;
   }
@@ -159,7 +149,7 @@ $radius-control: 6px;
     margin: 0;
     font-size: 1rem;
     font-weight: 700;
-    color: $micovi-ink;
+    color: $color-text-primary;
     letter-spacing: -0.01em;
   }
 }
@@ -223,9 +213,9 @@ $radius-control: 6px;
   justify-content: center;
   gap: 4px;
   padding: 12px;
-  border: 1px dashed $micovi-border-strong;
+  border: 1px dashed $color-border-strong;
   border-radius: $radius-panel;
-  background: $micovi-canvas;
+  background: $color-canvas;
   cursor: pointer;
   transition: background $dur $ease, border-color $dur $ease;
   box-sizing: border-box;
@@ -233,18 +223,18 @@ $radius-control: 6px;
 
   &:hover,
   &:focus-visible {
-    border-color: $micovi-accent;
-    background: $micovi-accent-soft;
+    border-color: $color-primary;
+    background: $color-primary-soft;
     outline: none;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 
   > mat-icon {
-    color: $micovi-accent;
+    color: $color-primary;
     font-size: 32px;
     width: 32px;
     height: 32px;
@@ -255,13 +245,13 @@ $radius-control: 6px;
   margin: 0;
   font-size: 0.9375rem;
   font-weight: 700;
-  color: $micovi-accent;
+  color: $color-primary;
 }
 
 .photo-hint {
   margin: 0;
   font-size: 0.75rem;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   line-height: 1.3;
 }
 
@@ -285,9 +275,9 @@ $radius-control: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid $micovi-border;
-  background: $micovi-over-soft;
-  color: $micovi-over;
+  border: 1px solid $color-border;
+  background: $color-danger-soft;
+  color: $color-danger;
   border-radius: 6px;
   cursor: pointer;
   transition: background $dur $ease, transform $dur $ease;
@@ -301,7 +291,7 @@ $radius-control: 6px;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 
@@ -321,7 +311,7 @@ $radius-control: 6px;
   width: 100%;
   margin-top: 4px;
   padding: 20px 0 8px; /* space-5 sobre el divisor de acciones */
-  border-top: 1px solid $micovi-border;
+  border-top: 1px solid $color-border;
 }
 
 .btn-back,
@@ -352,31 +342,31 @@ $radius-control: 6px;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 }
 
 .btn-back {
   min-width: 120px;
-  border: 1px solid $micovi-border-strong;
+  border: 1px solid $color-border-strong;
   background: transparent;
-  color: $micovi-accent;
+  color: $color-primary;
 
   &:hover {
-    background: $micovi-accent-soft;
-    border-color: $micovi-accent;
+    background: $color-primary-soft;
+    border-color: $color-primary;
   }
 }
 
 .btn-save {
   min-width: 180px;
   border: none;
-  background: $micovi-accent;
-  color: #fff;
+  background: $color-primary;
+  color: $color-text-on-dark;
 
   &:hover {
-    background: $micovi-accent-press;
+    background: $color-primary-pressed;
   }
 }
 
@@ -384,12 +374,12 @@ $radius-control: 6px;
 :host ::ng-deep {
   .mat-mdc-form-field {
     --mdc-outlined-text-field-container-shape: #{$radius-control};
-    --mdc-outlined-text-field-outline-color: #{$micovi-border};
-    --mdc-outlined-text-field-hover-outline-color: #{$micovi-border-strong};
-    --mdc-outlined-text-field-focus-outline-color: #{$micovi-accent};
-    --mdc-outlined-text-field-label-text-color: #{$micovi-muted};
-    --mdc-outlined-text-field-focus-label-text-color: #{$micovi-accent};
-    --mdc-outlined-text-field-input-text-color: #{$micovi-ink};
+    --mdc-outlined-text-field-outline-color: #{$color-border};
+    --mdc-outlined-text-field-hover-outline-color: #{$color-border-strong};
+    --mdc-outlined-text-field-focus-outline-color: #{$color-primary};
+    --mdc-outlined-text-field-label-text-color: #{$color-text-secondary};
+    --mdc-outlined-text-field-focus-label-text-color: #{$color-primary};
+    --mdc-outlined-text-field-input-text-color: #{$color-text-primary};
     font-family: 'Inria Sans', sans-serif;
   }
 

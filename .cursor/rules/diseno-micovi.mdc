@@ -21,7 +21,11 @@ Al crear, rediseñar o estilizar interfaz de producto, seguir este protocolo.
 - Angular Material + SCSS
 - Sin Tailwind, sin React, sin shadcn
 - Tipografía de continuidad: Inria Sans
-- Acento único: Azul Micovi `#0C4CC8`
+- Acento único: `$color-primary` (`#0C4CC8`) — ver regla **colores-scss**
+
+## Colores
+
+Seguir `.cursor/rules/colores-scss.mdc`: `@use 'styles/colors' as *;`, sin hex hardcoded repetidos.
 
 ## Límites
 

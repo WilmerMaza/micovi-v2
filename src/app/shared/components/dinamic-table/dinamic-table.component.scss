@@ -4,20 +4,22 @@
  * Scoped vía .dinamic-table-host (encapsulation: None por panelClass del menú).
  */
 
+@use 'styles/colors' as *;
+
 .dinamic-table-host {
-  --dt-surface: #ffffff;
-  --dt-canvas: #f9fafb;
-  --dt-ink: #0f172a;
-  --dt-muted: #64748b;
-  --dt-border: #e2e8f0;
-  --dt-accent: #0c4cc8;
-  --dt-accent-pressed: #0a3fa8;
-  --dt-accent-soft: #e8f0fc;
-  --dt-header-bg: #e8f0fc;
-  --dt-header-border: #cbd5e1;
-  --dt-scrollbar-track: #e2e8f0;
-  --dt-scrollbar-thumb: #94a3b8;
-  --dt-scrollbar-thumb-hover: #64748b;
+  --dt-surface: #{$color-surface};
+  --dt-canvas: #{$color-canvas};
+  --dt-ink: #{$color-text-primary};
+  --dt-muted: #{$color-text-secondary};
+  --dt-border: #{$color-border};
+  --dt-accent: #{$color-primary};
+  --dt-accent-pressed: #{$color-primary-pressed};
+  --dt-accent-soft: #{$color-primary-soft};
+  --dt-header-bg: #{$color-primary-soft};
+  --dt-header-border: #{$color-border-strong};
+  --dt-scrollbar-track: #{$color-border};
+  --dt-scrollbar-thumb: #{$color-scrollbar-thumb};
+  --dt-scrollbar-thumb-hover: #{$color-text-secondary};
   --dt-radius: 8px;
   --dt-space-2: 8px;
   --dt-space-3: 12px;
@@ -419,10 +421,10 @@
 
 /* Overlay del menú plano (fuera del host; panelClass) */
 .dinamic-table-menu-panel {
-  --dt-ink: #0f172a;
-  --dt-muted: #64748b;
-  --dt-accent-soft: #e8f0fc;
-  --dt-border: #e2e8f0;
+  --dt-ink: #{$color-text-primary};
+  --dt-muted: #{$color-text-secondary};
+  --dt-accent-soft: #{$color-primary-soft};
+  --dt-border: #{$color-border};
   --dt-font: 'Inria Sans', system-ui, sans-serif;
 
   min-width: 200px !important;
@@ -432,7 +434,7 @@
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12) !important;
   font-family: var(--dt-font);
   padding: 6px !important;
-  background: #ffffff !important;
+  background: $color-surface !important;
 
   .mat-mdc-menu-content {
     padding: 0 !important;
