@@ -16,17 +16,10 @@ import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
 import { DinamicTableComponent } from '../../../../shared/components/dinamic-table/dinamic-table.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CreateSportsmanComponent } from '../../Components/create-sportsman/create-sportsman.component';
 import { Sportsman } from '../../../../view/models/DataSportsman';
 import { columnsValue } from '../../../../view/models/columnDataSportman';
-import {
-  HistorialCategory,
-  visible,
-} from '../../../../view/models/HistorialCategoryModel';
-import {
-  jsonData,
-  SportsmanData,
-} from '../../../../view/models/dataFilterSportsman';
+import { HistorialCategory } from '../../../../view/models/HistorialCategoryModel';
+import { jsonData } from '../../../../view/models/dataFilterSportsman';
 import { gender } from '../../../../view/entrenador/Model/constantesEntrenador';
 import { categoryModel } from '../../../../view/models/categoryModel';
 import { MOCK_SPORTSMEN } from '../../mocks/sportsman.mock';
@@ -51,7 +44,6 @@ const USE_MOCK_SPORTSMAN = true;
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CreateSportsmanComponent,
   ],
 })
 export class SportsmanComponent implements OnInit {
@@ -62,11 +54,7 @@ export class SportsmanComponent implements OnInit {
   public dataSingle: Sportsman | undefined;
   public dataSingleAux: Sportsman | undefined;
   public isCheck = true;
-  public selectItemCount: number = 0;
   public historyCategory: HistorialCategory[] | undefined;
-  public dataCreateSportsman: SportsmanData[] = [{}] as SportsmanData[];
-  public showViewCreateSportsman: visible | undefined;
-  public fechaFormateada: string = '';
   public birdData: string = '';
   public generos: listInfo[] | undefined;
   public selectedImageURL: string = '';
@@ -105,8 +93,6 @@ export class SportsmanComponent implements OnInit {
         }));
       }
     });
-
-    this.dataCreateSportsman = this.jsonFilter;
   }
 
   getSportsman(): void {
@@ -254,9 +240,6 @@ export class SportsmanComponent implements OnInit {
 
   closeCard(): void {
     this.showSportsman = false;
-  }
-  getselectItemCount($event: number): void {
-    this.selectItemCount = $event;
   }
 
   getDataFilter(event: filterResult): void {

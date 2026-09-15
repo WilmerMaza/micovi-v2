@@ -267,9 +267,6 @@
         font-size: 48px !important;
         width: 48px !important;
         height: 48px !important;
-        font-size: 48px !important;
-        width: 48px !important;
-        height: 48px !important;
         color: #0c4cc8;
       }
     }
@@ -339,16 +336,13 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 16px auto;
+    background: #059669;
 
     mat-icon {
       font-size: 28px !important;
       width: 28px !important;
       height: 28px !important;
     }
-  }
-
-  .success-icon-box {
-    background: #059669;
   }
 
   .success-btn {
@@ -403,13 +397,6 @@
   }
 
   // ── Animaciones ────────────────────────────────────────────────
-  @keyframes ball-bounce {
-    0%, 100% { transform: translateY(0) scale(1, 1); }
-    40% { transform: translateY(-26px) scale(1, 1); }
-    50% { transform: translateY(-26px) scale(1.1, 0.9); }
-    60% { transform: translateY(-26px) scale(1, 1); }
-  }
-
   @keyframes loading-slide {
     0% { transform: translateX(-100%); width: 30%; }
     50% { width: 60%; }
