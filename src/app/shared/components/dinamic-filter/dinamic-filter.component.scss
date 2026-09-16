@@ -1,277 +1,355 @@
+/**
+ * Panel lateral de filtros: trigger, chips aplicados y drawer.
+ *
+ * Tokens MASTER; motion 150–250 ms; overlay sobre la topbar (z-index 1100).
+ */
 @use 'styles/colors' as *;
 
-#dinamic-filter {
-  padding: 12px 23px;
-  border-radius: 15px;
-  background-color: white;
-  //min-width: 1071px;
-  .container-everythings {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  // .txt-search {
-  //   width: 300px;
-  //   position: relative;
-  //   top: -8px;
-  //   left: -5px;
-  // }
-
-  // ::ng-deep.mat-mdc-form-field-subscript-wrapper {
-  //   display: none !important;
-  // }
-  // ::ng-deep .mat-mdc-text-field-wrapper {
-  //   height: 30px !important;
-  //   border-radius: 14px !important;
-  //   border-color: white !important;
-  //   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
-  // }
-  // ::ng-deep .matforms .mat-mdc-form-field-icon-suffix {
-  //   position: relative !important;
-  //   top: -10px !important;
-  // }
-
-  // ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
-  //   padding-top: 4px;
-  // }
-
-  // ::ng-deep.mdc-dialog__container {
-  //   border-radius: 12px;
-  //   overflow: hidden;
-  // }
-
-  // ::ng-deep.mdc-text-field--outlined .mdc-notched-outline{
-  //   display: none !important;
-  // }
-
-
-  .icon-filter:hover {
-    color: $color-primary !important;
-    cursor: pointer;
-  }
-
-  .content-filters {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
-
-  .icon-filtrar {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    margin-top: -15px;
-    .mat-icon {
-      transform: rotate(45deg);
-      height: 14px;
-    }
-    .togglefilter {
-      margin-left: 5px;
-      margin-top: 20px;
-      transform: rotate(225deg);
-    }
-  }
-
-  .content-filters:hover {
-    color: $color-primary;
-    transform: scale(1.1);
-    cursor: pointer;
-  }
-  .activeDownload {
-    font-weight: 500;
-    color: $color-primary;
-  }
-  .activeDownload:hover {
-    transform: scale(1.1);
-    cursor: pointer;
-  }
-  .enableDownload {
-    font-weight: 500;
-    color: rgba(128, 128, 128, 0.473);
-  }
-  .container-prueba {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: 99999;
-    left: 0;
-    top: 0;
-    background-color: rgba(70, 69, 69, 0.274);
-    animation: fadeIn 1s;
-
-    .prueba-absolute {
-      width: 320px;
-      height: calc(100vh - 65px);
-      position: absolute;
-      /* background-color: whitesmoke; */
-      background: #fbfbfb;
-      box-shadow: -4px 4px 5px 0px rgba(0, 0, 0, 0.25);
-      z-index: 99999;
-      right: -320px;
-      top: 65px;
-      .title-filter {
-        width: 100%;
-        height: 68px;
-        font-family: Inria Sans;
-        padding: 5px;
-        font-size: 18px;
-        font-weight: 700;
-        display: flex;
-        justify-content: center;
-        color: $color-primary;
-        span {
-          margin-top: 20px;
-        }
-      }
-      .line {
-        width: 80%;
-        margin-left: 10%;
-        border-top: 2px solid $color-primary;
-      }
-    }
-    .showfilter {
-      right: 0px;
-      animation: showfiltercontainer 0.5s;
-    }
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes showfiltercontainer {
-    from {
-      right: -300px;
-    }
-    to {
-      right: 0px;
-    }
-  }
-  .container-header-filter {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  .contenedorfiltro {
-    width: 100%;
-    height: 90%;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-  }
-
-  .container-filters {
-    height: 80%;
-    overflow: auto;
-    padding: 20px 10px;
-  }
-
-  .buttons-filter {
-    width: 100%;
-    height: 20%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    .buttons {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      button {
-        width: 156px;
-        background-color: $color-primary;
-        color: white;
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0);
-      }
-    }
-    .clearFilter {
-      color: $color-primary;
-      cursor: pointer;
-    }
-  }
-
-  .blockExitFilter {
-    width: 100%;
-    height: 100vh;
-  }
-
-  .Content-check {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .icon-clear-filter {
-    width: 100%;
-    display: flex;
-    justify-content: right;
-    svg {
-      color: $color-primary;
-      cursor: pointer;
-    }
-  }
-
-  // .icon-filter {
-  //   margin: -35px 5px 0 2px;
-  //   padding-bottom: 2px !important;
-  // }
-
-}
+$ease: cubic-bezier(0.2, 0, 0, 1);
+$nav-offset: 56px;
 
 :host {
-  .btnAñadir {
-    border-radius: 15px;
-    background: $color-primary;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0);
-    color: white;
+  display: contents;
+}
+
+.dinamic-filter {
+  display: contents;
+}
+
+.btnFiltrar {
+  grid-area: filter;
+  position: relative;
+  justify-self: start;
+  box-shadow: none !important;
+  background-color: $color-mist !important;
+  color: $color-text-secondary !important;
+  transition: transform 150ms $ease, background-color 160ms $ease, color 160ms $ease;
+
+  &:hover {
+    color: $color-primary !important;
   }
-  .btnFiltrar {
-    color: $color-primary;
-    font-family: Inria Sans;
-    font-size: 18px;
-    font-style: normal;
-    line-height: normal;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  &--active {
+    background-color: $color-primary-soft !important;
+    color: $color-primary !important;
   }
 }
 
-// :host {
-//   .mat-mdc-slide-toggle.mat-accent {
-//     --mdc-switch-selected-focus-state-layer-color: $color-primary;
-//     --mdc-switch-selected-handle-color: $color-primary;
-//     --mdc-switch-selected-hover-state-layer-color: $color-primary;
-//     --mdc-switch-selected-pressed-state-layer-color: $color-primary;
-//     --mdc-switch-selected-focus-handle-color: $color-primary;
-//     --mdc-switch-selected-hover-handle-color: $color-primary;
-//     --mdc-switch-selected-pressed-handle-color: $color-primary;
-//     --mdc-switch-selected-focus-track-color: $color-primary;
-//     --mdc-switch-selected-hover-track-color: $color-primary;
-//     --mdc-switch-selected-pressed-track-color: $color-primary;
-//     --mdc-switch-selected-track-color: $color-primary;
-//   }
-//   --mdc-checkbox-selected-focus-icon-color: $color-primary;
-//   --mdc-checkbox-selected-hover-icon-color: $color-primary;
-//   --mdc-checkbox-selected-icon-color: $color-primary;
-//   --mdc-checkbox-selected-pressed-icon-color: $color-primary;
-//   --mdc-checkbox-selected-focus-state-layer-color: $color-primary;
-//   --mdc-checkbox-selected-hover-state-layer-color: $color-primary;
-//   --mdc-checkbox-selected-pressed-state-layer-color: $color-primary;
+.dinamic-filter__count {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: $color-primary;
+  color: $color-text-on-dark;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+  text-align: center;
+}
 
-//   .mat-accordion .mat-expansion-panel:not(.mat-expanded),
-//   .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
-//     border-radius: 6px;
-//     margin: 2px;
-//   }
-// }
+.dinamic-filter__chips {
+  grid-area: chips;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 36px;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 140px;
+  min-height: 28px;
+  padding: 2px 4px 2px 8px;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+  background: $color-mist;
+  color: $color-text-primary;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.filter-chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filter-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: $color-text-secondary;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: $color-primary;
+  }
+}
+
+.filter-chip--more {
+  padding: 4px 8px;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: $color-primary;
+  background: $color-primary-soft;
+  border-color: $color-primary-soft;
+}
+
+.dinamic-filter-overlay {
+  grid-area: search;
+  position: relative;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  z-index: 1100;
+}
+
+.dinamic-filter-overlay__backdrop {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: $color-scrim;
+  cursor: pointer;
+  animation: filter-fade 200ms $ease;
+}
+
+.dinamic-filter-panel {
+  position: fixed;
+  top: $nav-offset;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  height: calc(100dvh - #{$nav-offset});
+  overflow: hidden;
+  background: $color-surface;
+  box-shadow: $color-shadow-elev-3;
+  transform: translateX(0);
+  animation: filter-slide 200ms $ease;
+}
+
+.dinamic-filter-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  gap: 8px;
+  min-height: 56px;
+  padding: 4px 8px 4px 16px;
+}
+
+.dinamic-filter-panel__title {
+  margin: 0;
+  color: $color-primary;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.dinamic-filter-panel__rule {
+  width: 80%;
+  margin: 0 auto;
+  border-top: 2px solid $color-primary;
+}
+
+.dinamic-filter-panel__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 8px 16px 16px;
+}
+
+.filter-group {
+  padding: 12px 0;
+  border-bottom: 1px solid $color-border;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &--active .filter-group__title {
+    color: $color-primary;
+  }
+}
+
+.filter-group__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.filter-group__title {
+  margin: 0;
+  color: $color-text-primary;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.filter-group__clear {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: $color-primary;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+.filter-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.filter-group__check {
+  --mdc-checkbox-selected-icon-color: #{$color-primary};
+  --mdc-checkbox-selected-hover-icon-color: #{$color-primary};
+  --mdc-checkbox-selected-focus-icon-color: #{$color-primary};
+  --mdc-checkbox-selected-pressed-icon-color: #{$color-primary};
+  --mdc-checkbox-selected-focus-state-layer-color: #{$color-primary};
+  --mdc-checkbox-selected-hover-state-layer-color: #{$color-primary};
+  --mat-checkbox-label-text-color: #{$color-text-primary};
+  --mat-checkbox-label-text-size: 0.9375rem;
+  --mat-checkbox-label-text-font: 'Inria Sans', sans-serif;
+}
+
+.filter-group__input {
+  width: 100%;
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+.dinamic-filter-panel__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 8px;
+  padding: 12px 16px 20px;
+  background: $color-surface;
+  border-top: 1px solid $color-border;
+}
+
+.dinamic-filter-panel__apply {
+  min-width: 156px;
+  --mdc-filled-button-container-color: #{$color-primary};
+  --mdc-filled-button-label-text-color: #{$color-text-on-dark};
+  --mdc-filled-button-disabled-container-color: #{$color-mist};
+  --mdc-filled-button-disabled-label-text-color: #{$color-text-secondary};
+  background-color: $color-primary;
+  color: $color-text-on-dark;
+  box-shadow: none;
+
+  &:not(:disabled):active {
+    transform: translateY(1px);
+  }
+}
+
+.dinamic-filter-panel__restore {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  padding: 4px 8px;
+  background: transparent;
+  color: $color-primary;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.875rem;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:disabled {
+    color: $color-text-secondary;
+    cursor: default;
+    opacity: 0.4;
+  }
+}
+
+@keyframes filter-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes filter-slide {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .dinamic-filter-panel {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btnFiltrar,
+  .dinamic-filter-overlay__backdrop,
+  .dinamic-filter-panel {
+    animation: none;
+    transition: none;
+  }
+}

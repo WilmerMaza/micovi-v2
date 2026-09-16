@@ -1,0 +1,151 @@
+/**
+ * Estilos de la barra de listado (sin el panel de filtros).
+ *
+ * El host usa `display: contents` para que búsqueda y acciones
+ * participen en la grid de la página (consulta izq. / acciones der.).
+ * El campo de búsqueda usa densidad Material (-2) para alinearse al mini FAB.
+ */
+@use 'styles/colors' as *;
+@use '@angular/material' as mat;
+
+$ease: cubic-bezier(0.2, 0, 0, 1);
+
+:host {
+  display: contents;
+}
+
+.dinamic-toolbar {
+  display: contents;
+}
+
+.dinamic-toolbar__assign {
+  grid-area: search;
+}
+
+.dinamic-toolbar__search {
+  grid-area: search;
+  min-width: 0;
+  width: 100%;
+  max-width: 280px;
+  @include mat.form-field-density(-1);
+
+  mat-form-field {
+    width: 100%;
+    font-family: 'Inria Sans', sans-serif;
+    --mat-form-field-outlined-outline-color: #{$color-border};
+    --mat-form-field-outlined-hover-outline-color: #{$color-border-strong};
+    --mat-form-field-outlined-focus-outline-color: #{$color-primary};
+    --mat-form-field-outlined-caret-color: #{$color-primary};
+    --mat-form-field-outlined-label-text-color: #{$color-text-secondary};
+    --mat-form-field-outlined-focus-label-text-color: #{$color-primary};
+    --mat-form-field-outlined-input-text-color: #{$color-text-primary};
+    --mat-form-field-outlined-container-shape: 8px;
+  }
+
+  mat-icon[matPrefix] {
+    color: $color-text-secondary;
+    margin-right: 4px;
+  }
+
+  .dinamic-toolbar__icon-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: $color-text-secondary;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}
+
+.dinamic-toolbar__fab {
+  box-shadow: none !important;
+  background-color: $color-mist !important;
+  color: $color-text-secondary !important;
+  transition: transform 150ms $ease, background-color 160ms $ease, color 160ms $ease;
+
+  &:hover {
+    color: $color-primary !important;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  &--on {
+    background-color: $color-primary-soft !important;
+    color: $color-primary !important;
+  }
+}
+
+.dinamic-toolbar__actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.dinamic-toolbar__selection {
+  margin: 0;
+  color: $color-text-secondary;
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.dinamic-toolbar__text-action {
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: $color-text-secondary;
+  min-height: 36px;
+  transition: color 160ms $ease, transform 150ms $ease;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &--on {
+    color: $color-primary;
+  }
+}
+
+.btnAñadir {
+  border-radius: 8px;
+  background: $color-primary;
+  box-shadow: none;
+  color: $color-text-on-dark;
+  min-height: 36px;
+  padding: 0 16px;
+  transition: background-color 150ms $ease, transform 150ms $ease;
+
+  &:hover {
+    background: $color-primary-pressed;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dinamic-toolbar__icon-btn,
+  .dinamic-toolbar__text-action,
+  .dinamic-toolbar__fab,
+  .btnAñadir {
+    transition: none;
+  }
+}

@@ -1,37 +1,36 @@
+/**
+ * Panel lateral de filtros de listado.
+ *
+ * Se abre solo con el botón «Filtrar». Distingue borrador (el panel) de
+ * filtros aplicados (contador, chips y petición HTTP). No dispara consultas
+ * al marcar opciones: una petición al pulsar Aplicar, al restaurar o al
+ * quitar un chip.
+ *
+ * Usado junto a `dinamic-toolbar` (búsqueda y acciones de tabla).
+ */
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
+  HostListener,
   Input,
-  NgZone,
   Output,
-  ViewChild,
+  signal,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-} from '@angular/material/expansion';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { A11yModule } from '@angular/cdk/a11y';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   ControlItem,
   DynamicObject,
+  FilterChip,
   filterResult,
   JsonDataItem,
 } from '../../model/filterModel';
-import { ActionResponse } from '../../model/Response/DefaultResponse';
-import { dataToPass, DinamicService } from '../../services/dinamic.service';
-import { regExps } from '../../../utils/Validators';
 import { MATERIAL_IMPORTS } from '../../modules/material-imports';
-import { CommonModule } from '@angular/common';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
+const MAX_VISIBLE_CHIPS = 3;
 
 @Component({
   selector: 'app-dinamic-filter',
@@ -40,179 +39,225 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   standalone: true,
   imports: [
     ...MATERIAL_IMPORTS,
-    ReactiveFormsModule,
     CommonModule,
     FormsModule,
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatSlideToggleModule,
+    A11yModule,
+    MatButtonModule,
+    MatCheckboxModule,
   ],
 })
-export class DinamicFilterComponent implements AfterViewInit {
-  public textForm: FormGroup;
-  public showFilter: boolean = false;
-  public jsonData: JsonDataItem[] = [];
-  public clearInput: boolean = false;
-  public selectItemCount: number = 0;
-  public viewBtonFilter: boolean = true;
-  public nameAdd: string = '';
-  @ViewChild(MatAccordion)
-  acc!: MatAccordion;
-  @ViewChild(MatExpansionPanel) pannel?: MatExpansionPanel;
+export class DinamicFilterComponent {
+  jsonData: JsonDataItem[] = [];
+  readonly panelOpen = signal(false);
+  readonly appliedCount = signal(0);
+  readonly appliedChips = signal<FilterChip[]>([]);
+  readonly isDirty = signal(false);
 
-  @Input('isDownload') isDownload = false;
-  @Input('nameAdd') set nameAddDinamic(value: string) {
-    this.zone.runOutsideAngular(() => {
-      this.zone.run(() => {
-        this.nameAdd = value;
-      });
-    });
-  }
-  @Input('isButtonEjercicio') isButtonEjercicio = false;
+  private appliedFilterData: DynamicObject<any> = {};
 
   @Input('dataFilter') set setDataFilter(value: JsonDataItem[]) {
-    this.jsonData = value;
+    this.jsonData = value ?? [];
+    if (!Object.keys(this.appliedFilterData).length) {
+      this.appliedFilterData = this.buildFilterData();
+    }
+    this.syncDirty();
   }
-  @Input('showDownload') showDownload = true;
-  @Input('showCombinate') showCombinate = false;
-  @Input('showSelection') showSelection = true;
-  @Input('showButtonAdd') showButtonAdd = true;
-  @Input('showLateralPanel') showLateralPanel = true;
 
   @Output() filterResult = new EventEmitter<filterResult>();
-  @Output() actionFilter = new EventEmitter<ActionResponse>();
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private service$: DinamicService,
-    private cdr: ChangeDetectorRef,
-    private zone: NgZone
-  ) {
-    this.textForm = this.formBuilder.group({
-      textInput: ['', Validators.pattern(regExps['special'])],
-    });
+  get filterTriggerLabel(): string {
+    const n = this.appliedCount();
+    if (n === 1) {
+      return 'Filtrar, 1 aplicado';
+    }
+    return n > 1 ? `Filtrar, ${n} aplicados` : 'Filtrar';
   }
 
-  ngAfterViewInit(): void {
-    this.zone.runOutsideAngular(() => {
-      this.service$.selectNumber$.subscribe((data) => {
-        this.zone.run(() => {
-          this.selectItemCount = data;
-          if (this.selectItemCount > 0 && this.isButtonEjercicio === true) {
-            this.viewBtonFilter = false;
-            this.nameAdd = 'indicador';
-          } else {
-            this.viewBtonFilter = true;
-            this.nameAdd =
-              this.isButtonEjercicio === true ? 'ejercicio' : this.nameAdd;
-          }
-
-          this.cdr.detectChanges();
-        });
-      });
-    });
+  get visibleChips(): FilterChip[] {
+    return this.appliedChips().slice(0, MAX_VISIBLE_CHIPS);
   }
 
-  onSubmit(): void {
-    if (this.textForm.valid) {
-      this.sendDataFilter();
-      this.textForm.reset();
+  get hiddenChipCount(): number {
+    return Math.max(0, this.appliedChips().length - MAX_VISIBLE_CHIPS);
+  }
+
+  get canRestore(): boolean {
+    return (
+      this.hasValues(this.buildFilterData()) ||
+      this.hasValues(this.appliedFilterData)
+    );
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.panelOpen()) {
+      this.closePanel();
     }
   }
 
-  otherOnSubmit(): void {
-    if (this.textForm.valid) {
-      this.sendDataFilter();
-      this.clearInput = true;
-    }
+  openPanel(): void {
+    this.syncDirty();
+    this.panelOpen.set(true);
   }
 
-  clearFilterAction(): void {
-    this.textForm.reset();
-    this.actionClick('clearFilter');
-    this.clearInput = false;
+  closePanel(): void {
+    this.panelOpen.set(false);
   }
 
-  showFilterToggle(): void {
-    this.showFilter = !this.showFilter;
-  }
-
-  enableSlideToggle(event: any, item: JsonDataItem): void {
-    event.stopPropagation();
-    item.isOpen = item.disable;
-  }
-
-  sendDataFilter(): void {
-    const {
-      value: { textInput },
-    } = this.textForm;
-    const dataResponseFilter: DynamicObject<any> = {};
-    const data = textInput;
-    dataResponseFilter['Name'] = data;
-    this.jsonData.forEach((data: JsonDataItem) => {
-      const arrayFilters: string[] = [];
-
-      if (data.typeFilter === 'check') {
-        const isChecked = data.control.filter(
-          (a: ControlItem) => a.code
-        ).length;
-
-        data.control.forEach((control: ControlItem) => {
-          if (control.code || isChecked == 0 || !data.disable) {
-            arrayFilters.push(control.value);
-          }
-        });
-      }
-
-      dataResponseFilter[data.property] =
-        data.typeFilter === 'input' ? data.control[0].value : arrayFilters;
-    });
-
-    const dataFinal: filterResult = {
-      jsonData: this.jsonData,
-      filterData: dataResponseFilter,
-    };
-    this.filterResult.emit(dataFinal);
-    this.showFilter = false;
-  }
-
-  clearItemFilter(item: JsonDataItem): void {
-    item.control.forEach((elem: ControlItem) => {
-      if (elem.code) elem.code = '';
-      if (elem.value) elem.value = '';
-    });
-  }
-
-  clearAllFilters(): void {
-    this.jsonData.forEach((data: JsonDataItem) => {
-      if (data.typeFilter === 'check') {
-        data.control.forEach((elem: ControlItem) => {
-          if (elem.code) elem.code = '';
-        });
-      }
-      if (data.typeFilter === 'input') {
-        data.control[0].value = '';
-      }
-    });
-  }
-
-  actionClick(data: string): void {
-    if (
-      data !== 'download' &&
-      data !== 'combinate' &&
-      this.nameAdd !== 'indicador'
-    ) {
-      let dataActionResponse: ActionResponse = { action: data, data };
-      this.actionFilter.emit(dataActionResponse);
+  togglePanel(): void {
+    if (this.panelOpen()) {
+      this.closePanel();
       return;
     }
-
-    if (data === 'add') data = `${data} ${this.nameAdd}`;
-    this.sendDataToTable({ eventName: data, isEspecial: true });
+    this.openPanel();
   }
 
-  sendDataToTable(data: dataToPass) {
-    this.service$.setData(data);
+  onDraftChange(): void {
+    this.syncDirty();
+  }
+
+  applyFilters(): void {
+    if (!this.isDirty()) {
+      this.closePanel();
+      return;
+    }
+    this.commitAndEmit(this.buildFilterData());
+    this.closePanel();
+  }
+
+  restoreAll(): void {
+    this.clearDraft();
+    this.commitAndEmit(this.buildFilterData());
+    this.closePanel();
+  }
+
+  clearItemFilter(item: JsonDataItem, event?: Event): void {
+    event?.stopPropagation();
+    if (item.typeFilter === 'check') {
+      item.control.forEach((elem) => {
+        elem.checked = false;
+      });
+    } else if (item.control[0]) {
+      item.control[0].value = '';
+    }
+    this.syncDirty();
+  }
+
+  removeChip(chip: FilterChip): void {
+    const item = this.jsonData.find((row) => row.property === chip.property);
+    if (!item) {
+      return;
+    }
+    if (item.typeFilter === 'check') {
+      const control = item.control.find((row) => row.value === chip.value);
+      if (control) {
+        control.checked = false;
+      }
+    } else if (item.control[0]) {
+      item.control[0].value = '';
+    }
+    this.commitAndEmit(this.buildFilterData());
+  }
+
+  inputPlaceholder(item: JsonDataItem): string {
+    return item.title || 'Valor';
+  }
+
+  itemHasValue(item: JsonDataItem): boolean {
+    if (item.typeFilter === 'check') {
+      return item.control.some((row) => this.isChecked(row));
+    }
+    return String(item.control[0]?.value ?? '').trim().length > 0;
+  }
+
+  private isChecked(control: ControlItem): boolean {
+    return control.checked === true;
+  }
+
+  private buildFilterData(): DynamicObject<any> {
+    const data: DynamicObject<any> = {};
+    this.jsonData.forEach((item) => {
+      if (item.typeFilter === 'check') {
+        data[item.property] = item.control
+          .filter((row) => this.isChecked(row))
+          .map((row) => row.value);
+      } else {
+        data[item.property] = String(item.control[0]?.value ?? '').trim();
+      }
+    });
+    return data;
+  }
+
+  private buildChips(data: DynamicObject<any>): FilterChip[] {
+    const chips: FilterChip[] = [];
+    this.jsonData.forEach((item) => {
+      const raw = data[item.property];
+      if (item.typeFilter === 'check' && Array.isArray(raw)) {
+        raw.forEach((value: string) => {
+          const option = item.control.find((row) => row.value === value);
+          chips.push({
+            property: item.property,
+            value,
+            label: option?.name ?? value,
+          });
+        });
+        return;
+      }
+      const text = String(raw ?? '').trim();
+      if (text) {
+        chips.push({
+          property: item.property,
+          value: text,
+          label: `${item.title}: ${text}`,
+        });
+      }
+    });
+    return chips;
+  }
+
+  private countApplied(data: DynamicObject<any>): number {
+    return this.jsonData.filter((item) => {
+      const raw = data[item.property];
+      if (Array.isArray(raw)) {
+        return raw.length > 0;
+      }
+      return String(raw ?? '').trim().length > 0;
+    }).length;
+  }
+
+  private hasValues(data: DynamicObject<any>): boolean {
+    return this.countApplied(data) > 0;
+  }
+
+  private serialize(data: DynamicObject<any>): string {
+    const keys = Object.keys(data).sort();
+    const normalized: DynamicObject<any> = {};
+    keys.forEach((key) => {
+      const value = data[key];
+      normalized[key] = Array.isArray(value) ? [...value].sort() : value;
+    });
+    return JSON.stringify(normalized);
+  }
+
+  private syncDirty(): void {
+    this.isDirty.set(
+      this.serialize(this.buildFilterData()) !==
+        this.serialize(this.appliedFilterData)
+    );
+  }
+
+  private clearDraft(): void {
+    this.jsonData.forEach((item) => this.clearItemFilter(item));
+  }
+
+  private commitAndEmit(filterData: DynamicObject<any>): void {
+    this.appliedFilterData = filterData;
+    this.appliedCount.set(this.countApplied(filterData));
+    this.appliedChips.set(this.buildChips(filterData));
+    this.syncDirty();
+    this.filterResult.emit({
+      jsonData: this.jsonData,
+      filterData,
+    });
   }
 }

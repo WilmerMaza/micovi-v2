@@ -1,0 +1,89 @@
+<div class="dinamic-toolbar">
+  @if (!viewSearch) {
+    <div class="dinamic-toolbar__assign">
+      <button
+        mat-raised-button
+        type="button"
+        class="btnAñadir"
+        (click)="actionClick('asignar')"
+      >
+        Asignar Deportista
+      </button>
+    </div>
+  } @else {
+    <form class="dinamic-toolbar__search" [formGroup]="textForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" floatLabel="always">
+        <mat-label>{{ searchAriaLabel }}</mat-label>
+        <mat-icon matPrefix class="material-icons-outlined" aria-hidden="true">search</mat-icon>
+        <input
+          matInput
+          formControlName="textInput"
+          [placeholder]="searchPlaceholder"
+          [attr.aria-label]="searchAriaLabel"
+        />
+        @if (searchValue) {
+          <button
+            matIconButton
+            type="button"
+            matSuffix
+            class="dinamic-toolbar__icon-btn"
+            aria-label="Limpiar búsqueda"
+            (click)="clearSearch()"
+          >
+            <mat-icon class="material-icons-outlined" aria-hidden="true">close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </form>
+  }
+
+  <div class="dinamic-toolbar__actions">
+    @if (showSelection && selectItemCount > 0) {
+      <p class="dinamic-toolbar__selection" aria-live="polite">
+        {{ selectItemCount }}
+        {{ selectItemCount === 1 ? 'Seleccionado' : 'Seleccionados' }}
+      </p>
+    }
+
+    @if (showDownload) {
+      <button
+        matMiniFab
+        type="button"
+        class="dinamic-toolbar__fab"
+        [class.dinamic-toolbar__fab--on]="isDownload"
+        matTooltip="Descargar"
+        aria-label="Descargar"
+        (click)="actionClick('download')"
+      >
+        <mat-icon class="material-icons-outlined" aria-hidden="true">download</mat-icon>
+      </button>
+    }
+
+    @if (showCombinate) {
+      <button
+        mat-button
+        type="button"
+        class="dinamic-toolbar__text-action"
+        [class.dinamic-toolbar__text-action--on]="isDownload"
+        (click)="actionClick('combinate')"
+      >
+        Combinar
+      </button>
+    }
+
+    @if (showButtonAdd) {
+      <button
+        mat-raised-button
+        type="button"
+        class="btnAñadir"
+        (click)="actionClick('add')"
+      >
+        @if (viewSearch) {
+          + Añadir {{ nameAdd }}
+        } @else {
+          + Añadir indicador
+        }
+      </button>
+    }
+  </div>
+</div>

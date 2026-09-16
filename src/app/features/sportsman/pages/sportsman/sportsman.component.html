@@ -1,14 +1,35 @@
 <div id="sportsman">
   <!-- aqui inicia la visualizacion individual -->
   <div class="conten-table">
+    <div class="sportsman-head">
+      <button
+        matFab
+        extended
+        color="primary"
+        type="button"
+        class="sportsman-add"
+        (click)="openCreateSportsman()"
+      >
+        <mat-icon aria-hidden="true">add</mat-icon>
+        Añadir deportista
+      </button>
+    </div>
     <div class="containerFilter">
-      <app-dinamic-filter
-        [isDownload]="isDownload"
-        [nameAdd]="nameAdd"
-        [dataFilter]="jsonFilter"
-        (filterResult)="getDataFilter($event)"
-        (actionFilter)="getActionEvent($event)"
-      />
+      <div class="containerFilter__bar">
+        <app-dinamic-toolbar
+          [isDownload]="isDownload"
+          [showButtonAdd]="false"
+          [searchPlaceholder]="'Nombre o identificación'"
+          [searchAriaLabel]="'Buscar'"
+          (actionToolbar)="getActionEvent($event)"
+          (searchSubmit)="onSearch($event)"
+          (searchClear)="onSearchClear()"
+        />
+        <app-dinamic-filter
+          [dataFilter]="jsonFilter"
+          (filterResult)="getDataFilter($event)"
+        />
+      </div>
     </div>
 
     @if (isListLoading() && dataSportman.length === 0) {
@@ -159,6 +180,7 @@
             [isCheckBox]="isCheck"
             [columns]="data"
             [dataSource]="dataSportman"
+            [emptyMessage]="emptyTableMessage()"
             (actionEvent)="getActionEvent($event)"
           >
           </app-dinamic-table>
