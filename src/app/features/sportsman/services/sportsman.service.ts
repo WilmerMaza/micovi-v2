@@ -27,24 +27,24 @@ export class SportsmanService {
 
   getSportsman(): Observable<Sportsman[]> {
     const endpoint = '/sportMan/getAll';
-    return this.micovid$.get(endpoint);
+    return this.micovid$.get(endpoint, undefined, { skipLoading: true });
   }
 
   getSFilterSportsman(filterData: DynamicObject<any>): Observable<Sportsman[]> {
     const endpoint = '/sportMan/get';
-    return this.micovid$.post(endpoint, filterData);
+    return this.micovid$.post(endpoint, filterData, { skipLoading: true });
   }
 
   getAllCategory(): Observable<categoryModel[]> {
     const endpoint = '/Categoria/getAll';
-    return this.micovid$.get(endpoint);
+    return this.micovid$.get(endpoint, undefined, { skipLoading: true });
   }
 
   getHistoryCategory(idObject: {
     id: string;
   }): Observable<HistorialCategory[]> {
     const endpoint = '/sportMan/getHistorialCategory';
-    return this.micovid$.post(endpoint, idObject);
+    return this.micovid$.post(endpoint, idObject, { skipLoading: true });
   }
 
   createSportsman(data: Sportsman): Observable<SuccessResponse> {

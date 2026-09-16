@@ -6,15 +6,8 @@
  * Ancho lo manda el .sidebar-wrapper del layout (250 / 80); :host llena ese wrapper.
  */
 
-$micovi-ink: #0f172a;
-$micovi-accent: #0c4cc8;
-$micovi-accent-soft: rgba(12, 76, 200, 0.26);
-$micovi-accent-soft-hover: rgba(12, 76, 200, 0.34);
-$micovi-on-dark: #ffffff;
-$micovi-muted-on-dark: rgba(255, 255, 255, 0.7);
-$micovi-meta-on-dark: rgba(255, 255, 255, 0.45);
-$micovi-hover: rgba(255, 255, 255, 0.07);
-$micovi-border-on-dark: rgba(226, 232, 240, 0.12);
+@use 'styles/colors' as *;
+
 $ease: cubic-bezier(0.2, 0, 0, 1);
 $dur: 180ms;
 $dur-press: 150ms;
@@ -30,12 +23,12 @@ $dur-fade: 120ms;
 .sidebar-container {
   height: 100%;
   width: 100%;
-  background: $micovi-ink;
+  background: $color-text-primary;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  border-right: 1px solid $micovi-border-on-dark;
+  border-right: 1px solid $color-border-on-dark;
   font-family: 'Inria Sans', sans-serif;
 }
 
@@ -60,7 +53,7 @@ $dur-fade: 120ms;
   justify-content: flex-start;
   gap: 10px;
   padding: 14px 16px;
-  border-bottom: 1px solid $micovi-border-on-dark;
+  border-bottom: 1px solid $color-border-on-dark;
   min-height: 64px;
   height: 64px;
   box-sizing: border-box;
@@ -88,7 +81,7 @@ $dur-fade: 120ms;
   }
 
   .brand-name {
-    color: $micovi-on-dark;
+    color: $color-text-on-dark;
     font-size: 1.125rem;
     font-weight: 700;
     letter-spacing: -0.01em;
@@ -119,7 +112,7 @@ $dur-fade: 120ms;
   font-size: 0.75rem; /* 12px meta */
   font-weight: 400;
   letter-spacing: 0.02em;
-  color: $micovi-meta-on-dark;
+  color: $color-text-meta-on-dark;
   line-height: 1.2;
   user-select: none;
 }
@@ -128,10 +121,33 @@ $dur-fade: 120ms;
   width: 100%;
 }
 
+.nav-skeleton {
+  min-height: 44px;
+  width: 100%;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  animation: nav-skeleton-pulse 1.4s $ease infinite;
+
+  &.collapsed {
+    width: 44px;
+    margin: 0 auto;
+  }
+}
+
+@keyframes nav-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
 .nav-button {
   position: relative;
   background: transparent;
-  color: $micovi-muted-on-dark;
+  color: $color-text-secondary-on-dark;
   border: none;
   border-radius: 6px;
   padding: 10px 12px 10px 14px;
@@ -170,8 +186,8 @@ $dur-fade: 120ms;
 
   /* Hover mesa fría — solo inactivos */
   &:hover:not(.active) {
-    background: $micovi-hover;
-    color: $micovi-on-dark;
+    background: $color-hover-on-dark;
+    color: $color-text-on-dark;
   }
 
   /* Press físico */
@@ -180,33 +196,33 @@ $dur-fade: 120ms;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 
   /* Activo: fill suave + barra blanca (no pastilla full-bleed) */
   &.active {
-    background: $micovi-accent-soft;
-    color: $micovi-on-dark;
+    background: $color-primary-overlay-dark;
+    color: $color-text-on-dark;
     font-weight: 700;
 
     &::before {
-      background: $micovi-on-dark;
+      background: $color-text-on-dark;
       opacity: 1;
     }
 
     &:hover {
-      background: $micovi-accent-soft-hover;
-      color: $micovi-on-dark;
+      background: $color-primary-overlay-dark-hover;
+      color: $color-text-on-dark;
     }
 
     mat-icon {
-      color: $micovi-on-dark;
+      color: $color-text-on-dark;
     }
 
     .badge {
       background-color: rgba(255, 255, 255, 0.2);
-      color: $micovi-on-dark;
+      color: $color-text-on-dark;
     }
   }
 
@@ -228,8 +244,8 @@ $dur-fade: 120ms;
   }
 
   .badge {
-    background-color: $micovi-accent-soft;
-    color: $micovi-on-dark;
+    background-color: $color-primary-overlay-dark;
+    color: $color-text-on-dark;
     font-size: 0.6875rem;
     padding: 2px 6px;
     border-radius: 4px;
@@ -243,13 +259,13 @@ $dur-fade: 120ms;
     }
 
     &.badge-warning {
-      background-color: #b45309;
-      color: #ffffff;
+      background-color: $color-warning;
+      color: $color-text-on-dark;
     }
 
     &.badge-success {
-      background-color: #059669;
-      color: #ffffff;
+      background-color: $color-success;
+      color: $color-text-on-dark;
     }
   }
 
@@ -277,7 +293,7 @@ $dur-fade: 120ms;
   align-items: center;
   gap: 10px;
   padding: 12px 14px 16px;
-  border-top: 1px solid $micovi-border-on-dark;
+  border-top: 1px solid $color-border-on-dark;
   flex-shrink: 0;
   min-height: 64px;
 
@@ -291,7 +307,7 @@ $dur-fade: 120ms;
     height: 40px;
     border-radius: 8px; /* squircle */
     object-fit: cover;
-    border: 1px solid $micovi-border-on-dark;
+    border: 1px solid $color-border-on-dark;
     flex-shrink: 0;
   }
 
@@ -303,7 +319,7 @@ $dur-fade: 120ms;
   }
 
   .user-name {
-    color: $micovi-on-dark;
+    color: $color-text-on-dark;
     font-size: 0.8125rem; /* 13px label */
     font-weight: 700;
     letter-spacing: -0.01em;
@@ -314,7 +330,7 @@ $dur-fade: 120ms;
   }
 
   .user-role {
-    color: $micovi-meta-on-dark;
+    color: $color-text-meta-on-dark;
     font-size: 0.75rem; /* 12px meta */
     font-weight: 400;
     line-height: 1.3;
@@ -397,5 +413,10 @@ $dur-fade: 120ms;
 
   .nav-fade {
     animation: none;
+  }
+
+  .nav-skeleton {
+    animation: none;
+    opacity: 0.65;
   }
 }

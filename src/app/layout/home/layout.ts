@@ -1,13 +1,39 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnDestroy, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  HostListener,
+  inject,
+  OnDestroy,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs';
+import {
+  ActivatedRoute,
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
+import { isTableOutletRoute } from '../../core/loading/list-route-patterns';
+import { AuthService } from '../../core/services/auth';
 import { Spinner } from '../../shared/components/spinner/spinner';
 import { Nav } from '../nav/nav';
+import {
+  OutletPlaceholder,
+  OutletPlaceholderVariant,
+} from './components/outlet-placeholder/outlet-placeholder';
 import { Sidenav } from './components/sidenav/sidenav';
+
+const PLACEHOLDER_SHOW_DELAY_MS = 300;
 
 @Component({
   selector: 'app-layout',
@@ -22,25 +48,95 @@ import { Sidenav } from './components/sidenav/sidenav';
     MatSidenavModule,
     Sidenav,
     Nav,
-    Spinner
+    Spinner,
+    OutletPlaceholder,
   ],
   templateUrl: './layout.html',
   styleUrls: ['./layout.scss'],
 })
 export class Layout implements OnDestroy {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly activeRoute = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
+
   private readonly STORAGE_KEY = 'sidebar-collapsed';
   readonly collapsed: WritableSignal<boolean> = signal(this.getSavedState());
   readonly isMobile: WritableSignal<boolean> = signal(this.checkIsMobile());
   public readonly showMenuToggle: WritableSignal<boolean> = signal(true);
+  private readonly routeNavigating = signal(false);
+  private placeholderShowTimer: ReturnType<typeof setTimeout> | null = null;
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute) {
+  /** true mientras /auth/me o chunk lazy están en curso. */
+  readonly outletPendingRaw = computed(
+    () => this.auth.bootstrapping() || this.routeNavigating(),
+  );
+
+  /** Visible solo tras 300 ms de espera — evita flicker en nav rápida. */
+  readonly showOutletPlaceholder = signal(false);
+
+  readonly placeholderVariant = signal<OutletPlaceholderVariant>('dashboard');
+
+  constructor() {
+    this.placeholderVariant.set(
+      this.resolvePlaceholderVariant(this.router.url),
+    );
+
+    effect(() => {
+      if (this.outletPendingRaw()) {
+        this.schedulePlaceholderShow();
+      } else {
+        this.cancelPlaceholderShow();
+        this.showOutletPlaceholder.set(false);
+      }
+    });
+
     this.router.events
-      .pipe(filter((ev) => ev instanceof NavigationEnd))
-      .subscribe(() => {
-        const leaf = this.getLeaf(this.activeRoute);
-        const data = leaf.snapshot.data;
-        this.showMenuToggle.set(data['showMenuToggle'] ?? true);
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((ev) => {
+        if (ev instanceof NavigationStart) {
+          this.routeNavigating.set(true);
+          this.placeholderVariant.set(
+            this.resolvePlaceholderVariant(ev.url),
+          );
+        }
+        if (
+          ev instanceof NavigationEnd ||
+          ev instanceof NavigationCancel ||
+          ev instanceof NavigationError
+        ) {
+          this.routeNavigating.set(false);
+        }
+
+        if (ev instanceof NavigationEnd) {
+          const leaf = this.getLeaf(this.activeRoute);
+          const data = leaf.snapshot.data;
+          this.showMenuToggle.set(data['showMenuToggle'] ?? true);
+        }
       });
+  }
+
+  private resolvePlaceholderVariant(url: string): OutletPlaceholderVariant {
+    return isTableOutletRoute(url) ? 'table' : 'dashboard';
+  }
+
+  private schedulePlaceholderShow(): void {
+    if (this.placeholderShowTimer || this.showOutletPlaceholder()) {
+      return;
+    }
+    this.placeholderShowTimer = setTimeout(() => {
+      this.placeholderShowTimer = null;
+      if (this.outletPendingRaw()) {
+        this.showOutletPlaceholder.set(true);
+      }
+    }, PLACEHOLDER_SHOW_DELAY_MS);
+  }
+
+  private cancelPlaceholderShow(): void {
+    if (this.placeholderShowTimer) {
+      clearTimeout(this.placeholderShowTimer);
+      this.placeholderShowTimer = null;
+    }
   }
 
   private getLeaf(r: ActivatedRoute): ActivatedRoute {
@@ -141,6 +237,7 @@ export class Layout implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.cancelPlaceholderShow();
 
     if (typeof document !== 'undefined') {
       document.body.style.overflow = '';

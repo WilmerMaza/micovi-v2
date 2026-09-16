@@ -10,11 +10,11 @@
  */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth';
 import { MeResponse } from '../../../../core/models/login-response.model';
 import { MicoviApi } from '../../../../core/services/micovi.api';
-import { Toast } from '../../../../utils/alert_Toast';
+import { fireErrorToast } from '../../../../utils/alert_Toast';
 
 @Injectable({
   providedIn: 'root',
@@ -26,29 +26,25 @@ export class Session {
     private router: Router,
   ) {}
 
-  sessionLogin(data: { email: string; password: string }): void {
-    this.api
-      .post<MeResponse>('/auth/login', data)
-      .pipe(
-        tap((user) => {
-          this.auth.setUser({
-            id: user.id,
-            email: user.email,
-            role: user.role,
-            schoolId: user.schoolId,
-          });
-        }),
-      )
-      .subscribe({
-        next: () => {
-          void this.router.navigate(['/dashboard']);
-        },
+  sessionLogin(data: {
+    email: string;
+    password: string;
+  }): Observable<MeResponse> {
+    return this.api.post<MeResponse>('/auth/login', data).pipe(
+      tap((user) => {
+        this.auth.setUser({
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          schoolId: user.schoolId,
+        });
+        void this.router.navigate(['/dashboard']);
+      }),
+      tap({
         error: () => {
-          Toast.fire({
-            icon: 'error',
-            title: 'Usuario o contraseña incorrecta',
-          });
+          void fireErrorToast('Usuario o contraseña incorrecta');
         },
-      });
+      }),
+    );
   }
 }

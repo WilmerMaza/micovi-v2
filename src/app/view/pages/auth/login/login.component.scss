@@ -6,30 +6,16 @@
  * No altera Session/cookies ni FormGroup.
  */
 
-$micovi-canvas-auth: #eef2fb;
-$micovi-surface: #ffffff;
-$micovi-ink: #0f172a;
-$micovi-ink-alt: #1d293d;
-$micovi-muted: #64748b;
-$micovi-muted-alt: #62748e;
-$micovi-border: #e2e8f0;
-$micovi-border-strong: #cbd5e1;
-$micovi-accent: #0c4cc8;
-$micovi-accent-bright: #1a6aff;
-$micovi-accent-press: #0a3fa8;
-$micovi-accent-soft: #e8f0fc;
-$micovi-over: #dc2626;
+@use 'styles/colors' as *;
+
 $micovi-radius-card: 16px;
 $micovi-radius-md: 8px;
 $micovi-radius-pill: 24px;
 $micovi-ease: cubic-bezier(0.2, 0, 0, 1);
-$micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
-  0 20px 25px -5px rgba(226, 232, 240, 0.8);
-
 :host {
   display: block;
   font-family: "Inria Sans", sans-serif;
-  color: $micovi-ink;
+  color: $color-text-primary;
 }
 
 .login {
@@ -40,7 +26,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: $micovi-canvas-auth;
+  background: $color-canvas-auth;
   padding: 40px 20px;
   position: relative;
   overflow-y: auto;
@@ -62,7 +48,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
     left: -160px;
     width: 500px;
     height: 500px;
-    background: #c7d8f866;
+    background: $color-auth-deco-1;
   }
 
   .circle-2 {
@@ -70,7 +56,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
     right: -120px;
     width: 400px;
     height: 400px;
-    background: #bfd0f54c;
+    background: $color-auth-deco-2;
   }
 
   .circle-3 {
@@ -78,7 +64,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
     left: 40%;
     width: 360px;
     height: 360px;
-    background: #d0e0fb66;
+    background: $color-auth-deco-3;
   }
 }
 
@@ -87,10 +73,10 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   padding: 0 !important;
   width: 100%;
   max-width: 440px;
-  background: $micovi-surface;
+  background: $color-surface;
   border-radius: $micovi-radius-card;
   border: none !important;
-  box-shadow: $micovi-shadow-auth;
+  box-shadow: $color-shadow-auth;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -99,9 +85,9 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
 }
 
 .card-header-blue {
-  background: linear-gradient(135deg, $micovi-accent 0%, $micovi-accent-bright 100%);
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-bright 100%);
   padding: 32px 32px 28px;
-  color: #ffffff;
+  color: $color-text-on-dark;
   flex-shrink: 0;
 }
 
@@ -118,7 +104,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
     letter-spacing: -0.02em;
     line-height: 1.25;
     margin: 0 0 4px;
-    color: #ffffff;
+    color: $color-text-on-dark;
     text-wrap: balance;
   }
 
@@ -142,7 +128,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
 
 .card-body {
   padding: 28px 32px 32px;
-  background: $micovi-surface;
+  background: $color-surface;
 }
 
 .login__form {
@@ -156,7 +142,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   width: 100%;
 
   .mat-mdc-text-field-wrapper {
-    background-color: $micovi-surface;
+    background-color: $color-surface;
   }
 
   .mat-mdc-form-field-focus-overlay {
@@ -164,31 +150,31 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   }
 
   .mat-mdc-form-field-error {
-    color: $micovi-over;
+    color: $color-danger;
   }
 
   .mat-mdc-input-element {
     font-family: "Inria Sans", sans-serif;
     font-size: 0.9375rem;
-    color: $micovi-ink;
+    color: $color-text-primary;
   }
 
   .mdc-floating-label,
   .mat-mdc-form-field-label {
-    color: $micovi-muted;
+    color: $color-text-secondary;
   }
 
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
-    border-color: $micovi-border !important;
+    border-color: $color-border !important;
   }
 
   &.mat-focused {
     .mdc-notched-outline__leading,
     .mdc-notched-outline__notch,
     .mdc-notched-outline__trailing {
-      border-color: $micovi-accent !important;
+      border-color: $color-primary !important;
     }
   }
 
@@ -197,7 +183,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
     .mdc-notched-outline__leading,
     .mdc-notched-outline__notch,
     .mdc-notched-outline__trailing {
-      border-color: $micovi-over !important;
+      border-color: $color-danger !important;
     }
   }
 }
@@ -226,7 +212,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   padding: 0;
   border: none;
   background: transparent;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   cursor: pointer;
   border-radius: $micovi-radius-md;
   transition:
@@ -234,14 +220,14 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
     background-color 160ms $micovi-ease;
 
   &:hover {
-    color: $micovi-ink;
-    background-color: $micovi-accent-soft;
+    color: $color-text-primary;
+    background-color: $color-primary-soft;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
-    color: $micovi-accent;
+    color: $color-primary;
   }
 
   &:active {
@@ -259,17 +245,17 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   font-size: 0.8125rem;
 
   .mat-mdc-checkbox {
-    --mdc-checkbox-selected-checkmark-color: #ffffff;
-    --mdc-checkbox-selected-focus-icon-color: #{$micovi-accent};
-    --mdc-checkbox-selected-hover-icon-color: #{$micovi-accent};
-    --mdc-checkbox-selected-icon-color: #{$micovi-accent};
-    --mdc-checkbox-selected-pressed-icon-color: #{$micovi-accent-press};
-    --mdc-checkbox-unselected-icon-color: #{$micovi-border-strong};
-    --mdc-checkbox-unselected-hover-icon-color: #{$micovi-muted};
+    --mdc-checkbox-selected-checkmark-color: $color-text-on-dark;
+    --mdc-checkbox-selected-focus-icon-color: #{$color-primary};
+    --mdc-checkbox-selected-hover-icon-color: #{$color-primary};
+    --mdc-checkbox-selected-icon-color: #{$color-primary};
+    --mdc-checkbox-selected-pressed-icon-color: #{$color-primary-pressed};
+    --mdc-checkbox-unselected-icon-color: #{$color-border-strong};
+    --mdc-checkbox-unselected-hover-icon-color: #{$color-text-secondary};
   }
 
   .mdc-label {
-    color: $micovi-muted;
+    color: $color-text-secondary;
     font-size: 0.8125rem;
     font-family: "Inria Sans", sans-serif;
   }
@@ -282,18 +268,18 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   background: transparent;
   font-family: "Inria Sans", sans-serif;
   font-size: 0.8125rem;
-  color: $micovi-accent;
+  color: $color-primary;
   cursor: pointer;
   border-radius: 4px;
   white-space: nowrap;
 
   &:hover {
     text-decoration: underline;
-    color: $micovi-accent-press;
+    color: $color-primary-pressed;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 }
@@ -304,10 +290,10 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   border-radius: $micovi-radius-pill !important;
   background: linear-gradient(
     90deg,
-    $micovi-accent 0%,
-    $micovi-accent-bright 100%
+    $color-primary 0%,
+    $color-primary-bright 100%
   ) !important;
-  color: #ffffff !important;
+  color: $color-text-on-dark !important;
   font-family: "Inria Sans", sans-serif !important;
   font-size: 0.9375rem;
   font-weight: 700;
@@ -327,7 +313,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 3px;
   }
 
@@ -340,24 +326,24 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
 .login__register {
   margin: 24px 0 0;
   font-size: 0.8125rem;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   text-align: center;
   line-height: 1.45;
 }
 
 .login__link {
-  color: $micovi-accent;
+  color: $color-primary;
   font-weight: 700;
   text-decoration: none;
   border-radius: 4px;
 
   &:hover {
     text-decoration: underline;
-    color: $micovi-accent-press;
+    color: $color-primary-pressed;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 }
@@ -365,7 +351,7 @@ $micovi-shadow-auth: 0 8px 10px -6px rgba(226, 232, 240, 0.8),
 .login-footer {
   margin-top: 20px;
   font-size: 0.75rem;
-  color: $micovi-muted-alt;
+  color: $color-text-secondary-alt;
   text-align: center;
   position: relative;
   z-index: 1;

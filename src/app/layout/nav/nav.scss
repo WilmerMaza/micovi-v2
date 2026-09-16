@@ -5,11 +5,8 @@
  * open 250 / collapsed 80.
  */
 
-$micovi-surface: #ffffff;
-$micovi-ink: #0f172a;
-$micovi-muted: #64748b;
-$micovi-border: #e2e8f0;
-$micovi-accent: #0c4cc8;
+@use 'styles/colors' as *;
+
 $ease: cubic-bezier(0.2, 0, 0, 1);
 $dur: 180ms;
 
@@ -21,9 +18,9 @@ $dur: 180ms;
   height: 56px;
   min-height: 56px !important;
   padding: 0 16px;
-  background-color: $micovi-surface;
+  background-color: $color-surface;
   border: none;
-  border-bottom: 1px solid $micovi-border;
+  border-bottom: 1px solid $color-border;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -63,7 +60,7 @@ $dur: 180ms;
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
-  color: $micovi-ink;
+  color: $color-text-primary;
   letter-spacing: -0.01em;
   white-space: nowrap;
   line-height: 1.2;
@@ -75,9 +72,9 @@ $dur: 180ms;
   padding: 4px 8px;
   font-size: 0.75rem;
   font-weight: 400;
-  color: $micovi-muted;
-  background: #f9fafb;
-  border: 1px solid $micovi-border;
+  color: $color-text-secondary;
+  background: $color-canvas;
+  border: 1px solid $color-border;
   border-radius: 6px;
   white-space: nowrap;
   max-width: 180px;
@@ -102,7 +99,7 @@ $dur: 180ms;
 }
 
 .menu-toggle {
-  color: $micovi-muted;
+  color: $color-text-secondary;
   transition: color $dur $ease;
 
   mat-icon {
@@ -110,11 +107,11 @@ $dur: 180ms;
   }
 
   &:hover {
-    color: $micovi-ink;
+    color: $color-text-primary;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 }

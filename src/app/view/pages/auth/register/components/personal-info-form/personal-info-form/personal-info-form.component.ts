@@ -16,7 +16,7 @@ import { RegisterService } from '../../../services/register.service';
 @Component({
   selector: 'app-personal-info-form',
   templateUrl: './personal-info-form.component.html',
-  styleUrls: ['./personal-info-form.component.css'],
+  styleUrl: './personal-info-form.component.scss',
   imports: [
     CommonModule,
     MatInputModule,

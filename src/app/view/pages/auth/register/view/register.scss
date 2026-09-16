@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use 'styles/colors' as *;
 @include mat.form-field-density(-1);
 
 #register {
@@ -8,7 +9,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #eef2fb;
+  background: $color-canvas-auth;
   padding: 24px 16px;
   position: relative;
   overflow-y: auto;
@@ -29,21 +30,21 @@
       left: -160px;
       width: 500px;
       height: 500px;
-      background: #c7d8f866;
+      background: $color-auth-deco-1;
     }
     .circle-2 {
       top: 60%;
       right: -120px;
       width: 400px;
       height: 400px;
-      background: #bfd0f54c;
+      background: $color-auth-deco-2;
     }
     .circle-3 {
       bottom: -100px;
       left: 40%;
       width: 360px;
       height: 360px;
-      background: #d0e0fb66;
+      background: $color-auth-deco-3;
     }
   }
 
@@ -57,9 +58,9 @@
     padding: 0 !important;
     width: 100%;
     max-width: 600px;
-    background: #ffffff;
+    background: $color-surface;
     border-radius: 16px;
-    box-shadow: 0px 8px 10px -6px #e2e8f0cc, 0px 20px 25px -5px #e2e8f0cc;
+    box-shadow: 0px 8px 10px -6px $color-shadow-border-alpha, 0px 20px 25px -5px $color-shadow-border-alpha;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -69,9 +70,9 @@
 
   // ── Cabecera azul ──────────────────────────────────────────
   .card-header-blue {
-    background: linear-gradient(135deg, #0c4cc8 0%, #1a6aff 100%);
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-bright 100%);
     padding: 28px 24px 20px 24px;
-    color: #ffffff;
+    color: $color-surface;
     flex-shrink: 0;
   }
 
@@ -85,7 +86,7 @@
       font-size: 1.5rem;
       font-weight: 700;
       margin: 0 0 4px 0;
-      color: #ffffff;
+      color: $color-surface;
     }
 
     .subtitle {
@@ -115,7 +116,7 @@
       transition: background 0.3s;
 
       &.completed {
-        background: #ffffff;
+        background: $color-surface;
       }
     }
 
@@ -150,22 +151,22 @@
 
       &.active {
         .node-circle {
-          background: #ffffff;
-          border-color: #ffffff;
-          color: #0c4cc8;
+          background: $color-surface;
+          border-color: $color-surface;
+          color: $color-primary;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         .node-label {
-          color: #ffffff;
+          color: $color-surface;
           font-weight: 700;
         }
       }
 
       &.completed {
         .node-circle {
-          background: #ffffff;
-          border-color: #ffffff;
-          color: #0c4cc8;
+          background: $color-surface;
+          border-color: $color-surface;
+          color: $color-primary;
         }
         .node-label {
           color: rgba(255, 255, 255, 0.85);
@@ -182,7 +183,7 @@
       display: block;
       font-size: 0.75rem;
       font-weight: 600;
-      color: #62748e;
+      color: $color-text-secondary-alt;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 2px;
@@ -192,7 +193,7 @@
       display: block;
       font-size: 1.125rem;
       font-weight: 700;
-      color: #1d293d;
+      color: $color-text-primary-alt;
     }
   }
 
@@ -225,7 +226,7 @@
   .register-footer {
     margin-top: 20px;
     font-size: 0.75rem;
-    color: #62748e;
+    color: $color-text-secondary-alt;
     text-align: center;
     position: relative;
     z-index: 1;
@@ -240,9 +241,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
+    background: $color-surface;
     border-radius: 16px;
-    box-shadow: 0px 8px 10px -6px #e2e8f0cc, 0px 20px 25px -5px #e2e8f0cc;
+    box-shadow: 0px 8px 10px -6px $color-shadow-border-alpha, 0px 20px 25px -5px $color-shadow-border-alpha;
     padding: 60px 32px;
     position: relative;
     z-index: 1;
@@ -258,9 +259,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
+    background: $color-surface;
     border-radius: 16px;
-    box-shadow: 0px 8px 10px -6px #e2e8f0cc, 0px 20px 25px -5px #e2e8f0cc;
+    box-shadow: 0px 8px 10px -6px $color-shadow-border-alpha, 0px 20px 25px -5px $color-shadow-border-alpha;
     padding: 60px 32px;
     position: relative;
     z-index: 1;
@@ -288,7 +289,7 @@
         font-size: 48px !important;
         width: 48px !important;
         height: 48px !important;
-        color: #0c4cc8;
+        color: $color-primary;
       }
     }
 
@@ -296,14 +297,14 @@
       font-size: 1.2rem;
       font-weight: 700;
       letter-spacing: -0.01em;
-      color: #1d293d;
+      color: $color-text-primary-alt;
       margin: 0 0 6px 0;
     }
 
     .loading-subtext {
       font-size: 0.875rem;
       line-height: 1.45;
-      color: #62748e;
+      color: $color-text-secondary-alt;
       margin: 0 0 20px 0;
     }
 
@@ -311,7 +312,7 @@
       width: 240px;
       max-width: 100%;
       height: 4px;
-      background: #e2e8f0;
+      background: $color-border;
       border-radius: 4px;
       margin: 0 auto;
       overflow: hidden;
@@ -320,7 +321,7 @@
     .loading-bar {
       width: 36%;
       height: 100%;
-      background: linear-gradient(90deg, #0c4cc8 0%, #1a6aff 100%);
+      background: linear-gradient(90deg, $color-primary 0%, $color-primary-bright 100%);
       border-radius: 4px;
       will-change: transform;
       animation: loading-slide 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
@@ -336,13 +337,13 @@
       font-weight: 700;
       letter-spacing: -0.01em;
       margin: 0 0 8px 0;
-      color: #0f172a;
+      color: $color-text-primary;
       text-wrap: balance;
     }
 
     p {
       font-size: 0.9rem;
-      color: #62748e;
+      color: $color-text-secondary-alt;
       margin: 0 0 4px 0;
       line-height: 1.5;
     }
@@ -352,12 +353,12 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    color: #ffffff;
+    color: $color-surface;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 16px auto;
-    background: #059669;
+    background: $color-success;
 
     mat-icon {
       font-size: 28px !important;
@@ -368,16 +369,16 @@
 
   .success-btn {
     margin-top: 20px;
-    background: linear-gradient(90deg, #0c4cc8 0%, #1a6aff 100%) !important;
+    background: linear-gradient(90deg, $color-primary 0%, $color-primary-bright 100%) !important;
     border-radius: 24px !important;
     padding: 0 32px !important;
     height: 40px !important;
-    color: #ffffff !important;
+    color: $color-surface !important;
     font-weight: 600 !important;
   }
 
   .error-icon-box {
-    background: #dc2626;
+    background: $color-danger;
   }
 
   .error-actions {
@@ -388,11 +389,11 @@
     margin-top: 20px;
 
     .retry-btn {
-      background: linear-gradient(90deg, #0c4cc8 0%, #1a6aff 100%) !important;
+      background: linear-gradient(90deg, $color-primary 0%, $color-primary-bright 100%) !important;
       border-radius: 24px !important;
       padding: 0 28px !important;
       height: 40px !important;
-      color: #ffffff !important;
+      color: $color-surface !important;
       font-weight: 600 !important;
       font-family: "Inria Sans", Roboto, sans-serif !important;
       transition: opacity 180ms cubic-bezier(0.2, 0, 0, 1),
@@ -411,8 +412,8 @@
       border-radius: 24px !important;
       padding: 0 28px !important;
       height: 40px !important;
-      border-color: #e2e8f0 !important;
-      color: #62748e !important;
+      border-color: $color-border !important;
+      color: $color-text-secondary-alt !important;
       font-weight: 600 !important;
     }
   }

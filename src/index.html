@@ -1,31 +1,356 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <title>MicoviV2</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet"> -->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+    <script>
+      (function () {
+        var path = window.location.pathname || '';
+        var isAuth =
+          path.indexOf('/login') === 0 || path.indexOf('/registers') === 0;
+        var isConfig = path.indexOf('/configuration') === 0;
+        if (isAuth) {
+          document.documentElement.classList.add('boot-auth');
+        } else if (isConfig) {
+          document.documentElement.classList.add('boot-config');
+        } else {
+          document.documentElement.classList.add('boot-app');
+        }
+      })();
+    </script>
+    <style>
+      /* Shell estático pre-Angular — mismas dimensiones que layout/home */
+      html,
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        background-color: #f9fafb;
+        font-family: 'Inria Sans', system-ui, sans-serif;
+      }
 
-    <!-- font -->
+      .boot-shell {
+        display: none;
+        min-height: 100dvh;
+      }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      /* ── App shell (cabina) ── */
+      html.boot-app .boot-shell--auth,
+      html.boot-app .boot-shell--config {
+        display: none;
+      }
+
+      html.boot-app .boot-shell--app {
+        display: flex;
+        flex-direction: column;
+        min-height: 100dvh;
+        overflow: hidden;
+      }
+
+      .boot-topbar {
+        position: fixed;
+        top: 0;
+        left: 250px;
+        right: 0;
+        height: 56px;
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        z-index: 2;
+      }
+
+      .boot-body {
+        display: flex;
+        flex: 1;
+        min-height: 100dvh;
+      }
+
+      .boot-sidebar {
+        flex: 0 0 250px;
+        width: 250px;
+        background: #0f172a;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .boot-main {
+        flex: 1;
+        min-width: 0;
+        padding: 76px 20px 20px;
+        background: #f9fafb;
+      }
+
+      .boot-line {
+        border-radius: 6px;
+        background: #e2e8f0;
+        animation: boot-pulse 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+      }
+
+      .boot-line--title {
+        height: 28px;
+        width: 42%;
+        max-width: 280px;
+        margin-bottom: 12px;
+      }
+
+      .boot-line--sub {
+        height: 14px;
+        width: 28%;
+        max-width: 180px;
+        margin-bottom: 24px;
+      }
+
+      .boot-block {
+        height: 72px;
+        border-radius: 12px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        margin-bottom: 16px;
+        animation: boot-pulse 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+      }
+
+      .boot-kpis {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .boot-kpi {
+        flex: 1;
+        height: 88px;
+        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        animation: boot-pulse 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+      }
+
+      /* ── Config shell ── */
+      html.boot-config .boot-shell--app,
+      html.boot-config .boot-shell--auth {
+        display: none;
+      }
+
+      html.boot-config body {
+        background-color: #f9fafb;
+      }
+
+      html.boot-config .boot-shell--config {
+        display: flex;
+        flex-direction: column;
+        min-height: 100dvh;
+        padding: 20px 24px;
+        box-sizing: border-box;
+      }
+
+      .boot-config-title {
+        height: 28px;
+        width: min(220px, 50%);
+        border-radius: 6px;
+        background: #e2e8f0;
+        margin-bottom: 8px;
+        animation: boot-pulse 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+      }
+
+      .boot-config-sub {
+        height: 14px;
+        width: min(320px, 70%);
+        border-radius: 6px;
+        background: #e8ecf1;
+        margin-bottom: 16px;
+        animation: boot-pulse 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+      }
+
+      .boot-config-panel {
+        flex: 1;
+        display: flex;
+        min-height: 360px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f9fafb;
+      }
+
+      .boot-config-nav {
+        flex: 0 0 260px;
+        background: #ffffff;
+        border-right: 1px solid #e2e8f0;
+        animation: boot-pulse 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+      }
+
+      .boot-config-content {
+        flex: 1;
+        padding: 24px;
+      }
+
+      .boot-config-content .boot-line {
+        height: 14px;
+        margin-bottom: 12px;
+      }
+
+      .boot-config-block {
+        height: 160px;
+        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        animation: boot-pulse 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+      }
+
+      html.boot-config .boot-shell--config {
+        display: flex;
+      }
+
+      /* ── Auth shell (login/register) ── */
+      html.boot-auth .boot-shell--app,
+      html.boot-auth .boot-shell--config {
+        display: none;
+      }
+
+      html.boot-auth body {
+        background-color: #eef2fb;
+      }
+
+      html.boot-auth .boot-shell--auth {
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        box-sizing: border-box;
+      }
+
+      .boot-auth-card {
+        width: 100%;
+        max-width: 440px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      }
+
+      .boot-auth-head {
+        height: 96px;
+        background: linear-gradient(135deg, #0c4cc8 0%, #0a3fa8 100%);
+        animation: boot-pulse 1.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+      }
+
+      .boot-auth-body {
+        padding: 24px;
+      }
+
+      .boot-auth-body .boot-line {
+        height: 44px;
+        width: 100%;
+        margin-bottom: 16px;
+      }
+
+      .boot-auth-body .boot-line:last-child {
+        width: 56%;
+        height: 40px;
+        margin-bottom: 0;
+      }
+
+      @keyframes boot-pulse {
+        0%,
+        100% {
+          opacity: 0.55;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .boot-topbar {
+          left: 0;
+        }
+
+        .boot-sidebar {
+          display: none;
+        }
+
+        .boot-main {
+          padding-top: 76px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .boot-line,
+        .boot-block,
+        .boot-kpi,
+        .boot-auth-head,
+        .boot-config-title,
+        .boot-config-sub,
+        .boot-config-nav,
+        .boot-config-block {
+          animation: none;
+          opacity: 0.72;
+        }
+      }
+    </style>
+    <!-- Tipografía self-hosted — ver src/styles/_fonts.scss -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/inria-sans-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/material-icons.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
   </head>
   <body class="mat-typography">
-    <app-root></app-root>
+    <app-root>
+      <!-- Reemplazado por Angular al bootstrap; visible mientras cargan chunks + /auth/me -->
+      <div class="boot-shell boot-shell--app" role="status" aria-live="polite" aria-label="Cargando Micovi">
+        <div class="boot-topbar" aria-hidden="true"></div>
+        <div class="boot-body">
+          <aside class="boot-sidebar" aria-hidden="true"></aside>
+          <main class="boot-main" aria-hidden="true">
+            <div class="boot-line boot-line--title"></div>
+            <div class="boot-line boot-line--sub"></div>
+            <div class="boot-block"></div>
+            <div class="boot-kpis">
+              <div class="boot-kpi"></div>
+              <div class="boot-kpi"></div>
+              <div class="boot-kpi"></div>
+            </div>
+            <div class="boot-block"></div>
+          </main>
+        </div>
+      </div>
+      <div
+        class="boot-shell boot-shell--config"
+        role="status"
+        aria-live="polite"
+        aria-label="Cargando configuración"
+      >
+        <div class="boot-config-title" aria-hidden="true"></div>
+        <div class="boot-config-sub" aria-hidden="true"></div>
+        <div class="boot-config-panel" aria-hidden="true">
+          <div class="boot-config-nav"></div>
+          <div class="boot-config-content">
+            <div class="boot-line"></div>
+            <div class="boot-line boot-line--sub"></div>
+            <div class="boot-config-block"></div>
+          </div>
+        </div>
+      </div>
+      <div class="boot-shell boot-shell--auth" role="status" aria-live="polite" aria-label="Cargando acceso">
+        <div class="boot-auth-card" aria-hidden="true">
+          <div class="boot-auth-head"></div>
+          <div class="boot-auth-body">
+            <div class="boot-line"></div>
+            <div class="boot-line"></div>
+            <div class="boot-line"></div>
+          </div>
+        </div>
+      </div>
+    </app-root>
   </body>
 </html>

@@ -39,6 +39,7 @@ export class ProfileMenu {
   private readonly authService = inject(AuthService);
 
   readonly showLogoutModal: WritableSignal<boolean> = signal(false);
+  readonly isLoggingOut: WritableSignal<boolean> = signal(false);
 
   private readonly authUser = this.authService.userSignal();
 
@@ -79,8 +80,17 @@ export class ProfileMenu {
   }
 
   public async confirmLogout(): Promise<void> {
-    this.showLogoutModal.set(false);
-    await firstValueFrom(this.authService.logout());
+    if (this.isLoggingOut()) {
+      return;
+    }
+
+    this.isLoggingOut.set(true);
+    try {
+      await firstValueFrom(this.authService.logout());
+      this.showLogoutModal.set(false);
+    } finally {
+      this.isLoggingOut.set(false);
+    }
   }
 
   public cancelLogout(): void {

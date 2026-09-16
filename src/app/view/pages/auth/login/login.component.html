@@ -36,6 +36,7 @@
         [ngClass]="{ 'login__form--submitted': submitted }"
         (ngSubmit)="sessionLogin()"
         novalidate
+        [attr.aria-busy]="submitState === 'loading'"
       >
         <mat-form-field class="login__field" appearance="outline">
           <mat-label>Email</mat-label>
@@ -161,8 +162,13 @@
           mat-flat-button
           class="login__submit"
           type="submit"
+          [disabled]="submitState === 'loading'"
         >
-          Entrar
+          @if (submitState === 'loading') {
+            Entrando…
+          } @else {
+            Entrar
+          }
         </button>
       </form>
 

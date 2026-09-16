@@ -41,7 +41,7 @@ import {
 import { ImageLoader } from '../../../../utils/readerBlodImg';
 import { calcularEdad } from '../../../../utils/UtilFunctions';
 
-import { Toast } from '../../../../utils/alert_Toast';
+import { fireToast } from '../../../../utils/alert_Toast';
 
 import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
 import { CommonModule } from '@angular/common';
@@ -90,6 +90,7 @@ export class CreateSportsmanComponent implements OnInit {
   public generos: listInfo[] | undefined;
   public typeIdentification: listInfo[] | undefined;
   public isEdit: boolean = false;
+  public isSaving = false;
   /** true cuando la pantalla se abrió por ruta (/create o /edit/:id). */
   public isRoutePage = false;
   public listEstados: Estado[] | undefined = [];
@@ -348,7 +349,12 @@ export class CreateSportsmanComponent implements OnInit {
   }
 
   async createSportsman(): Promise<void> {
+    if (this.isSaving) {
+      return;
+    }
+
     if (this.sportsmansForm.valid) {
+      this.isSaving = true;
       const {
         value: { image, department, city, nationality, category, birtDate },
         value,
@@ -395,51 +401,54 @@ export class CreateSportsmanComponent implements OnInit {
       }
       this.sporsmanService$[
         this.isEdit ? 'updateSportsman' : 'createSportsman'
-      ](formSportsman).subscribe(
-        async (res: SuccessResponse) => {
+      ](formSportsman).subscribe({
+        next: async (res: SuccessResponse) => {
           if (!Validar.isNullOrUndefined(this.selectedFiles)) {
             this.uploadImg(formData);
           } else {
-            await Toast.fire({
+            this.isSaving = false;
+            await fireToast({
               icon: 'success',
               title: `${res.Message}`,
             });
+            this.defaulCarrusel();
           }
-
-          this.defaulCarrusel();
         },
-        (respError): void => {
+        error: (respError): void => {
+          this.isSaving = false;
           const { error } = respError;
-          Toast.fire({
+          void fireToast({
             icon: 'error',
             title: error,
           });
-        }
-      );
+        },
+      });
     } else {
       this.sportsmansForm.markAllAsTouched();
     }
   }
 
   uploadImg(formData: FormData): void {
-    this.imagenFuntionsService$.subirImg(formData).subscribe(
-      (respuesta: responseUploadMode) => {
-        Toast.fire({
+    this.imagenFuntionsService$.subirImg(formData).subscribe({
+      next: (respuesta: responseUploadMode) => {
+        this.isSaving = false;
+        void fireToast({
           icon: 'success',
           title: respuesta.msg,
         });
         this.defaulCarrusel();
       },
-      (respError): void => {
+      error: (respError): void => {
+        this.isSaving = false;
         const {
           error: { error },
         } = respError;
-        Toast.fire({
+        void fireToast({
           icon: 'error',
           title: error,
         });
-      }
-    );
+      },
+    });
   }
 
   onFilesSelected(event: any): void {

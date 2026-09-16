@@ -6,16 +6,8 @@
  * Sin © en el menú: el legal vive en configuración.
  */
 
-$micovi-canvas: #f9fafb;
-$micovi-surface: #ffffff;
-$micovi-ink: #0f172a;
-$micovi-muted: #64748b;
-$micovi-border: #e2e8f0;
-$micovi-border-strong: #cbd5e1;
-$micovi-accent: #0c4cc8;
-$micovi-accent-soft: #e8f0fc;
-$micovi-over: #dc2626;
-$micovi-over-soft: #fee2e2;
+@use 'styles/colors' as *;
+
 $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
 
 .profile-menu {
@@ -34,10 +26,10 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   min-height: 44px;
   padding: 4px 10px 4px 4px;
   margin: 0;
-  border: 1px solid $micovi-border;
+  border: 1px solid $color-border;
   border-radius: 10px;
-  background: $micovi-surface;
-  color: $micovi-ink;
+  background: $color-surface;
+  color: $color-text-primary;
   cursor: pointer;
   font-family: 'Inria Sans', sans-serif;
   text-align: left;
@@ -47,12 +39,12 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
     transform 150ms $micovi-easing;
 
   &:hover {
-    background: $micovi-accent-soft;
+    background: $color-primary-soft;
     border-color: #c5d8f7;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 
@@ -69,8 +61,8 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: $micovi-accent;
-  color: #ffffff;
+  background: $color-primary;
+  color: $color-text-on-dark;
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -89,7 +81,7 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
 .profile-trigger__name {
   font-size: 0.875rem; /* 14px */
   font-weight: 700;
-  color: $micovi-ink;
+  color: $color-text-primary;
   line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -99,7 +91,7 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
 .profile-trigger__role {
   font-size: 0.75rem; /* 12px */
   font-weight: 400;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -111,7 +103,7 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   width: 20px;
   height: 20px;
   font-size: 20px;
-  color: $micovi-muted;
+  color: $color-text-secondary;
 }
 
 /* —— Panel MatMenu —— */
@@ -119,16 +111,16 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   min-width: 320px;
   max-width: 360px;
   border-radius: 12px;
-  border: 1px solid $micovi-border;
+  border: 1px solid $color-border;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
-  background: $micovi-surface;
+  background: $color-surface;
   overflow: hidden;
 }
 
 .micovi-menu-panel .mat-mdc-menu-content {
   padding: 0;
-  background: $micovi-surface;
-  color: $micovi-ink;
+  background: $color-surface;
+  color: $color-text-primary;
   font-family: 'Inria Sans', sans-serif;
 }
 
@@ -137,8 +129,8 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   align-items: flex-start;
   gap: 14px;
   padding: 20px 20px 18px;
-  background: $micovi-canvas;
-  border-bottom: 1px solid $micovi-border;
+  background: $color-canvas;
+  border-bottom: 1px solid $color-border;
   cursor: default;
 }
 
@@ -150,8 +142,8 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   width: 52px;
   height: 52px;
   border-radius: 12px;
-  background: $micovi-accent;
-  color: #ffffff;
+  background: $color-primary;
+  color: $color-text-on-dark;
   font-size: 1.125rem; /* 18px */
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -169,7 +161,7 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
 .micovi-menu-header__name {
   font-size: 1.125rem; /* 18px */
   font-weight: 700;
-  color: $micovi-ink;
+  color: $color-text-primary;
   letter-spacing: -0.01em;
   line-height: 1.25;
   overflow: hidden;
@@ -180,7 +172,7 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
 .micovi-menu-header__email {
   font-size: 0.8125rem; /* 13px */
   font-weight: 400;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   line-height: 1.3;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -194,8 +186,8 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   padding: 2px 8px;
   font-size: 0.75rem; /* 12px */
   font-weight: 700;
-  color: $micovi-accent;
-  background: $micovi-accent-soft;
+  color: $color-primary;
+  background: $color-primary-soft;
   border-radius: 6px;
   line-height: 1.4;
 }
@@ -213,14 +205,14 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   margin: 0;
   border-radius: 8px;
   font-family: 'Inria Sans', sans-serif;
-  color: $micovi-ink;
+  color: $color-text-primary;
   letter-spacing: 0;
   transition: background-color 150ms $micovi-easing;
 
   .mat-icon {
     margin-right: 14px;
     margin-left: 0;
-    color: $micovi-ink;
+    color: $color-text-primary;
     font-size: 24px;
     width: 24px;
     height: 24px;
@@ -234,11 +226,11 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   }
 
   &:hover:not([disabled]) {
-    background-color: $micovi-accent-soft;
+    background-color: $color-primary-soft;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: -2px;
   }
 }
@@ -262,29 +254,29 @@ $micovi-easing: cubic-bezier(0.2, 0, 0, 1);
   font-size: 0.75rem; /* 12px */
   font-weight: 400;
   line-height: 1.3;
-  color: $micovi-muted;
+  color: $color-text-secondary;
 }
 
 .micovi-menu-panel .mat-mdc-menu-item.micovi-menu-item--danger {
-  color: $micovi-over;
+  color: $color-danger;
 
   .mat-icon {
-    color: $micovi-over;
+    color: $color-danger;
   }
 
   .micovi-menu-item__hint {
-    color: #b91c1c;
+    color: $color-danger-pressed;
     opacity: 0.75;
   }
 
   &:hover:not([disabled]) {
-    background-color: $micovi-over-soft;
+    background-color: $color-danger-soft;
   }
 }
 
 .micovi-menu-panel .mat-divider {
   margin: 0;
-  border-top-color: $micovi-border;
+  border-top-color: $color-border;
 }
 
 @media (max-width: 767px) {

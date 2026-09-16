@@ -5,21 +5,8 @@
  * atajos en filas densas. Placeholders honestos — sin métricas inventadas.
  */
 
-$micovi-canvas: #f9fafb;
-$micovi-surface: #ffffff;
-$micovi-ink: #0f172a;
-$micovi-muted: #64748b;
-$micovi-border: #e2e8f0;
-$micovi-border-strong: #cbd5e1;
-$micovi-accent: #0c4cc8;
-$micovi-accent-soft: #e8f0fc;
-$micovi-accent-press: #0a3fa8;
-$micovi-ok: #059669;
-$micovi-ok-soft: #d1fae5;
-$micovi-under: #b45309;
-$micovi-under-soft: #fef3c7;
-$micovi-over: #dc2626;
-$micovi-over-soft: #fee2e2;
+@use 'styles/colors' as *;
+
 $ease: cubic-bezier(0.2, 0, 0, 1);
 $dur: 180ms;
 
@@ -36,7 +23,7 @@ $dur: 180ms;
   gap: 16px;
   padding: 4px 0 24px;
   font-family: 'Inria Sans', sans-serif;
-  color: $micovi-ink;
+  color: $color-text-primary;
   /* Full-bleed del content pane (MASTER): sin columna estrecha a la izquierda */
   width: 100%;
   max-width: none;
@@ -56,7 +43,7 @@ $dur: 180ms;
   font-size: 1.375rem; /* 22px */
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: $micovi-ink;
+  color: $color-text-primary;
   line-height: 1.25;
   text-wrap: balance;
 }
@@ -64,14 +51,14 @@ $dur: 180ms;
 .dash-lead {
   margin: 0;
   font-size: 0.9375rem;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   line-height: 1.45;
 }
 
 .dash-date {
   font-size: 0.8125rem;
   font-weight: 700;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   font-variant-numeric: tabular-nums;
   padding-top: 4px;
 }
@@ -84,9 +71,9 @@ $dur: 180ms;
   gap: 16px;
   flex-wrap: wrap;
   padding: 12px 14px;
-  background: $micovi-accent-soft;
-  border: 1px solid $micovi-border;
-  border-left: 3px solid $micovi-accent;
+  background: $color-primary-soft;
+  border: 1px solid $color-border;
+  border-left: 3px solid $color-primary;
   border-radius: 8px;
 }
 
@@ -94,14 +81,14 @@ $dur: 180ms;
   margin: 0 0 2px;
   font-size: 0.9375rem;
   font-weight: 700;
-  color: $micovi-ink;
+  color: $color-text-primary;
   line-height: 1.3;
 }
 
 .empty-banner-hint {
   margin: 0;
   font-size: 0.8125rem;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   line-height: 1.4;
   max-width: 52ch;
 }
@@ -116,14 +103,14 @@ $dur: 180ms;
   font-size: 0.875rem;
   font-weight: 700;
   font-family: inherit;
-  color: #fff;
-  background: $micovi-accent;
+  color: $color-text-on-dark;
+  background: $color-primary;
   border-radius: 6px;
   text-decoration: none;
   transition: background $dur $ease, transform $dur $ease;
 
   &:hover {
-    background: $micovi-accent-press;
+    background: $color-primary-pressed;
   }
 
   &:active {
@@ -131,7 +118,7 @@ $dur: 180ms;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: 2px;
   }
 }
@@ -140,8 +127,8 @@ $dur: 180ms;
 .kpi-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  background: $micovi-surface;
-  border: 1px solid $micovi-border;
+  background: $color-surface;
+  border: 1px solid $color-border;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -159,20 +146,20 @@ $dur: 180ms;
 
   /* Divisor entre celdas sin pisar el borde semántico */
   & + & {
-    box-shadow: inset 1px 0 0 $micovi-border;
+    box-shadow: inset 1px 0 0 $color-border;
   }
 }
 
 .kpi--ok {
-  border-left-color: $micovi-ok;
+  border-left-color: $color-success;
 }
 
 .kpi--under {
-  border-left-color: $micovi-under;
+  border-left-color: $color-warning;
 }
 
 .kpi--over {
-  border-left-color: $micovi-over;
+  border-left-color: $color-danger;
 }
 
 .kpi-label {
@@ -188,18 +175,18 @@ $dur: 180ms;
 }
 
 .kpi--ok .kpi-label {
-  color: $micovi-ok;
-  background: $micovi-ok-soft;
+  color: $color-success;
+  background: $color-success-soft;
 }
 
 .kpi--under .kpi-label {
-  color: $micovi-under;
-  background: $micovi-under-soft;
+  color: $color-warning;
+  background: $color-warning-soft;
 }
 
 .kpi--over .kpi-label {
-  color: $micovi-over;
-  background: $micovi-over-soft;
+  color: $color-danger;
+  background: $color-danger-soft;
 }
 
 .kpi-value {
@@ -212,14 +199,14 @@ $dur: 180ms;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
   font-family: 'JetBrains Mono', 'Inria Sans', ui-monospace, monospace;
-  color: $micovi-ink;
+  color: $color-text-primary;
 }
 
 .kpi-hint {
   grid-column: 1;
   grid-row: 2;
   font-size: 0.75rem;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -227,8 +214,8 @@ $dur: 180ms;
 
 /* Atajos: filas densas, no 3 feature cards */
 .shortcuts {
-  background: $micovi-surface;
-  border: 1px solid $micovi-border;
+  background: $color-surface;
+  border: 1px solid $color-border;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -238,9 +225,9 @@ $dur: 180ms;
   padding: 10px 14px;
   font-size: 0.8125rem;
   font-weight: 700;
-  color: $micovi-muted;
-  border-bottom: 1px solid $micovi-border;
-  background: $micovi-canvas;
+  color: $color-text-secondary;
+  border-bottom: 1px solid $color-border;
+  background: $color-canvas;
 }
 
 .shortcut-list {
@@ -250,7 +237,7 @@ $dur: 180ms;
 }
 
 .shortcut-list li + li {
-  border-top: 1px solid $micovi-border;
+  border-top: 1px solid $color-border;
 }
 
 .shortcut-row {
@@ -264,17 +251,17 @@ $dur: 180ms;
   transition: background $dur $ease;
 
   &:hover {
-    background: $micovi-accent-soft;
+    background: $color-primary-soft;
   }
 
   &:focus-visible {
-    outline: 2px solid $micovi-accent;
+    outline: 2px solid $color-primary;
     outline-offset: -2px;
   }
 }
 
 .shortcut-icon {
-  color: $micovi-accent;
+  color: $color-primary;
   font-size: 22px;
   width: 22px;
   height: 22px;
@@ -292,19 +279,19 @@ $dur: 180ms;
 .shortcut-label {
   font-size: 0.9375rem;
   font-weight: 700;
-  color: $micovi-ink;
+  color: $color-text-primary;
 }
 
 .shortcut-hint {
   font-size: 0.75rem;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .shortcut-chevron {
-  color: $micovi-muted;
+  color: $color-text-secondary;
   font-size: 20px;
   width: 20px;
   height: 20px;
@@ -317,7 +304,7 @@ $dur: 180ms;
   }
 
   .kpi + .kpi {
-    box-shadow: inset 0 1px 0 $micovi-border;
+    box-shadow: inset 0 1px 0 $color-border;
   }
 
   .empty-banner {

@@ -8,12 +8,12 @@
  * Ruteado por features/home/home.routes (no el legacy view/dashboard).
  */
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { afterNextRender, Component, OnInit } from '@angular/core';
+import { prefetchSecondaryRoutes } from '../../core/loading/route-prefetch';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import Swal from 'sweetalert2';
 import { AuthService } from '../../core/services/auth';
-import { customOptions } from '../../utils/alert_Toast';
+import { fireNewPayCelebration } from '../../utils/alert_Toast';
 import { Validators } from '../../utils/Validators';
 
 interface DashShortcut {
@@ -39,7 +39,9 @@ export class Dashboard implements OnInit {
   constructor(
     private route$: ActivatedRoute,
     private auth: AuthService,
-  ) {}
+  ) {
+    afterNextRender(() => prefetchSecondaryRoutes());
+  }
 
   public ngOnInit(): void {
     this.buildGreeting();
@@ -101,8 +103,7 @@ export class Dashboard implements OnInit {
   }
 
   private newPayCompleted(): void {
-    Swal.fire(customOptions);
-    this.createConfeti();
+    void fireNewPayCelebration().then(() => this.createConfeti());
   }
 
   private createConfeti(): void {

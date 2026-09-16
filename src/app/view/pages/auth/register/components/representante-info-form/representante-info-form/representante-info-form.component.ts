@@ -10,7 +10,7 @@ import { RegisterService } from "../../../services/register.service";
 @Component({
   selector: "app-representante-info-form",
   templateUrl: "./representante-info-form.component.html",
-  styleUrl: "./representante-info-form.component.css",
+  styleUrl: "./representante-info-form.component.scss",
   standalone: true,
   imports: [CommonModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
 })

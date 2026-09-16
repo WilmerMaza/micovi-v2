@@ -1,17 +1,23 @@
-// features/home/home.routes.ts
+/**
+ * Rutas hijas del shell home (dashboard, listados, etc.).
+ *
+ * Listados tabulares: al activar entrenador/ejercicios, registrar el segmento en
+ * `core/loading/list-route-patterns.ts` y usar TableSkeletonComponent + isListLoading
+ * (patrón sportsman.component).
+ */
 import { Routes } from '@angular/router';
+import { Dashboard } from '../dashboard/dashboard';
 
 export const HOME_ROUTES: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
-  // Dashboard
+  // Dashboard — eager: ruta por defecto, sin HTTP en init
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('../dashboard/dashboard').then((m) => m.Dashboard),
+    component: Dashboard,
   },
 
-  // Entrenador
+  // Entrenador — al activar: añadir '/entrenador' en list-route-patterns.ts
   // {
   //   path: 'entrenador',
   //   loadChildren: () =>
@@ -20,14 +26,13 @@ export const HOME_ROUTES: Routes = [
   //     ),
   // },
 
-  // // Deportistas
   {
     path: 'sportsman',
     loadChildren: () =>
       import('../sportsman/sportsman.routes').then((m) => m.SPORTSMAN_ROUTES),
   },
 
-  // // Ejercicios (ejemplo)
+  // Ejercicios — al activar: añadir '/ejercicios' en list-route-patterns.ts
   // {
   //   path: 'ejercicios',
   //   loadChildren: () =>

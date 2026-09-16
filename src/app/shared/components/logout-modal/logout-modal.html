@@ -27,6 +27,7 @@
         type="button"
         class="logout-modal__cancel"
         (click)="onCancel()"
+        [disabled]="isLoading()"
       >
         Cancelar
       </button>
@@ -36,8 +37,14 @@
         type="button"
         class="logout-modal__confirm"
         (click)="onConfirm()"
+        [disabled]="isLoading()"
+        [attr.aria-busy]="isLoading()"
       >
-        Cerrar sesión
+        @if (isLoading()) {
+          Cerrando sesión…
+        } @else {
+          Cerrar sesión
+        }
       </button>
     </div>
   </div>

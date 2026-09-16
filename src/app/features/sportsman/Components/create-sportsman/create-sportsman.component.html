@@ -29,6 +29,7 @@
     class="registration-form"
     [formGroup]="sportsmansForm"
     (ngSubmit)="createSportsman()"
+    [attr.aria-busy]="isSaving"
   >
     <!-- 1. Identificación -->
     <section class="registration-card" aria-labelledby="sec-identificacion">
@@ -311,13 +312,21 @@
     </section>
 
     <footer class="form-actions">
-      <button type="button" class="btn-back" (click)="closeCard()">
+      <button type="button" class="btn-back" (click)="closeCard()" [disabled]="isSaving">
         <mat-icon aria-hidden="true">arrow_back</mat-icon>
         <span>Atrás</span>
       </button>
 
-      <button type="submit" class="btn-save">
-        <span>{{ isEdit ? 'Guardar cambios' : 'Guardar deportista' }}</span>
+      <button type="submit" class="btn-save" [disabled]="isSaving">
+        <span>{{
+          isSaving
+            ? isEdit
+              ? 'Guardando cambios…'
+              : 'Guardando…'
+            : isEdit
+              ? 'Guardar cambios'
+              : 'Guardar deportista'
+        }}</span>
         <mat-icon aria-hidden="true">arrow_forward</mat-icon>
       </button>
     </footer>

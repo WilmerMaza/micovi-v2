@@ -7,11 +7,22 @@
  * En DEV el proxy de Angular reenvía /api → localhost:3000.
  * En QA/PROD el reverse proxy hace el mismo rol.
  */
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpContext,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
+import { SKIP_LOADING } from '../loading/loading.context';
 import { RequestOptions } from '../../models/interface';
+
+export interface MicoviRequestOptions {
+  /** Omite overlay global; el caller muestra skeleton o button loading. */
+  skipLoading?: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -21,28 +32,60 @@ export class MicoviApi {
 
   constructor(private http: HttpClient) {}
 
-  get<T>(endpoint: string, params?: HttpParams): Observable<T> {
+  get<T>(
+    endpoint: string,
+    params?: HttpParams,
+    options?: MicoviRequestOptions,
+  ): Observable<T> {
     return this.http
-      .get<T>(`${this.baseUrl}${endpoint}`, { params, withCredentials: true })
+      .get<T>(`${this.baseUrl}${endpoint}`, {
+        params,
+        withCredentials: true,
+        context: this.buildContext(options),
+      })
       .pipe(catchError(this.handleError));
   }
 
-  post<T>(endpoint: string, body: unknown = {}): Observable<T> {
+  post<T>(
+    endpoint: string,
+    body: unknown = {},
+    options?: MicoviRequestOptions,
+  ): Observable<T> {
     return this.http
-      .post<T>(`${this.baseUrl}${endpoint}`, body, { withCredentials: true })
+      .post<T>(`${this.baseUrl}${endpoint}`, body, {
+        withCredentials: true,
+        context: this.buildContext(options),
+      })
       .pipe(catchError(this.handleError));
   }
 
-  put<T>(endpoint: string, body: unknown): Observable<T> {
+  put<T>(
+    endpoint: string,
+    body: unknown,
+    options?: MicoviRequestOptions,
+  ): Observable<T> {
     return this.http
-      .put<T>(`${this.baseUrl}${endpoint}`, body, { withCredentials: true })
+      .put<T>(`${this.baseUrl}${endpoint}`, body, {
+        withCredentials: true,
+        context: this.buildContext(options),
+      })
       .pipe(catchError(this.handleError));
   }
 
-  delete<T>(endpoint: string): Observable<T> {
+  delete<T>(endpoint: string, options?: MicoviRequestOptions): Observable<T> {
     return this.http
-      .delete<T>(`${this.baseUrl}${endpoint}`, { withCredentials: true })
+      .delete<T>(`${this.baseUrl}${endpoint}`, {
+        withCredentials: true,
+        context: this.buildContext(options),
+      })
       .pipe(catchError(this.handleError));
+  }
+
+  private buildContext(options?: MicoviRequestOptions): HttpContext | undefined {
+    if (!options?.skipLoading) {
+      return undefined;
+    }
+    return new HttpContext().set(SKIP_LOADING, true);
   }
 
   request<T>(method: string, endpoint: string, options: RequestOptions = {}): Observable<T> {
@@ -59,7 +102,18 @@ export class MicoviApi {
   }
 
   private handleError(error: unknown): Observable<never> {
-    console.error('API error:', error);
+    if (!this.isExpectedAuthProbeError(error)) {
+      console.error('API error:', error);
+    }
     return throwError(() => error);
+  }
+
+  /** 401 en sonda de sesión sin cookie — flujo normal, no es fallo de app. */
+  private isExpectedAuthProbeError(error: unknown): boolean {
+    if (!(error instanceof HttpErrorResponse) || error.status !== 401) {
+      return false;
+    }
+    const url = error.url ?? '';
+    return url.includes('/auth/me') || url.includes('/auth/refresh');
   }
 }

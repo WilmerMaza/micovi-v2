@@ -1,0 +1,72 @@
+/**
+ * Placeholder contextual del outlet — tokens MASTER, Motion 3/10.
+ */
+
+@use 'styles/colors' as *;
+
+$ease: cubic-bezier(0.2, 0, 0, 1);
+
+.outlet-placeholder {
+  width: 100%;
+}
+
+.outlet-placeholder__title {
+  height: 28px;
+  width: min(280px, 42%);
+  border-radius: 6px;
+  background: $color-track;
+  margin-bottom: 12px;
+  animation: outlet-placeholder-pulse 1.4s $ease infinite;
+}
+
+.outlet-placeholder__sub {
+  height: 14px;
+  width: min(180px, 28%);
+  border-radius: 6px;
+  background: $color-mist;
+  margin-bottom: 24px;
+  animation: outlet-placeholder-pulse 1.4s $ease infinite;
+}
+
+.outlet-placeholder__banner {
+  height: 72px;
+  border-radius: 12px;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  margin-bottom: 16px;
+  animation: outlet-placeholder-pulse 1.4s $ease infinite;
+}
+
+.outlet-placeholder__kpis {
+  display: flex;
+  gap: 12px;
+}
+
+.outlet-placeholder__kpi {
+  flex: 1;
+  height: 88px;
+  border-radius: 8px;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  animation: outlet-placeholder-pulse 1.4s $ease infinite;
+}
+
+@keyframes outlet-placeholder-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .outlet-placeholder__title,
+  .outlet-placeholder__sub,
+  .outlet-placeholder__banner,
+  .outlet-placeholder__kpi {
+    animation: none;
+    opacity: 0.72;
+  }
+}

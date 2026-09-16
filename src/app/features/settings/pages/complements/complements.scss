@@ -2,8 +2,7 @@
  * Empty state de Complementos — tokens MASTER.
  */
 
-$micovi-ink: #0f172a;
-$micovi-muted: #64748b;
+@use 'styles/colors' as *;
 
 :host {
   display: block;
@@ -19,7 +18,7 @@ $micovi-muted: #64748b;
   margin: 0 0 8px;
   font-size: 1.375rem;
   font-weight: 700;
-  color: $micovi-ink;
+  color: $color-text-primary;
   letter-spacing: -0.01em;
   line-height: 1.25;
 }
@@ -27,6 +26,6 @@ $micovi-muted: #64748b;
 .complements-page__body {
   margin: 0;
   font-size: 0.9375rem;
-  color: $micovi-muted;
+  color: $color-text-secondary;
   line-height: 1.5;
 }

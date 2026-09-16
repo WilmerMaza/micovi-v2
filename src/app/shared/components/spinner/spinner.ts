@@ -5,7 +5,8 @@
  * (gradiente de marca) y label “Cargando…”, alineado al loading del register.
  *
  * Solo presentación: no gestiona show/hide ni el conteo de peticiones.
- * Visible vía `SpinnerService.isLoading`; lo activan interceptor HTTP y router.
+ * Visible vía `SpinnerService.isLoading`; lo activa el interceptor HTTP en GET
+ * lentos sin feedback local (delay 300 ms antes de mostrar).
  */
 import { Component, inject } from '@angular/core';
 import { SpinnerService } from '../../services/spinner.service';

@@ -1,14 +1,15 @@
 // features/settings/settings.routes.ts
 import { Routes } from '@angular/router';
+import { Complements } from './pages/complements/complements';
+import { Home } from './pages/home/home';
 
 export const SETTINGS_ROUTES: Routes = [
   {
     path: '',
-    loadComponent: () => import('./pages/home/home').then((m) => m.Home),
+    component: Home,
   },
   {
     path: 'complements',
-    loadComponent: () =>
-      import('./pages/complements/complements').then((m) => m.Complements),
+    component: Complements,
   },
 ];

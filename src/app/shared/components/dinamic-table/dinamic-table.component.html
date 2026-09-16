@@ -184,13 +184,18 @@
         class="dinamic-table__row"
         [ngClass]="{ 'dinamic-table__row--checked': isCheckBox && selection.isSelected(row) }"
       ></tr>
-    </table>
 
-    @if (dataSource.data.length === 0) {
-    <div class="dinamic-table__empty" role="status">
-      {{ noneData }}
-    </div>
-    }
+      <ng-template matNoDataRow>
+        <tr class="dinamic-table__row dinamic-table__row--empty" role="status">
+          <td
+            class="dinamic-table__td dinamic-table__empty-cell"
+            [attr.colspan]="columnsToDisplay.length"
+          >
+            {{ noneData }}
+          </td>
+        </tr>
+      </ng-template>
+    </table>
   </div>
 
   @if (isPaginador) {
