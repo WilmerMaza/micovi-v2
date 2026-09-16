@@ -191,7 +191,7 @@
             class="dinamic-table__td dinamic-table__empty-cell"
             [attr.colspan]="columnsToDisplay.length"
           >
-            {{ noneData }}
+            {{ emptyMessage || noneData }}
           </td>
         </tr>
       </ng-template>

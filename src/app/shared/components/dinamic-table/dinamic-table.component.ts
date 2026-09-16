@@ -99,6 +99,8 @@ export class DinamicTableComponent implements AfterViewInit {
   public showFirstLastButtons = true;
   public disabled = false;
   public noneData = 'No hay registros para mostrar.';
+  /** Mensaje de vacío (filtros / error); si falta, usa `noneData`. */
+  @Input() emptyMessage = '';
   public displayedColumns: DinamicColumn[] = [];
   public columnsToDisplay: string[] = [];
   public dataSource = new MatTableDataSource<any>([]);

@@ -1,14 +1,20 @@
 @use 'styles/colors' as *;
 
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+}
+
 #sportsman {
-  /* Llena el canvas: toolbar 56px + padding main (top+bottom ~40px) */
+  /* Aire de módulo (MASTER 16–24px): 20px bajo la topbar; laterales del shell. */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: calc(100dvh - 96px);
-  height: calc(100dvh - 96px);
-  padding: 4px 0 0;
+  height: 100%;
+  min-height: 0;
+  padding: 12px 0 0;
   overflow: hidden;
 
   .container {
@@ -28,12 +34,67 @@
 
   .sportsman-list-skeleton {
     flex: 1 1 auto;
-    padding: 0 8px;
+    min-height: 0;
+  }
+
+  .sportsman-head {
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    margin-bottom: 8px;
+  }
+
+  .sportsman-add {
+    box-shadow: none !important;
+    font-family: 'Inria Sans', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    background-color: $color-primary !important;
+    color: $color-text-on-dark !important;
+
+    mat-icon {
+      color: $color-text-on-dark;
+    }
+
+    &:hover {
+      background-color: $color-primary-pressed !important;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
   }
 
   .containerFilter {
     flex-shrink: 0;
-    padding: 0 8px 12px;
+    padding: 0 0 8px;
+
+    /* Mismo ancho que la tabla; cabina: consulta izq. / acciones der. */
+    &__bar {
+      display: grid;
+      grid-template-columns: minmax(200px, 280px) auto minmax(0, 1fr) auto;
+      grid-template-areas: 'search filter chips actions';
+      align-items: center;
+      column-gap: 4px;
+      row-gap: 4px;
+      padding: 8px 12px;
+      border: 1px solid $color-border;
+      border-radius: 8px;
+      background-color: $color-surface;
+      container-type: inline-size;
+
+      @container (max-width: 560px) {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+          'search actions'
+          'filter chips';
+      }
+    }
   }
 
   .container-view {

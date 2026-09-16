@@ -28,8 +28,8 @@
   --dt-ease: cubic-bezier(0.2, 0, 0, 1);
   --dt-font: 'Inria Sans', system-ui, sans-serif;
   /* Cuerpo: crece con el viewport; padres flex pueden estirar con height:100% */
-  --dt-body-min-height: 320px;
-  --dt-body-height: clamp(400px, calc(100dvh - 180px), 1400px);
+  --dt-body-min-height: 240px;
+  --dt-body-height: clamp(280px, calc(100dvh - 220px), 1400px);
 
   /* Checkbox Material → Azul Micovi */
   --mdc-checkbox-selected-focus-icon-color: var(--dt-accent);
@@ -385,8 +385,8 @@
 
   .mat-mdc-paginator-container {
     justify-content: space-between;
-    min-height: 48px;
-    padding: 0 var(--dt-space-4);
+    min-height: 40px;
+    padding: 0 var(--dt-space-3);
     font-family: var(--dt-font);
     font-size: 0.8125rem;
     color: var(--dt-muted);

@@ -2,9 +2,9 @@
  * Barra superior del shell Micovi (toggle + contexto de página + perfil).
  *
  * Expone título corto según la URL actual para anclar la jerarquía mental.
- * No altera auth, Session ni el comportamiento collapsed/mobile del layout.
+ * Sin acciones de negocio: el alta y el resto de CTAs viven en cada feature.
  *
- * pageTitle es solo presentación (markup/aria); las rutas siguen en Router.
+ * No altera auth, Session ni el comportamiento collapsed/mobile del layout.
  */
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, input, OnInit, output, signal } from '@angular/core';
