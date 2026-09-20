@@ -221,6 +221,28 @@
     padding: 16px 24px 24px 24px;
   }
 
+  .back-to-login {
+    text-align: center;
+    padding: 8px 24px 20px 24px;
+    font-size: 0.875rem;
+    color: #62748e;
+
+    span {
+      margin-right: 6px;
+    }
+
+    a {
+      color: #0c4cc8;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
   // ── Footer ─────────────────────────────────────────────────────
   .register-footer {
     margin-top: 20px;

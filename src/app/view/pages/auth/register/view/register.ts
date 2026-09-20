@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DatosContactoFormComponent } from '../components/datos-contacto-form/datos-contacto-form/datos-contacto-form.component';
 import { PasswordFormComponent } from '../components/password-form/password-form/password-form.component';
 import { PersonalInfoFormComponent } from '../components/personal-info-form/personal-info-form/personal-info-form.component';
@@ -28,6 +28,7 @@ import { RegisterService } from '../services/register.service';
   selector: 'app-register',
   imports: [
     CommonModule,
+    RouterLink,
     MatButtonModule,
     MatStepperModule,
     FormsModule,
