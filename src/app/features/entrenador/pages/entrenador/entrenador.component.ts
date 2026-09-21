@@ -56,8 +56,7 @@ export class EntrenadorComponent implements OnInit {
     const rawAction: unknown = event.action;
     const action = typeof rawAction === 'string' ? rawAction : (rawAction as { action?: string })?.action;
     if (action === 'add' || action === 'Añadir entrenador') {
-      // TODO: abrir modal/formulario entrenador (campos te los pido luego)
-      console.log('Añadir entrenador');
+      this.router.navigate(['/Entrenador/create']);
       return;
     }
     if (action === 'ver') {
