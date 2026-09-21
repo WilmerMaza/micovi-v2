@@ -3,6 +3,14 @@ import { gender, typeIdentification } from './constantesEntrenador';
 
 export const filterEntrenadorValue: JsonDataItem[] = [
   {
+    title: 'No. identificación',
+    property: 'identificacion',
+    disable: false,
+    isOpen: false,
+    typeFilter: 'input',
+    control: [{ name: 'identificacion', value: '', code: '', checked: false }],
+  },
+  {
     title: 'Genero',
     property: 'gender',
     disable: false,
