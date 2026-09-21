@@ -170,7 +170,7 @@ $radius-control: 6px;
 .identification-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 16px; /* space-2 filas / space-4 columnas */
+  gap: 4px 12px; /* compacto como deportista — menos separación vertical */
   min-width: 0;
 }
 

@@ -38,7 +38,7 @@
               <mat-error *ngIf="coachForm.get('identification')?.hasError('required') && coachForm.get('identification')?.touched">Campo requerido</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="field field--full">
+            <mat-form-field appearance="outline" class="field">
               <mat-label>Fecha de nacimiento</mat-label>
               <input matInput [matDatepicker]="dp" formControlName="birtDate" placeholder="DD/MM/AAAA" />
               <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
