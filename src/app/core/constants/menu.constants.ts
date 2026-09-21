@@ -26,6 +26,11 @@ export const MENU: Record<string, INavData[]> = {
       iconComponent: { name: 'directions_run' },
     },
     {
+      name: 'Entrenador',
+      url: '/Entrenador',
+      iconComponent: { name: 'how_to_reg' },
+    },
+    {
       name: 'Plan Anual',
       url: '/plan-anual',
       iconComponent: { name: 'calendar_month' },
