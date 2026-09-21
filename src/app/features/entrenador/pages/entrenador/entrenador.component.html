@@ -17,7 +17,7 @@
           (searchSubmit)="onSearch($event)"
           (searchClear)="onSearchClear()"
         />
-        <app-dinamic-filter [dataFilter]="[]" (filterResult)="getDataFilter($event)" />
+        <app-dinamic-filter [dataFilter]="jsonFilter" (filterResult)="getDataFilter($event)" />
       </div>
     </div>
 

@@ -11,6 +11,7 @@ import { TableSkeletonComponent } from '../../../../shared/components/table-skel
 import { ActionResponse } from '../../../../shared/model/Response/DefaultResponse';
 import { filterResult } from '../../../../shared/model/filterModel';
 import { columnsEntrenadorValue } from '../../../../view/entrenador/Model/columnDataEntrenador';
+import { filterEntrenadorValue } from '../../../../view/entrenador/Model/filtroDataEntrenador';
 
 @Component({
   selector: 'app-entrenador',
@@ -32,6 +33,7 @@ export class EntrenadorComponent implements OnInit {
   public data = columnsEntrenadorValue;
   public dataEntrenador: unknown[] = [];
   public isCheck = true;
+  public jsonFilter = structuredClone(filterEntrenadorValue);
   readonly isListLoading = signal(false);
   readonly listError = signal(false);
 
