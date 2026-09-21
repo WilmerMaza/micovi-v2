@@ -30,7 +30,7 @@ import { columnsEntrenadorValue } from '../../../../view/entrenador/Model/column
 })
 export class EntrenadorComponent implements OnInit {
   public data = columnsEntrenadorValue;
-  public dataEntrenador: any[] = [];
+  public dataEntrenador: unknown[] = [];
   public isCheck = true;
   readonly isListLoading = signal(false);
   readonly listError = signal(false);
@@ -51,7 +51,8 @@ export class EntrenadorComponent implements OnInit {
   }
 
   getActionEvent(event: ActionResponse): void {
-    const action = typeof event.action === 'string' ? event.action : (event.action as any)?.action;
+    const rawAction: unknown = event.action;
+    const action = typeof rawAction === 'string' ? rawAction : (rawAction as { action?: string })?.action;
     if (action === 'add' || action === 'Añadir entrenador') {
       // TODO: abrir modal/formulario entrenador (campos te los pido luego)
       console.log('Añadir entrenador');
