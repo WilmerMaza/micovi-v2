@@ -21,7 +21,7 @@
             <mat-form-field appearance="outline" class="field field--full">
               <mat-label>Nombre completo</mat-label>
               <input matInput formControlName="name" placeholder="Ej. Juan Pérez" />
-              <mat-error *ngIf="coachForm.get('name')?.hasError('required')">Campo requerido</mat-error>
+              <mat-error *ngIf="coachForm.get('name')?.hasError('required') && coachForm.get('name')?.touched">Campo requerido</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="field">
@@ -29,21 +29,21 @@
               <mat-select formControlName="typeIdentification" placeholder="Seleccione">
                 <mat-option *ngFor="let opt of typeIdentification" [value]="opt.code">{{ opt.value }}</mat-option>
               </mat-select>
-              <mat-error *ngIf="coachForm.get('typeIdentification')?.hasError('required')">Campo requerido</mat-error>
+              <mat-error *ngIf="coachForm.get('typeIdentification')?.hasError('required') && coachForm.get('typeIdentification')?.touched">Campo requerido</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="field">
               <mat-label>Número de documento</mat-label>
               <input matInput formControlName="identification" placeholder="Ej. 12345678" />
-              <mat-error *ngIf="coachForm.get('identification')?.hasError('required')">Campo requerido</mat-error>
+              <mat-error *ngIf="coachForm.get('identification')?.hasError('required') && coachForm.get('identification')?.touched">Campo requerido</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="field">
+            <mat-form-field appearance="outline" class="field field--full">
               <mat-label>Fecha de nacimiento</mat-label>
               <input matInput [matDatepicker]="dp" formControlName="birtDate" placeholder="DD/MM/AAAA" />
               <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
               <mat-datepicker #dp></mat-datepicker>
-              <mat-error *ngIf="coachForm.get('birtDate')?.hasError('required')">Campo requerido</mat-error>
+              <mat-error *ngIf="coachForm.get('birtDate')?.hasError('required') && coachForm.get('birtDate')?.touched">Campo requerido</mat-error>
             </mat-form-field>
           </div>
 
@@ -76,7 +76,7 @@
           <mat-select formControlName="nationality" placeholder="Seleccione" (selectionChange)="universalEstadoApis($event)">
             <mat-option *ngFor="let p of listPaises" [value]="p.country_name">{{ p.country_name }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="coachForm.get('nationality')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('nationality')?.hasError('required') && coachForm.get('nationality')?.touched">Campo requerido</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="field" [matTooltipDisabled]="activeDepto" matTooltip="Selecciona un país">
@@ -84,7 +84,7 @@
           <mat-select formControlName="department" placeholder="Seleccione" (selectionChange)="universalCiudadesApis($event)">
             <mat-option *ngFor="let e of listEstados" [value]="e.state_name">{{ e.state_name }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="coachForm.get('department')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('department')?.hasError('required') && coachForm.get('department')?.touched">Campo requerido</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="field" [matTooltipDisabled]="activeCity" matTooltip="Selecciona un departamento">
@@ -92,7 +92,7 @@
           <mat-select formControlName="city" placeholder="Seleccione">
             <mat-option *ngFor="let c of listCiudades" [value]="c.city_name">{{ c.city_name }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="coachForm.get('city')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('city')?.hasError('required') && coachForm.get('city')?.touched">Campo requerido</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="field">
@@ -100,7 +100,7 @@
           <mat-select formControlName="gender" placeholder="Seleccione">
             <mat-option *ngFor="let g of generos" [value]="g.code">{{ g.value }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="coachForm.get('gender')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('gender')?.hasError('required') && coachForm.get('gender')?.touched">Campo requerido</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="field">
@@ -108,13 +108,13 @@
           <mat-select formControlName="studyLevelMax" placeholder="Seleccione">
             <mat-option *ngFor="let n of nivelEstudio" [value]="n.code">{{ n.value }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="coachForm.get('studyLevelMax')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('studyLevelMax')?.hasError('required') && coachForm.get('studyLevelMax')?.touched">Campo requerido</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="field field--span-2">
           <mat-label>Institución donde estudió</mat-label>
           <input matInput formControlName="institutionNameStudy" />
-          <mat-error *ngIf="coachForm.get('institutionNameStudy')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('institutionNameStudy')?.hasError('required') && coachForm.get('institutionNameStudy')?.touched">Campo requerido</mat-error>
         </mat-form-field>
       </div>
     </section>
@@ -129,20 +129,20 @@
         <mat-form-field appearance="outline" class="field">
           <mat-label>Contraseña</mat-label>
           <input matInput type="password" formControlName="password" />
-          <mat-error *ngIf="coachForm.get('password')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('password')?.hasError('required') && coachForm.get('password')?.touched">Campo requerido</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="field">
           <mat-label>Teléfono</mat-label>
           <input matInput formControlName="phone" placeholder="+57 ..." />
-          <mat-error *ngIf="coachForm.get('phone')?.hasError('required')">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('phone')?.hasError('required') && coachForm.get('phone')?.touched">Campo requerido</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="field">
           <mat-label>Correo electrónico</mat-label>
           <input matInput type="email" formControlName="email" />
-          <mat-error *ngIf="coachForm.get('email')?.hasError('required')">Campo requerido</mat-error>
-          <mat-error *ngIf="coachForm.get('email')?.hasError('email')">Correo inválido</mat-error>
+          <mat-error *ngIf="coachForm.get('email')?.hasError('required') && coachForm.get('email')?.touched">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('email')?.hasError('email') && coachForm.get('email')?.touched">Correo inválido</mat-error>
         </mat-form-field>
       </div>
     </section>
