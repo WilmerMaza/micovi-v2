@@ -2,7 +2,6 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MATERIAL_IMPORTS } from '../../../../shared/modules/material-imports';
 import { DinamicTableComponent } from '../../../../shared/components/dinamic-table/dinamic-table.component';
@@ -20,8 +19,6 @@ import { columnsEntrenadorValue } from '../../../../view/entrenador/Model/column
   styleUrls: ['./entrenador.component.scss'],
   imports: [
     CommonModule,
-    MatCard,
-    MatCardContent,
     MatButtonModule,
     MatIconModule,
     ...MATERIAL_IMPORTS,
