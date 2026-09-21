@@ -170,7 +170,7 @@ $radius-control: 6px;
 .identification-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 4px 12px; /* compacto como deportista — menos separación vertical */
+  gap: 2px 12px; /* ultra compacto: vertical 2px como deportista donde no cabe cursor */
   min-width: 0;
 }
 
@@ -181,7 +181,7 @@ $radius-control: 6px;
 .fields-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px 16px; /* space-2 / space-4 — densos, no pegados */
+  gap: 2px 12px; /* ultra compacto vertical como deportista */
 }
 
 .field--span-2 {
