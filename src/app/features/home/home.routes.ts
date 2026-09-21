@@ -17,14 +17,14 @@ export const HOME_ROUTES: Routes = [
     component: Dashboard,
   },
 
-  // Entrenador — al activar: añadir '/entrenador' en list-route-patterns.ts
-  // {
-  //   path: 'entrenador',
-  //   loadChildren: () =>
-  //     import('../entrenador/entrenador.routes').then(
-  //       (m) => m.ENTRENADOR_ROUTES
-  //     ),
-  // },
+  // Entrenador — reutiliza layout de deportista (FE-002)
+  {
+    path: 'Entrenador',
+    loadChildren: () =>
+      import('../entrenador/entrenador.routes').then(
+        (m) => m.ENTRENADOR_ROUTES
+      ),
+  },
 
   {
     path: 'sportsman',
