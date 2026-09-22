@@ -1,3 +1,9 @@
+/**
+ * Shell home Micovi: topbar + rail + outlet.
+ *
+ * El breadcrumb se genera desde BreadcrumbService. El guard de auth vive en
+ * las rutas hijas para que el chrome aparezca de inmediato.
+ */
 import { CommonModule } from '@angular/common';
 import {
   Component,
@@ -31,6 +37,7 @@ import {
   OutletPlaceholder,
   OutletPlaceholderVariant,
 } from './components/outlet-placeholder/outlet-placeholder';
+import { ShellBreadcrumb } from './components/breadcrumb/breadcrumb';
 import { Sidenav } from './components/sidenav/sidenav';
 
 const PLACEHOLDER_SHOW_DELAY_MS = 300;
@@ -50,6 +57,7 @@ const PLACEHOLDER_SHOW_DELAY_MS = 300;
     Nav,
     Spinner,
     OutletPlaceholder,
+    ShellBreadcrumb,
   ],
   templateUrl: './layout.html',
   styleUrls: ['./layout.scss'],

@@ -6,6 +6,7 @@
  */
 
 @use 'styles/colors' as *;
+@use 'styles/spacing' as *;
 
 $ease: cubic-bezier(0.2, 0, 0, 1);
 $dur: 180ms;
@@ -20,8 +21,9 @@ $dur: 180ms;
 .dash {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 4px 0 24px;
+  gap: $space-4;
+  /* Sin padding horizontal: el shell ($shell-pad-*) es la fuente de verdad */
+  padding: 0 0 $space-5;
   font-family: 'Inria Sans', sans-serif;
   color: $color-text-primary;
   /* Full-bleed del content pane (MASTER): sin columna estrecha a la izquierda */

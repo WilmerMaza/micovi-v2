@@ -1,13 +1,12 @@
 /**
  * Rutas de listado tabular que usan placeholder tipo «table» en el shell.
  *
- * Al activar entrenador/ejercicios en home.routes, añadir el segmento aquí y
+ * Al convertir un dominio en listado denso, añadir el segmento aquí y
  * reutilizar TableSkeletonComponent + isListLoading en el componente listado.
  */
 export const TABLE_OUTLET_ROUTE_SEGMENTS = [
+  '/deportistas',
   '/sportsman',
-  '/entrenador',
-  '/ejercicios',
 ] as const;
 
 /** true si la URL destino es un listado denso (dinamic-table). */

@@ -11,7 +11,7 @@
         var path = window.location.pathname || '';
         var isAuth =
           path.indexOf('/login') === 0 || path.indexOf('/registers') === 0;
-        var isConfig = path.indexOf('/configuration') === 0;
+        var isConfig = false;
         if (isAuth) {
           document.documentElement.classList.add('boot-auth');
         } else if (isConfig) {

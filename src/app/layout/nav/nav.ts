@@ -1,19 +1,18 @@
 /**
  * Barra superior del shell Micovi (toggle + contexto de página + perfil).
  *
- * Expone título corto según la URL actual para anclar la jerarquía mental.
+ * Título y chip de ciclo vienen de BreadcrumbService y TrainingContextService.
  * Sin acciones de negocio: el alta y el resto de CTAs viven en cada feature.
  *
  * No altera auth, Session ni el comportamiento collapsed/mobile del layout.
  */
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, input, OnInit, output, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { BreadcrumbService } from '../../core/breadcrumbs/breadcrumb.service';
+import { TrainingContextService } from '../../core/context/training-context.service';
 import { ProfileMenu } from '../widgets/profile-menu/profile-menu';
 
 @Component({
@@ -29,56 +28,18 @@ import { ProfileMenu } from '../widgets/profile-menu/profile-menu';
   templateUrl: './nav.html',
   styleUrls: ['./nav.scss'],
 })
-export class Nav implements OnInit {
+export class Nav {
   public readonly mostrarToggleMenu = input<boolean>(true);
   readonly collapsed = input<boolean>(false);
   readonly menuToggle = output<void>();
 
-  readonly pageTitle = signal('Inicio');
+  private readonly breadcrumbs = inject(BreadcrumbService);
+  private readonly trainingContext = inject(TrainingContextService);
 
-  private readonly router = inject(Router);
-  private readonly destroyRef = inject(DestroyRef);
-
-  ngOnInit(): void {
-    this.updateTitle(this.router.url);
-    this.router.events
-      .pipe(
-        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe((e) => this.updateTitle(e.urlAfterRedirects));
-  }
+  readonly pageTitle = this.breadcrumbs.pageTitle;
+  readonly cycleChip = this.trainingContext.chipLabel;
 
   toggleMenu(): void {
     this.menuToggle.emit();
-  }
-
-  private updateTitle(url: string): void {
-    const path = url.split('?')[0];
-    if (path.includes('/sportsman')) {
-      this.pageTitle.set('Deportistas');
-      return;
-    }
-    if (path.includes('/plan-anual')) {
-      this.pageTitle.set('Plan anual');
-      return;
-    }
-    if (path.includes('/Ejercicios') || path.includes('/ejercicios')) {
-      this.pageTitle.set('Ejercicios');
-      return;
-    }
-    if (path.includes('/Entrenador') || path.includes('/entrenador')) {
-      this.pageTitle.set('Entrenador');
-      return;
-    }
-    if (path.includes('/Complementos') || path.includes('/complementos')) {
-      this.pageTitle.set('Complementos');
-      return;
-    }
-    if (path.includes('/configuration') || path.includes('/configuración')) {
-      this.pageTitle.set('Configuración');
-      return;
-    }
-    this.pageTitle.set('Inicio');
   }
 }

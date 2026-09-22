@@ -3,9 +3,11 @@
  *
  * Full-bleed del content pane; Identificación = campos + foto fija;
  * Física/personales en 3 columnas desktop. Sin max-width centrado.
+ * Padding horizontal: shell ($shell-pad-*).
  */
 
 @use 'styles/colors' as *;
+@use 'styles/spacing' as *;
 
 @use '@angular/material' as mat;
 
@@ -30,11 +32,11 @@ $radius-control: 6px;
 .registration-container {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* space-5: entre header y formulario */
+  gap: $space-5;
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 12px 0 20px; /* space-3 / space-5 — sin padding horizontal (shell) */
+  padding: 0 0 $space-5;
   box-sizing: border-box;
 }
 
@@ -402,8 +404,8 @@ $radius-control: 6px;
 /* Móvil ≤767: 1 col; foto full-width debajo */
 @media (max-width: 767px) {
   .registration-container {
-    padding: 8px 0 16px;
-    gap: 20px;
+    padding: 0 0 $space-4;
+    gap: $space-5;
   }
 
   .registration-form {

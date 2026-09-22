@@ -1,0 +1,46 @@
+/**
+ * Placeholder de módulo — densidad de cabina, sin card ornamental.
+ *
+ * Sin padding de página: el shell aporta $shell-pad-*.
+ */
+@use 'styles/colors' as *;
+@use 'styles/spacing' as *;
+
+:host {
+  display: block;
+}
+
+.placeholder {
+  max-width: 52ch;
+  padding: 0 0 $space-5;
+}
+
+.placeholder__header {
+  margin-bottom: $space-4;
+}
+
+.placeholder__title {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: $color-text-primary;
+}
+
+.placeholder__description {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: $color-text-secondary;
+}
+
+.placeholder__status {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: $color-text-secondary;
+  background: $color-mist;
+  border-radius: 6px;
+}

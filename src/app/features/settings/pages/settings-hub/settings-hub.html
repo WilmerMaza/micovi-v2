@@ -1,0 +1,26 @@
+<!--
+  Hub de configuración: cabecera + filas densas (mismo patrón que atajos del home).
+-->
+<section class="hub" aria-labelledby="settings-hub-title">
+  <header class="hub__header">
+    <h1 id="settings-hub-title" class="hub__title">{{ title() }}</h1>
+    <p class="hub__lead">{{ description() }}</p>
+  </header>
+
+  <nav class="shortcuts" [attr.aria-label]="title()">
+    <ul class="shortcut-list">
+      @for (item of entries(); track item.id) {
+      <li>
+        <a class="shortcut-row" [routerLink]="item.route">
+          <mat-icon class="shortcut-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+          <span class="shortcut-text">
+            <span class="shortcut-label">{{ item.label }}</span>
+            <span class="shortcut-hint">{{ item.hint }}</span>
+          </span>
+          <mat-icon class="shortcut-chevron" aria-hidden="true">chevron_right</mat-icon>
+        </a>
+      </li>
+      }
+    </ul>
+  </nav>
+</section>
