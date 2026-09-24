@@ -1,12 +1,13 @@
 /**
  * Empty state de Complementos — tokens MASTER.
+ *
+ * Sin padding de página: el shell aporta $shell-pad-*.
  */
 
 @use 'styles/colors' as *;
 
 :host {
   display: block;
-  padding: 24px;
   font-family: 'Inria Sans', sans-serif;
 }
 

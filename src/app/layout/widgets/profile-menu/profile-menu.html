@@ -10,7 +10,7 @@
     <span class="profile-trigger__avatar" aria-hidden="true">{{ initials() }}</span>
     <span class="profile-trigger__text">
       <span class="profile-trigger__name">{{ displayName() }}</span>
-      <span class="profile-trigger__role">{{ roleLabel() }}</span>
+          <span class="profile-trigger__role">{{ roleName() }}</span>
     </span>
     <mat-icon class="profile-trigger__caret" aria-hidden="true">expand_more</mat-icon>
   </button>
@@ -29,20 +29,22 @@
         @if (emailLabel()) {
           <div class="micovi-menu-header__email">{{ emailLabel() }}</div>
         }
-        <div class="micovi-menu-header__meta">{{ roleLabel() }}</div>
+        <div class="micovi-menu-header__meta">{{ roleName() }}</div>
       </div>
     </div>
 
     <mat-divider></mat-divider>
 
     <div class="micovi-menu-actions" role="group" aria-label="Acciones de cuenta">
+    @if (canAccessSettings()) {
       <button mat-menu-item class="micovi-menu-item" (click)="configuracion()">
         <mat-icon aria-hidden="true">settings</mat-icon>
         <span class="micovi-menu-item__label">
           <span class="micovi-menu-item__title">Configuración</span>
-          <span class="micovi-menu-item__hint">Preferencias de la cuenta</span>
+          <span class="micovi-menu-item__hint">Institución y maestros</span>
         </span>
       </button>
+    }
 
       <button
         mat-menu-item

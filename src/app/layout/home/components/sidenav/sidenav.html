@@ -1,7 +1,7 @@
 <!--
   Rail de navegación del shell Micovi.
   Marca: /images/logo_micovi_mark.png (derivado de logo_register, sin fondo negro).
-  Collapsed: tooltips + aria-label; abierto: label de zona «Menú».
+  Collapsed: tooltips + aria-label; abierto: labels de zona por sección.
 -->
 <div class="sidebar-container">
   <!-- Marca oficial sobre tinta pizarra -->
@@ -26,31 +26,6 @@
     aria-label="Navegación principal"
     [attr.aria-busy]="navPending()"
   >
-    @if (!collapsed() && showText()) {
-    <span class="nav-zone-label nav-fade">Menú</span>
-    }
-
-    <div class="nav-button-container">
-      <button
-        type="button"
-        class="nav-button"
-        [class.collapsed]="collapsed()"
-        [class.active]="isActive('/dashboard')"
-        (click)="navigateTo('/dashboard')"
-        [attr.aria-current]="isActive('/dashboard') ? 'page' : null"
-        [attr.aria-label]="collapsed() ? 'Inicio' : null"
-        matTooltip="Inicio"
-        matTooltipPosition="right"
-        [matTooltipDisabled]="!collapsed()"
-        matTooltipShowDelay="200"
-      >
-        <mat-icon aria-hidden="true">home</mat-icon>
-        @if (!collapsed() && showText()) {
-        <span class="nav-fade">Inicio</span>
-        }
-      </button>
-    </div>
-
     @if (navPending()) {
       @for (slot of navPlaceholderSlots; track slot) {
       <div class="nav-button-container">
@@ -62,31 +37,62 @@
       </div>
       }
     } @else {
-      @for (item of Menu; track item.url) {
+      @for (group of groups(); track group.section; let first = $first) {
+      @if (!first) {
+      <div class="nav-section-divider" [class.collapsed]="collapsed()" aria-hidden="true"></div>
+      }
+      @if (!collapsed() && showText()) {
+      <span class="nav-zone-label nav-fade">{{ group.label }}</span>
+      }
+
+      @for (item of group.items; track item.id) {
       <div class="nav-button-container">
         <button
           type="button"
           class="nav-button"
           [class.collapsed]="collapsed()"
-          [class.active]="isActive(item.url)"
-          (click)="navigateTo(item.url)"
-          [attr.aria-current]="isActive(item.url) ? 'page' : null"
-          [attr.aria-label]="collapsed() ? item.name : null"
-          [matTooltip]="item.name"
+          [class.active]="isActive(item) && !item.children?.length"
+          [class.parent-active]="isActive(item) && !!item.children?.length"
+          (click)="navigateTo(item.route)"
+          [attr.aria-current]="isActive(item) && !item.children?.length ? 'page' : null"
+          [attr.aria-expanded]="item.children?.length ? isExpanded(item.id) : null"
+          [attr.aria-label]="collapsed() ? item.label : null"
+          [matTooltip]="item.label"
           matTooltipPosition="right"
           [matTooltipDisabled]="!collapsed()"
           matTooltipShowDelay="200"
         >
-          <mat-icon aria-hidden="true">{{ item.iconComponent.name }}</mat-icon>
+          <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
           @if (!collapsed() && showText()) {
-          <span class="nav-fade">{{ item.name }}</span>
-          @if (item.badge) {
-          <span class="badge nav-fade" [class]="'badge-' + item.badge.color">{{
-            item.badge.text
-          }}</span>
-          } }
+          <span class="nav-fade">{{ item.label }}</span>
+          @if (item.children?.length) {
+          <mat-icon
+            class="nav-chevron"
+            aria-hidden="true"
+            (click)="toggleExpand($event, item.id)"
+          >{{ isExpanded(item.id) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+          }
+          }
         </button>
       </div>
+
+      @if (item.children?.length && !collapsed() && isExpanded(item.id) && showText()) {
+        @for (child of item.children; track child.id) {
+        <div class="nav-button-container nav-button-container--child">
+          <button
+            type="button"
+            class="nav-button nav-button--child"
+            [class.active]="isActive(child)"
+            (click)="navigateTo(child.route)"
+            [attr.aria-current]="isActive(child) ? 'page' : null"
+          >
+            <span class="nav-child-dot" aria-hidden="true"></span>
+            <span class="nav-fade">{{ child.label }}</span>
+          </button>
+        </div>
+        }
+      }
+      }
       }
     }
   </nav>
@@ -96,8 +102,8 @@
     <img [src]="avatar" class="user-avatar" alt="" width="40" height="40" />
     @if (!collapsed() && showText()) {
     <div class="user-meta nav-fade">
-      <span class="user-name">{{ username }}</span>
-      <span class="user-role">Entrenador</span>
+      <span class="user-name">{{ displayName() }}</span>
+      <span class="user-role">{{ roleName() }}</span>
     </div>
     }
   </div>

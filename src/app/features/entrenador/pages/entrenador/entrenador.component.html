@@ -1,0 +1,42 @@
+<div id="entrenador">
+  <div class="conten-table">
+    <div class="sportsman-head">
+      <button matFab extended color="primary" type="button" class="sportsman-add" (click)="getActionEvent({action: {action: 'add'}, data: null})">
+        <mat-icon aria-hidden="true">add</mat-icon>
+        Añadir entrenador
+      </button>
+    </div>
+    <div class="containerFilter">
+      <div class="containerFilter__bar">
+        <app-dinamic-toolbar
+          [isDownload]="false"
+          [showButtonAdd]="false"
+          [searchPlaceholder]="'Nombre o identificación'"
+          [searchAriaLabel]="'Buscar entrenador'"
+          (actionToolbar)="getActionEvent($event)"
+          (searchSubmit)="onSearch($event)"
+          (searchClear)="onSearchClear()"
+        />
+        <app-dinamic-filter [dataFilter]="jsonFilter" (filterResult)="getDataFilter($event)" />
+      </div>
+    </div>
+
+    @if (isListLoading() && dataEntrenador.length === 0) {
+      <app-table-skeleton class="sportsman-list-skeleton" [showFilters]="false" [showCheckbox]="isCheck" [columns]="data.length" />
+    } @else {
+      <div class="conten-table1">
+        <div class="conten-table2">
+          <div class="container" [class.container--busy]="isListLoading() && dataEntrenador.length > 0" [attr.aria-busy]="isListLoading()">
+            <app-dinamic-table
+              [isCheckBox]="isCheck"
+              [columns]="data"
+              [dataSource]="dataEntrenador"
+              [emptyMessage]="emptyTableMessage()"
+              (actionEvent)="getActionEvent($event)"
+            />
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

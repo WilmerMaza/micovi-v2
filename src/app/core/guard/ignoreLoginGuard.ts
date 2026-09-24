@@ -1,13 +1,14 @@
 /**
  * Guard de rutas públicas de auth (login/register).
  *
- * Si la sesión ya está restaurada, redirige al dashboard. Espera el bootstrap
+ * Si la sesión ya está restaurada, redirige a Inicio. Espera el bootstrap
  * de auth antes de decidir para evitar flash de login en usuarios con cookie válida.
  */
 import { inject, Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth';
+import { APP_ROUTES } from '../navigation/routes';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class IgnoreLoginGuard {
     }
 
     if (this.authService.isAuthenticated()) {
-      return this.router.createUrlTree(['/dashboard']);
+      return this.router.createUrlTree([APP_ROUTES.inicio]);
     }
 
     return true;

@@ -1,0 +1,35 @@
+export const columnsEntrenadorValue = [
+  {
+    displayname: 'No. identificación',
+    name: 'identification',
+    estado: true,
+    type: 'text',
+  },
+  {
+    displayname: 'Nombre completo',
+    name: 'name',
+    estado: true,
+    type: 'text',
+  },
+  {
+    displayname: 'Correo',
+    name: 'email',
+    estado: true,
+    type: 'text',
+  },
+  {
+    displayname: 'Teléfono',
+    name: 'phone',
+    estado: true,
+    type: 'text',
+  },
+  {
+    displayname: 'Acción',
+    estado: true,
+    type: 'action',
+    menu: [
+      { action: 'ver', text: 'Ver detalle' },
+      { action: 'Editar', text: 'Editar', dividerBefore: true },
+    ],
+  },
+];

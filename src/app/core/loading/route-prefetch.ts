@@ -25,19 +25,14 @@ export function prefetchSportsmanRoutes(): void {
   void import('../../features/sportsman/sportsman.routes');
 }
 
-/** Precarga módulo de configuración (SETTINGS ya eager; útil si vuelve a lazy). */
+/** Precarga módulo de configuración. */
 export function prefetchConfigurationRoutes(): void {
   if (configurationPrefetched) {
     return;
   }
   configurationPrefetched = true;
-  void import('../../features/settings/pages/complements/complements');
+  void import('../../features/settings/settings.routes');
 }
-
-/**
- * Al cablear entrenador/ejercicios en home.routes, añadir aquí el import()
- * del .routes.ts correspondiente (mismo patrón que prefetchSportsmanRoutes).
- */
 
 /** Prefetch de rutas secundarias frecuentes tras el dashboard. */
 export function prefetchSecondaryRoutes(): void {

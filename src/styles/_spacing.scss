@@ -1,0 +1,27 @@
+/**
+ * Tokens de espaciado Micovi — ritmo 4/8 (MASTER density 7).
+ *
+ * Fuente única para padding/gap del shell y módulos.
+ * Uso: @use 'styles/spacing' as *;
+ *
+ * App shell: inset de contenido 16–24px (evitar huecos de landing).
+ */
+
+// ── Escala base ──────────────────────────────────────────────
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+
+// ── Shell: inset del canvas de contenido ─────────────────────
+// Aire bajo la topbar + laterales + fondo. Los módulos no deben
+// repetir padding horizontal; solo gap interno entre bloques.
+$shell-pad-x: $space-5; // 24px desktop
+$shell-pad-y: $space-4; // 16px bajo topbar / fondo
+$shell-pad-x-mobile: $space-4; // 16px
+$shell-pad-y-mobile: $space-4; // 16px
+
+// Hueco entre breadcrumb y título de página
+$shell-breadcrumb-gap: $space-4; // 16px
