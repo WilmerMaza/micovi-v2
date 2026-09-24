@@ -5,7 +5,7 @@
  * (placeholders) en franja única y atajos a rutas reales del menú.
  * Conserva el flujo newpay + Swal/confeti sin cambios.
  *
- * Ruteado por features/home/home.routes (no el legacy view/dashboard).
+ * Ruteado por `/inicio` (features/home/home.routes).
  */
 import { CommonModule } from '@angular/common';
 import { afterNextRender, Component, OnInit } from '@angular/core';
@@ -13,6 +13,7 @@ import { prefetchSecondaryRoutes } from '../../core/loading/route-prefetch';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
+import { APP_ROUTES } from '../../core/navigation/routes';
 import { fireNewPayCelebration } from '../../utils/alert_Toast';
 import { Validators } from '../../utils/Validators';
 
@@ -84,19 +85,19 @@ export class Dashboard implements OnInit {
       {
         label: 'Deportistas',
         hint: 'Entra al listado para planificar y dosificar',
-        url: '/sportsman',
+        url: APP_ROUTES.deportistas,
         icon: 'directions_run',
       },
       {
         label: 'Sesión de hoy',
         hint: 'Sin sesión cargada — elige un deportista',
-        url: '/sportsman',
+        url: APP_ROUTES.sesiones,
         icon: 'today',
       },
       {
         label: 'Resultados',
         hint: 'Sin datos aún — registra ejecución desde el deportista',
-        url: '/sportsman',
+        url: APP_ROUTES.desempenoReportes,
         icon: 'insights',
       },
     ];

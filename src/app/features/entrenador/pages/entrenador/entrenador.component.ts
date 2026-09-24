@@ -12,7 +12,13 @@ import { ActionResponse } from '../../../../shared/model/Response/DefaultRespons
 import { filterResult } from '../../../../shared/model/filterModel';
 import { columnsEntrenadorValue } from '../../../../view/entrenador/Model/columnDataEntrenador';
 import { filterEntrenadorValue } from '../../../../view/entrenador/Model/filtroDataEntrenador';
+import { APP_ROUTES } from '../../../../core/navigation/routes';
 
+/**
+ * Listado de entrenadores: búsqueda, filtros y tabla.
+ *
+ * El alta vive en esta feature. Mock vacío hasta conectar el servicio.
+ */
 @Component({
   selector: 'app-entrenador',
   standalone: true,
@@ -56,7 +62,7 @@ export class EntrenadorComponent implements OnInit {
     const rawAction: unknown = event.action;
     const action = typeof rawAction === 'string' ? rawAction : (rawAction as { action?: string })?.action;
     if (action === 'add' || action === 'Añadir entrenador') {
-      this.router.navigate(['/Entrenador/create']);
+      this.router.navigateByUrl(APP_ROUTES.entrenadoresCrear);
       return;
     }
     if (action === 'ver') {

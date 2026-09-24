@@ -1,49 +1,5 @@
-import { INavData } from '../../layout/interfaces/nav-data.interface';
-
-export const MENU: Record<string, INavData[]> = {
-  entrenador: [
-    {
-      name: 'Deportista',
-      url: '/sportsman',
-      iconComponent: { name: 'directions_run' },
-    },
-    {
-      name: 'Entrenador',
-      url: '/Entrenador',
-      iconComponent: { name: 'how_to_reg' },
-    },
-    {
-      name: 'Complementos',
-      url: '/Complementos',
-      iconComponent: { name: 'widgets' },
-    },
-  ],
-
-  instucion: [
-    {
-      name: 'Deportista',
-      url: '/sportsman',
-      iconComponent: { name: 'directions_run' },
-    },
-    {
-      name: 'Entrenador',
-      url: '/Entrenador',
-      iconComponent: { name: 'how_to_reg' },
-    },
-    {
-      name: 'Plan Anual',
-      url: '/plan-anual',
-      iconComponent: { name: 'calendar_month' },
-    },
-    {
-      name: 'Ejercicios',
-      url: '/Ejercicios',
-      iconComponent: { name: 'fitness_center' },
-    },
-    {
-      name: 'Complementos',
-      url: '/Complementos',
-      iconComponent: { name: 'widgets' },
-    },
-  ],
-};
+/**
+ * @deprecated Usar `NAVIGATION_CONFIG` en `core/navigation/navigation.config.ts`.
+ * Se mantiene el reexport para no romper imports residuales.
+ */
+export { NAVIGATION_CONFIG as MENU } from '../navigation/navigation.config';

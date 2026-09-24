@@ -55,5 +55,5 @@ export const columnsValue = [
  * Nota de navegación (deportistas):
  * - Menú plano (schema): Ver detalle / Ejercicios asociados · Editar.
  * - enableWhen en el schema; la tabla no conoce HasIndicators por nombre de action.
- * - «Editar» → `/sportsman/edit/:id`. Alta → `/sportsman/create`.
+ * - «Editar» → `/deportistas/:id/editar`. Alta → `/deportistas/crear`.
  */

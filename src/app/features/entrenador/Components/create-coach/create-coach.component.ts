@@ -15,7 +15,13 @@ import { PAISESCONST, ESTADOSCONST, CIUDADESCONST, Iestados, Iciudades, Ipaises,
 import { typeIdentification } from '../../../../models/constan';
 import { gender, entradorNivelEducativo } from '../../../../view/entrenador/Model/constantesEntrenador';
 import { eventsPaises } from '../../../../view/entrenador/Model/entrenadorModel';
+import { APP_ROUTES } from '../../../../core/navigation/routes';
 
+/**
+ * Formulario de alta / edición de entrenador.
+ *
+ * Tras guardar o cancelar vuelve al listado canónico `/entrenadores`.
+ */
 @Component({
   selector: 'app-create-coach',
   standalone: true,
@@ -107,13 +113,13 @@ export class CreateCoachComponent implements OnInit {
   }
 
   closeCard(): void {
-    this.router.navigate(['/Entrenador']);
+    this.router.navigateByUrl(APP_ROUTES.entrenadores);
   }
 
   submit(): void {
     if (this.coachForm.valid) {
       console.log('Coach submit', this.coachForm.value);
-      this.router.navigate(['/Entrenador']);
+      this.router.navigateByUrl(APP_ROUTES.entrenadores);
     } else {
       this.coachForm.markAllAsTouched();
     }

@@ -3,7 +3,7 @@
  *
  * Envía credenciales a POST /api/auth/login. El backend responde con el perfil
  * y establece cookies HttpOnly (access/refresh). Este servicio actualiza
- * AuthService en memoria y redirige al dashboard.
+ * AuthService en memoria y redirige a Inicio.
  *
  * Separado del componente para reutilizar el mismo flujo si se agrega otro
  * punto de entrada (ej. modal, SSO).
@@ -12,6 +12,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth';
+import { APP_ROUTES } from '../../../../core/navigation/routes';
 import { MeResponse } from '../../../../core/models/login-response.model';
 import { MicoviApi } from '../../../../core/services/micovi.api';
 import { fireErrorToast } from '../../../../utils/alert_Toast';
@@ -38,7 +39,7 @@ export class Session {
           role: user.role,
           schoolId: user.schoolId,
         });
-        void this.router.navigate(['/dashboard']);
+        void this.router.navigate([APP_ROUTES.inicio]);
       }),
       tap({
         error: () => {

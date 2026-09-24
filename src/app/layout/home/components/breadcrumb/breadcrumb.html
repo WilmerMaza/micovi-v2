@@ -1,0 +1,16 @@
+@if (breadcrumbs.visible()) {
+<nav class="breadcrumb" aria-label="Ruta de navegación">
+  <ol class="breadcrumb__list">
+    @for (crumb of breadcrumbs.crumbs(); track crumb.url + crumb.label; let last = $last) {
+    <li class="breadcrumb__item">
+      @if (!last) {
+      <a class="breadcrumb__link" [routerLink]="crumb.url">{{ crumb.label }}</a>
+      <span class="breadcrumb__sep" aria-hidden="true">/</span>
+      } @else {
+      <span class="breadcrumb__current" aria-current="page">{{ crumb.label }}</span>
+      }
+    </li>
+    }
+  </ol>
+</nav>
+}
