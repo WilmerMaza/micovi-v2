@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
+import { APP_ROUTES } from '../../../../core/navigation/routes';
 import { SportsmanService } from '../../services/sportsman.service';
 import { listInfo } from '../../../../models/interface';
 import { Imgs } from '../../../../core/services/imgs';
@@ -35,14 +36,13 @@ import { MOCK_SPORTSMEN } from '../../mocks/sportsman.mock';
  * true  → lista con MOCK_SPORTSMEN (UI / paginación sin back).
  * false → vuelve a SportsmanService.getSportsman() / getSFilterSportsman().
  */
-const USE_MOCK_SPORTSMAN = false;
+const USE_MOCK_SPORTSMAN = true;
 
 /**
  * Listado de deportistas: alta de página, búsqueda, filtros y tabla.
  *
  * El CTA de alta vive en esta feature (no en el shell ni en la barra de
- * consulta). La búsqueda (Name) y los filtros laterales se aplican por
- * separado; POST `/sportMan/get` solo cuando hay criterios activos.
+ * consulta). Rutas: `/deportistas`, `/deportistas/crear`, `/deportistas/:id/editar`.
  */
 @Component({
   selector: 'app-sportsman',
@@ -189,15 +189,13 @@ export class SportsmanComponent implements OnInit {
     }
 
     if (action === 'verEjercicios') {
-      this.router.navigate(['sportsman/view'], {
-        queryParams: { id: data.ID },
-      });
+      void this.router.navigateByUrl(APP_ROUTES.deportista(data.ID));
     }
   }
 
   /** Alta de deportista: navega al formulario de create de esta feature. */
   openCreateSportsman(): void {
-    this.router.navigate(['/sportsman/create']);
+    this.router.navigateByUrl(APP_ROUTES.deportistasCrear);
   }
 
   /** Navega a la ruta hija de edición (misma pantalla que create). */
@@ -208,7 +206,7 @@ export class SportsmanComponent implements OnInit {
       this.sporsmanService$.setSportmanInfoRedirect(this.dataSingleAux);
     }
     this.showSportsman = false;
-    this.router.navigate(['/sportsman', 'edit', data.ID]);
+    this.router.navigateByUrl(APP_ROUTES.deportistaEditar(data.ID));
   }
 
   transformGenre(data: Sportsman[]): void {

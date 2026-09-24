@@ -5,7 +5,7 @@
  * país → departamento → ciudad. La UI es secciones densas Micovi;
  * create/update e upload de imagen no cambian de contrato.
  *
- * Usado por ruta `/sportsman/create|edit/:id` y overlay en listado.
+ * Usado por ruta `/deportistas/crear|:id/editar` y overlay en listado.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
@@ -15,6 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { APP_ROUTES } from '../../../../core/navigation/routes';
 
 import { SportsmanService } from '../../services/sportsman.service';
 
@@ -136,7 +137,11 @@ export class CreateSportsmanComponent implements OnInit {
   private bootstrapFromRoute(): void {
     const editId = this.route.snapshot.paramMap.get('id');
     const path = this.route.snapshot.routeConfig?.path ?? '';
-    this.isRoutePage = path === 'create' || path.startsWith('edit');
+    this.isRoutePage =
+      path === 'crear' ||
+      path === 'create' ||
+      path === ':id/editar' ||
+      path.startsWith('edit');
 
     if (!this.isRoutePage) {
       return;
@@ -158,7 +163,7 @@ export class CreateSportsmanComponent implements OnInit {
 
   closeCard(): void {
     if (this.isRoutePage) {
-      this.router.navigate(['/sportsman']);
+      this.router.navigateByUrl(APP_ROUTES.deportistas);
       return;
     }
     this.showViewSportsman = false;
@@ -198,7 +203,7 @@ export class CreateSportsmanComponent implements OnInit {
     this.activeDepto = false;
     this.activeCity = false;
     if (this.isRoutePage) {
-      this.router.navigate(['/sportsman']);
+      this.router.navigateByUrl(APP_ROUTES.deportistas);
       return;
     }
     this.CreateSportsman.emit(true);

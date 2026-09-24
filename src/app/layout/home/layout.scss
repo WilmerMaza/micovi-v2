@@ -3,9 +3,13 @@
  *
  * Rail + canvas en flex (sin margin-left sobre 100vw): al colapsar, el
  * dashboard ocupa el ancho liberado. Móvil: drawer overlay (lógica intacta).
+ *
+ * El inset de contenido ($shell-pad-*) es la fuente de verdad de padding
+ * para todos los módulos del outlet — no repetir laterales en features.
  */
 
 @use 'styles/colors' as *;
+@use 'styles/spacing' as *;
 
 :host {
   display: block;
@@ -46,7 +50,8 @@ $dur: 180ms;
   flex: 1 1 0;
   min-width: 0;
   height: 100vh;
-  padding: #{$toolbar-h} 20px 20px 20px;
+  /* topbar + aire vertical; laterales controlados por $shell-pad-* */
+  padding: calc(#{$toolbar-h} + #{$shell-pad-y}) $shell-pad-x $shell-pad-y;
   overflow: auto;
   background-color: $color-canvas;
   position: relative;
@@ -58,10 +63,10 @@ $dur: 180ms;
 .main-content-placeholder {
   display: block;
   position: absolute;
-  top: $toolbar-h;
-  left: 20px;
-  right: 20px;
-  bottom: 20px;
+  top: calc(#{$toolbar-h} + #{$shell-pad-y});
+  left: $shell-pad-x;
+  right: $shell-pad-x;
+  bottom: $shell-pad-y;
   pointer-events: none;
   z-index: 0;
 }
@@ -117,7 +122,15 @@ $dur: 180ms;
     .main-content {
       flex: 1 1 auto;
       width: 100%;
-      padding: #{$toolbar-h} 16px 16px 16px;
+      padding: calc(#{$toolbar-h} + #{$shell-pad-y-mobile}) $shell-pad-x-mobile
+        $shell-pad-y-mobile;
+    }
+
+    .main-content-placeholder {
+      top: calc(#{$toolbar-h} + #{$shell-pad-y-mobile});
+      left: $shell-pad-x-mobile;
+      right: $shell-pad-x-mobile;
+      bottom: $shell-pad-y-mobile;
     }
 
     &:not(.sidebar-collapsed) .sidebar-wrapper {
@@ -136,5 +149,4 @@ $dur: 180ms;
   .mobile-backdrop {
     opacity: 1;
   }
-
 }

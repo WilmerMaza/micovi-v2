@@ -2,7 +2,7 @@
  * Widget de perfil en la topbar del shell Micovi.
  *
  * Chip de identidad + menú de cuenta (Configuración / Cerrar sesión).
- * Datos solo lectura desde AuthService; no altera logout ni ruta configuration.
+ * Datos solo lectura desde AuthService. Configuración se oculta sin permiso.
  * El © legal no vive aquí — va en la pantalla de configuración.
  *
  * Usado por layout/nav; confirma logout vía LogoutModal.
@@ -13,18 +13,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { displayNameFromEmail, roleLabel } from '../../../core/auth/user-role';
+import { APP_ROUTES } from '../../../core/navigation/routes';
+import { NavigationService } from '../../../core/services/navigation.service';
 import { AuthService } from '../../../core/services/auth';
 import { LogoutModal } from '../../../shared/components/logout-modal/logout-modal';
-
-/** Etiquetas de rol conocidas; el resto se muestra tal cual desde Auth. */
-const ROLE_LABELS: Record<string, string> = {
-  coach: 'Entrenador',
-  trainer: 'Entrenador',
-  entrenador: 'Entrenador',
-  admin: 'Administrador',
-  coordinator: 'Coordinador',
-  coordinador: 'Coordinador',
-};
 
 @Component({
   selector: 'app-profile-menu',
@@ -37,33 +30,24 @@ const ROLE_LABELS: Record<string, string> = {
 export class ProfileMenu {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly navigation = inject(NavigationService);
 
   readonly showLogoutModal: WritableSignal<boolean> = signal(false);
   readonly isLoggingOut: WritableSignal<boolean> = signal(false);
+  readonly canAccessSettings = this.navigation.canAccessSettings;
 
   private readonly authUser = this.authService.userSignal();
 
   /** Parte local del email o fallback neutro (sin nombres inventados). */
-  readonly displayName = computed(() => {
-    const email = this.authUser()?.email?.trim();
-    if (!email) {
-      return 'Usuario';
-    }
-    const local = email.split('@')[0]?.trim();
-    return local || email;
-  });
+  readonly displayName = computed(() =>
+    displayNameFromEmail(this.authUser()?.email),
+  );
 
   /** Email completo para meta del menú. */
   readonly emailLabel = computed(() => this.authUser()?.email?.trim() || '');
 
   /** Rol real de Auth; si falta, meta de dominio “Entrenador”. */
-  readonly roleLabel = computed(() => {
-    const role = this.authUser()?.role?.trim();
-    if (!role) {
-      return 'Entrenador';
-    }
-    return ROLE_LABELS[role.toLowerCase()] ?? role;
-  });
+  readonly roleName = computed(() => roleLabel(this.authUser()?.role));
 
   /** Iniciales derivadas del displayName para el squircle. */
   readonly initials = computed(() => {
@@ -98,6 +82,6 @@ export class ProfileMenu {
   }
 
   public configuracion(): void {
-    this.router.navigate(['configuration']);
+    void this.router.navigateByUrl(APP_ROUTES.configuracion);
   }
 }

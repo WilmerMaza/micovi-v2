@@ -1,9 +1,4 @@
-export interface INavData {
-  name: string;
-  url: string;
-  iconComponent: { name: string };
-  badge?: {
-    color: string;
-    text: string;
-  };
-} 
+/**
+ * @deprecated Usar `NavigationItem` en `core/navigation/navigation.types.ts`.
+ */
+export type { NavigationItem as INavData } from '../../core/navigation/navigation.types';

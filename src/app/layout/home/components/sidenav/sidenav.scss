@@ -117,8 +117,24 @@ $dur-fade: 120ms;
   user-select: none;
 }
 
+.nav-section-divider {
+  height: 1px;
+  margin: 8px 12px 10px;
+  background: $color-border-on-dark;
+  flex-shrink: 0;
+
+  &.collapsed {
+    margin: 8px auto;
+    width: 24px;
+  }
+}
+
 .nav-button-container {
   width: 100%;
+
+  &--child {
+    padding-left: 8px;
+  }
 }
 
 .nav-skeleton {
@@ -200,6 +216,46 @@ $dur-fade: 120ms;
     outline-offset: 2px;
   }
 
+  /* Padre con hijo activo: sin barra, solo peso */
+  &.parent-active {
+    color: $color-text-on-dark;
+    font-weight: 700;
+  }
+
+  .nav-chevron {
+    margin-left: auto;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+    flex: 0 0 auto;
+  }
+
+  &--child {
+    min-height: 36px;
+    padding: 6px 12px 6px 28px;
+    font-size: 0.8125rem;
+
+    &::before {
+      top: 6px;
+      bottom: 6px;
+    }
+
+    .nav-child-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.45;
+      flex-shrink: 0;
+    }
+
+    &.active .nav-child-dot {
+      opacity: 1;
+      background: $color-text-on-dark;
+    }
+  }
+
   /* Activo: fill suave + barra blanca (no pastilla full-bleed) */
   &.active {
     background: $color-primary-overlay-dark;
@@ -235,7 +291,7 @@ $dur-fade: 120ms;
     transition: color $dur $ease;
   }
 
-  span {
+  span:not(.nav-child-dot) {
     color: inherit;
     flex: 1;
     white-space: nowrap;
@@ -281,7 +337,8 @@ $dur-fade: 120ms;
     }
 
     span,
-    .badge {
+    .badge,
+    .nav-child-dot {
       display: none;
     }
   }
@@ -360,7 +417,8 @@ $dur-fade: 120ms;
     align-items: center;
   }
 
-  .nav-zone-label {
+  .nav-zone-label,
+  .nav-section-divider {
     display: none;
   }
 
@@ -381,7 +439,8 @@ $dur-fade: 120ms;
     }
 
     span,
-    .badge {
+    .badge,
+    .nav-child-dot {
       display: none;
     }
   }
