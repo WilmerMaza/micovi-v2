@@ -38,6 +38,19 @@ export const HOME_ROUTES: Routes = [
   { path: 'sportsman', redirectTo: APP_PATHS.deportistas },
 
   {
+    path: APP_PATHS.entrenadores,
+    data: {
+      breadcrumb: 'Entrenadores',
+      permissions: [Permission.NavEntrenadores],
+    },
+    loadChildren: () =>
+      import('../entrenador/entrenador.routes').then((m) => m.ENTRENADOR_ROUTES),
+  },
+  { path: 'Entrenador/create', redirectTo: `${APP_PATHS.entrenadores}/${APP_PATHS.entrenadoresCrear}` },
+  { path: 'Entrenador/edit/:id', redirectTo: `${APP_PATHS.entrenadores}/:id/${APP_PATHS.entrenadorEditar}` },
+  { path: 'Entrenador', redirectTo: APP_PATHS.entrenadores },
+
+  {
     path: APP_PATHS.planificacion,
     data: {
       breadcrumb: 'Planificación',

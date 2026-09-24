@@ -1,0 +1,155 @@
+<!-- Reutiliza registration-container de create-sportsman con 11 campos Figma -->
+<main class="registration-container" *ngIf="true">
+  <header class="registration-header">
+    <div class="header-text">
+      <h1 class="registration-title">Agregar entrenador</h1>
+      <p class="registration-lead">Completa la información para registrar un nuevo entrenador</p>
+    </div>
+    <img class="registration-mark" src="/images/logo_micovi_mark.png" alt="" width="48" height="48" decoding="async" />
+  </header>
+
+  <form class="registration-form" [formGroup]="coachForm" (ngSubmit)="submit()">
+    <!-- 1. Identificación + foto -->
+    <section class="registration-card" aria-labelledby="sec-identificacion">
+      <div class="card-header">
+        <mat-icon aria-hidden="true">person</mat-icon>
+        <h2 id="sec-identificacion">Identificación</h2>
+      </div>
+      <div class="card-content">
+        <div class="identification-layout">
+          <div class="identification-form">
+            <mat-form-field appearance="outline" class="field field--full">
+              <mat-label>Nombre completo</mat-label>
+              <input matInput formControlName="name" placeholder="Ej. Juan Pérez" />
+              <mat-error *ngIf="coachForm.get('name')?.hasError('required') && coachForm.get('name')?.touched">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Tipo de documento</mat-label>
+              <mat-select formControlName="typeIdentification" placeholder="Seleccione">
+                <mat-option *ngFor="let opt of typeIdentification" [value]="opt.code">{{ opt.value }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="coachForm.get('typeIdentification')?.hasError('required') && coachForm.get('typeIdentification')?.touched">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Número de documento</mat-label>
+              <input matInput formControlName="identification" placeholder="Ej. 12345678" />
+              <mat-error *ngIf="coachForm.get('identification')?.hasError('required') && coachForm.get('identification')?.touched">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field field--full">
+              <mat-label>Fecha de nacimiento</mat-label>
+              <input matInput [matDatepicker]="dp" formControlName="birtDate" placeholder="DD/MM/AAAA" />
+              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp></mat-datepicker>
+              <mat-error *ngIf="coachForm.get('birtDate')?.hasError('required') && coachForm.get('birtDate')?.touched">Campo requerido</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="photo-upload" role="button" tabindex="0" (click)="fileInput.click()">
+            <ng-container *ngIf="imageSelected; else addPhoto">
+              <button class="remove-image" type="button" (click)="removeImage($event)"><mat-icon>close</mat-icon></button>
+              <img [src]="selectedImageURL" alt="Vista previa" class="preview-image" />
+            </ng-container>
+            <ng-template #addPhoto>
+              <mat-icon>upload</mat-icon>
+              <h3 class="photo-title">Añadir foto</h3>
+              <p class="photo-hint">Formatos: JPG o PNG</p>
+              <p class="photo-hint">Máx. 2MB</p>
+            </ng-template>
+            <input type="file" hidden #fileInput accept="image/png,image/jpeg" (change)="onFilesSelected($event)" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Datos de nacimiento y formación -->
+    <section class="registration-card" aria-labelledby="sec-nacimiento">
+      <div class="card-header">
+        <mat-icon aria-hidden="true">public</mat-icon>
+        <h2 id="sec-nacimiento">Datos de nacimiento y formación</h2>
+      </div>
+      <div class="card-content fields-grid">
+        <mat-form-field appearance="outline" class="field">
+          <mat-label>País de nacimiento</mat-label>
+          <mat-select formControlName="nationality" placeholder="Seleccione" (selectionChange)="universalEstadoApis($event)">
+            <mat-option *ngFor="let p of listPaises" [value]="p.country_name">{{ p.country_name }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="coachForm.get('nationality')?.hasError('required') && coachForm.get('nationality')?.touched">Campo requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field" [matTooltipDisabled]="activeDepto" matTooltip="Selecciona un país">
+          <mat-label>Departamento</mat-label>
+          <mat-select formControlName="department" placeholder="Seleccione" (selectionChange)="universalCiudadesApis($event)">
+            <mat-option *ngFor="let e of listEstados" [value]="e.state_name">{{ e.state_name }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="coachForm.get('department')?.hasError('required') && coachForm.get('department')?.touched">Campo requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field" [matTooltipDisabled]="activeCity" matTooltip="Selecciona un departamento">
+          <mat-label>Ciudad</mat-label>
+          <mat-select formControlName="city" placeholder="Seleccione">
+            <mat-option *ngFor="let c of listCiudades" [value]="c.city_name">{{ c.city_name }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="coachForm.get('city')?.hasError('required') && coachForm.get('city')?.touched">Campo requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field">
+          <mat-label>Género</mat-label>
+          <mat-select formControlName="gender" placeholder="Seleccione">
+            <mat-option *ngFor="let g of generos" [value]="g.code">{{ g.value }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="coachForm.get('gender')?.hasError('required') && coachForm.get('gender')?.touched">Campo requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field">
+          <mat-label>Máximo nivel de estudio alcanzado</mat-label>
+          <mat-select formControlName="studyLevelMax" placeholder="Seleccione">
+            <mat-option *ngFor="let n of nivelEstudio" [value]="n.code">{{ n.value }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="coachForm.get('studyLevelMax')?.hasError('required') && coachForm.get('studyLevelMax')?.touched">Campo requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field field--span-2">
+          <mat-label>Institución donde estudió</mat-label>
+          <input matInput formControlName="institutionNameStudy" />
+          <mat-error *ngIf="coachForm.get('institutionNameStudy')?.hasError('required') && coachForm.get('institutionNameStudy')?.touched">Campo requerido</mat-error>
+        </mat-form-field>
+      </div>
+    </section>
+
+    <!-- 3. Acceso -->
+    <section class="registration-card" aria-labelledby="sec-acceso">
+      <div class="card-header">
+        <mat-icon aria-hidden="true">lock</mat-icon>
+        <h2 id="sec-acceso">Acceso</h2>
+      </div>
+      <div class="card-content fields-grid">
+        <mat-form-field appearance="outline" class="field">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error *ngIf="coachForm.get('password')?.hasError('required') && coachForm.get('password')?.touched">Campo requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phone" placeholder="+57 ..." />
+          <mat-error *ngIf="coachForm.get('phone')?.hasError('required') && coachForm.get('phone')?.touched">Campo requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput type="email" formControlName="email" />
+          <mat-error *ngIf="coachForm.get('email')?.hasError('required') && coachForm.get('email')?.touched">Campo requerido</mat-error>
+          <mat-error *ngIf="coachForm.get('email')?.hasError('email') && coachForm.get('email')?.touched">Correo inválido</mat-error>
+        </mat-form-field>
+      </div>
+    </section>
+
+    <footer class="form-actions">
+      <button type="button" class="btn-back" (click)="closeCard()"><mat-icon>arrow_back</mat-icon><span>Atrás</span></button>
+      <button type="submit" class="btn-save"><span>Crear</span><mat-icon>arrow_forward</mat-icon></button>
+    </footer>
+  </form>
+</main>
