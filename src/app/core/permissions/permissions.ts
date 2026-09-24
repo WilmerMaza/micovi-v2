@@ -8,6 +8,7 @@
 export const Permission = {
   NavInicio: 'nav.inicio',
   NavDeportistas: 'nav.deportistas',
+  NavEntrenadores: 'nav.entrenadores',
   NavPlanificacion: 'nav.planificacion',
   NavEjercicios: 'nav.ejercicios',
   NavEntrenamiento: 'nav.entrenamiento',
@@ -27,6 +28,7 @@ export type Permission = (typeof Permission)[keyof typeof Permission];
 export const OPERATION_PERMISSIONS: readonly Permission[] = [
   Permission.NavInicio,
   Permission.NavDeportistas,
+  Permission.NavEntrenadores,
   Permission.NavPlanificacion,
   Permission.NavEjercicios,
   Permission.NavEntrenamiento,

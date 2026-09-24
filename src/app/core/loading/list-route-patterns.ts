@@ -7,6 +7,8 @@
 export const TABLE_OUTLET_ROUTE_SEGMENTS = [
   '/deportistas',
   '/sportsman',
+  '/entrenadores',
+  '/entrenador',
 ] as const;
 
 /** true si la URL destino es un listado denso (dinamic-table). */

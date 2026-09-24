@@ -27,6 +27,14 @@ export const NAVIGATION_CONFIG: NavigationItem[] = [
     permissions: [Permission.NavDeportistas],
   },
   {
+    id: 'entrenadores',
+    label: 'Entrenadores',
+    route: APP_ROUTES.entrenadores,
+    icon: 'supervisor_account',
+    section: 'operacion',
+    permissions: [Permission.NavEntrenadores],
+  },
+  {
     id: 'planificacion',
     label: 'Planificación',
     route: APP_ROUTES.planificacion,

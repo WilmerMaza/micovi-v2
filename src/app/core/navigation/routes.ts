@@ -10,6 +10,9 @@ export const APP_PATHS = {
   deportistasCrear: 'crear',
   deportistaEditar: 'editar',
   historialCategorias: 'historial-categorias',
+  entrenadores: 'entrenadores',
+  entrenadoresCrear: 'crear',
+  entrenadorEditar: 'editar',
   planificacion: 'planificacion',
   planesAnuales: 'planes-anuales',
   eventos: 'eventos',
@@ -48,6 +51,10 @@ export const APP_ROUTES = {
     `/${APP_PATHS.deportistas}/${id}/${APP_PATHS.deportistaEditar}`,
   deportistaHistorialCategorias: (id: string | number) =>
     `/${APP_PATHS.deportistas}/${id}/${APP_PATHS.historialCategorias}`,
+  entrenadores: `/${APP_PATHS.entrenadores}`,
+  entrenadoresCrear: `/${APP_PATHS.entrenadores}/${APP_PATHS.entrenadoresCrear}`,
+  entrenadorEditar: (id: string | number) =>
+    `/${APP_PATHS.entrenadores}/${id}/${APP_PATHS.entrenadorEditar}`,
   planificacion: `/${APP_PATHS.planificacion}`,
   planesAnuales: `/${APP_PATHS.planificacion}/${APP_PATHS.planesAnuales}`,
   planAnual: (id: string | number) =>
